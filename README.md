@@ -12,7 +12,7 @@ If you have a better suggestion to any of the things I'm proposing here, please 
 
 ## PIP ##
 
-- PIP is a package manager for Python. It's like NPM or Bower for javascript. You should aready have it installed on your computer - Open up a terminal and run "pip" to see if the command exists. Follow the installation instructions if you don't have it (https://pip.pypa.io/en/stable/installing/).
+- PIP is a package manager for Python. It's like NPM or Bower for javascript. You should aready have it installed on your computer - Open up a terminal and run `pip` to see if the command exists. Follow the installation instructions if you don't have it (https://pip.pypa.io/en/stable/installing/).
 
 ## Virtualenv ##
 
@@ -28,23 +28,23 @@ Follow these steps to begin coding:
 
 1. Clone this repository 
 
-  "git clone https://github.com/YArane/ECSE-428-Book-Swap"
+  `git clone https://github.com/YArane/ECSE-428-Book-Swap`
 
 2. Go into the folder
 
-  "cd ECSE-428-Book-Swap"
+  `cd ECSE-428-Book-Swap`
 
-3. Create a new virtualenv for the project. You will automatically be using it by running this command. If you want to stop using it run "deactivate", and to start using it again run "workon bookswap"
+3. Create a new virtualenv for the project. You will automatically be using it by running this command. If you want to stop using it run `deactivate`, and to start using it again run `workon bookswap`
 
-  "mkvirtualenv bookswap"
+  `mkvirtualenv bookswap`
 
 3. Install the dependencies by running the following (the file requirements.txt contains a list of all the dependecies used by the project)
   
-  "pip install -r requirements.txt"
+  `pip install -r requirements.txt`
 
-4. Run the server to verify that everything is OK. Your terminal should say " * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)". You can run the URL in your browser to see a "Hello World!" message.
+4. Run the server to verify that everything is OK. Your terminal should say `* Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)`. You can run the URL in your browser to see a "Hello World!" message.
 
-  "python BookSwap.py"
+  `python BookSwap.py`
   
 5. Rejoice in your success.
 
@@ -63,6 +63,6 @@ I think we should follow this guide: https://github.com/amontalenti/elements-of-
 - Constants: UPPER_WITH_UNDERSCORES.
 - Precompiled regular expressions: name_re.
 
-## Git Commits ## 
+## Git Commits ##
 
 Keep your commit messages relevant to what you are pushing (messages can be really useful!). I follow the convention of writing them in present tense: "Add endpoint for listing retrieval" instead of "Added endpoint for listing retrieval".
