@@ -16,7 +16,7 @@ If you have a better suggestion to any of the things I'm proposing here, please 
 
 ## Virtualenv ##
 
-Virtualenv is an awesome tool for mananging dependencies for a python project. We will use to make sure that we are all *always* working with the same set of tools. 
+Virtualenv is an awesome tool for mananging dependencies for a python project. We will use it to make sure that we are all *always* working with the same set of tools. 
 
 - To install virtualenv in OSX follow steps 1 to 4 of the following page (ignore all the remaining steps): http://www.pyimagesearch.com/2015/06/15/install-opencv-3-0-and-python-2-7-on-osx/
 
@@ -27,15 +27,25 @@ Virtualenv is an awesome tool for mananging dependencies for a python project. W
 Follow these steps to begin coding:
 
 1. Clone this repository 
+
   "git clone https://github.com/YArane/ECSE-428-Book-Swap"
+
 2. Go into the folder
+
   "cd ECSE-428-Book-Swap"
+
 3. Create a new virtualenv for the project. You will automatically be using it by running this command. If you want to stop using it run "deactivate", and to start using it again run "workon bookswap"
+
   "mkvirtualenv bookswap"
+
 3. Install the dependencies by running the following (the file requirements.txt contains a list of all the dependecies used by the project)
+  
   "pip install -r requirements.txt"
+
 4. Run the server to verify that everything is OK. Your terminal should say " * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)". You can run the URL in your browser to see a "Hello World!" message.
+
   "python BookSwap.py"
+  
 5. Rejoice in your success.
 
 # Coding Conventions #
