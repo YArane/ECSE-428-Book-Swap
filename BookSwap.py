@@ -8,9 +8,9 @@ def hello_world():
     return 'Hello Slack!'
 
 
-@app.create_account('/create_acount', methods = ['POST'])
+@app.route('/create_acount', methods = ['POST'])
 def create_account():
-
+    pass
 
 
 if __name__ == '__main__':
