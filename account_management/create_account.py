@@ -1,5 +1,4 @@
 import re
-from mail_verifier import verify_email
 
 rgx_password_requirements = [r'(.*[a-z])', \
                          r'(.*[A-Z])', \
@@ -58,5 +57,3 @@ def validate_email(email):
 
 
     return []
-
-print verify_email('yarden.arane@mail.mcgill.ca', 'mail.mcgill.ca')

@@ -40,7 +40,7 @@ class TestPasswordRequirementMethod(unittest.TestCase):
 class TestVaildateEmailMethod(unittest.TestCase):
 
     def test_syntax(self):
-        self.assertTrue(validate_email("yarden.arane@gmail.com"))
+        self.assertEquals(validate_email("yarden.arane@gmail.com"), [])
         self.assertEqual(validate_email('skatie_girl57@.com'), ['invalid syntax'])
 
     def test_null(self):
