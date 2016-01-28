@@ -17,7 +17,7 @@ to find rules that are not obeyed
     password: input string
     return: list of rules which failed
 """
-def validate_password_requirement(password):
+def validate_password(password):
     # check for string type
     if not password:
         return ['field is required']
