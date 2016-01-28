@@ -1,4 +1,5 @@
 import re
+from mail_verifier import verify_email
 
 rgx_password_requirements = [r'(.*[a-z])', \
                          r'(.*[A-Z])', \
@@ -15,14 +16,14 @@ password_requirements = ['lowercase required', \
 to find rules that are not obeyed
 
     password: input string
-    return: list of rules which failed
+    return: list of rules which have failed
 """
 def validate_password(password):
     # check for string type
     if not password:
         return ['field is required']
     if not isinstance(password, basestring):
-        return ['alphanumeric characters only']
+        return ['string characters only']
     if not password.isalnum():
         return ['alphanumeric characters only']
 
@@ -33,5 +34,29 @@ def validate_password(password):
         if not result:
            failed_rules.append(requirement)
 
+
     return failed_rules
 
+
+""" Validates user input email address using regex
+to find rules that are not obeyed
+
+    password: input string
+    return: list of rules which have failed
+"""
+def validate_email(email):
+    # check for string type
+    if not email:
+        return ['field is required']
+    if not isinstance(email, basestring):
+        return ['string characters only']
+
+    # check syntax
+    valid_syntax = re.match('^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$', email)
+    if not valid_syntax:
+        return ['invalid syntax']
+
+
+    return []
+
+print verify_email('yarden.arane@mail.mcgill.ca', 'mail.mcgill.ca')

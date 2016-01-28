@@ -1,5 +1,7 @@
 import unittest
 from account_management.create_account import validate_password
+from account_management.create_account import validate_email
+
 
 class TestPasswordRequirementMethod(unittest.TestCase):
 
@@ -33,7 +35,18 @@ class TestPasswordRequirementMethod(unittest.TestCase):
 
     def test_general(self):
         self.assertEquals(validate_password("passwor"), ['uppercase required', 'number required', 'min length = 8'])
-        self.assertEquals(validate_password(123), ['alphanumeric characters only'])
+        self.assertEquals(validate_password(123), ['string characters only'])
+
+class TestVaildateEmailMethod(unittest.TestCase):
+
+    def test_syntax(self):
+        self.assertTrue(validate_email("yarden.arane@gmail.com"))
+        self.assertEqual(validate_email('skatie_girl57@.com'), ['invalid syntax'])
+
+    def test_null(self):
+        self.assertEquals(validate_email(""), ['field is required'])
+        self.assertEquals(validate_email(None), ['field is required'])
+
 
 if __name__ == '__main__':
     unittest.main()
