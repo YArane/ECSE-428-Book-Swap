@@ -22,6 +22,30 @@ Virtualenv is an awesome tool for mananging dependencies for a python project. W
 
 - To install virtualenv on Linux follow step 8 of the following page (ignore all the other steps): http://www.pyimagesearch.com/2015/06/22/install-opencv-3-0-and-python-2-7-on-ubuntu/
 
+## MongoDB ##
+
+We are using MongoDB as the data store for the project. Once we start building the DB endpoints (right now), you'll need to have MongoDB installed on your computer to run the webserver. 
+
+- Ubuntu installation instructions: https://docs.mongodb.org/manual/tutorial/install-mongodb-on-ubuntu/
+- Mac OS X installation instructions: https://docs.mongodb.org/manual/tutorial/install-mongodb-on-os-x/
+- Ask Katie or Daniel to help you setup a local db on your computer. Here are quick instructions:
+
+1. Make a folder somewhere on your computer to store the data. Please DO NOT make it inside the repository folder, you shouldn't push your DB to the repo.
+
+  `mkdir bookswap_data`
+  
+2. Create and bootup a MongoDB instance (terms totally made up by me, Daniel):
+
+  `mongod --dbpath bookswap_data`
+  
+3. You should see a process run on that terminal window. Great, you have a database locally deployed on your computer. Now you can open a second terminal and use the mongo command to explore your db (you need a new window, leave the DB running). You need to give mongo the path to the folder where the data is:
+
+  `mongo bookswap_data/`
+  
+4. Follow this guide to do cool things on your DB (insert, update, remove, ...): https://docs.mongodb.org/manual/reference/mongo-shell/
+
+5. Rejoice in your abilities to install dependencies. This is what you were born for. I'm sure someone will hire you because you have truly mastered the craft of googling tutorials.
+
 ## Project Setup ##
 
 Follow these steps to begin coding:
