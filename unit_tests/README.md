@@ -41,3 +41,7 @@ if __name__ == '__main__':
 
 - All **story related**, **public members** must be accompanied by a *complete* testing suite
 - All unit tests should be in the *unit_tests/* subdirectory
+
+##*Todo:*##
+Test runner module
+    `unittest.run()`
