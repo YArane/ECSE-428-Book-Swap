@@ -1,0 +1,21 @@
+<html>
+    <head>
+        <title>This is the user's home page</title>
+        <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
+    </head>
+    <body>
+        <div id="container">
+            <div class="title">
+                <h1>POST request to create new post</h1>
+            </div>
+            <div id="content">
+                <form method="post" action="{{ url_for('show_user_page', user_id=1) }}">
+                  <label for="post_id">Please enter post id number:</label>
+                  <input type="text" name="yourname" /><br />
+                  <input type="submit" />
+                </form>
+            </div>
+        </div>
+    </body>
+</html>
+ 

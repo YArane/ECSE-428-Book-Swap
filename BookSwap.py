@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, redirect, url_for
 from account_management.create_account import *
 from database.operations import DBOperations
 
@@ -22,7 +22,7 @@ dbOperations = DBOperations()
 def hello_world():
     return 'Hello Slack!'
 
-@app.route('/create_acount', methods = ['POST'])
+@app.route('/create_account', methods = ['POST'])
 def create_account():
     error = []
     if request.method == 'POST':
@@ -48,5 +48,23 @@ def login():
 
     return render_template('login.html', error=error)
 
+@app.route('/user/<int:user_id>/', methods=['GET', 'POST'])
+def show_user_page(user_id):
+    if request.method == 'GET':
+        return render_template('user_page.html', user_id=user_id)
+    if request.method == 'POST':
+        post_id = request.form['post_id']
+        return redirect(url_for('show_post', post_id=post_id))
+
+@app.route('/post/<int:post_id>/', methods=['GET', 'POST'])
+def show_post(post_id):
+    if request.method == 'GET':
+        #this is just a placeholder message, obviously it should check the database for the post and get data from there
+        return 'This is the post page of post #%d' % post_id
+    if request.method == 'POST':
+        if request.values['delete'] == 'true':
+            return 'Post would hypothetically get deleted'
+        else:
+            return 'No other options implemented yet'
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=4000)
