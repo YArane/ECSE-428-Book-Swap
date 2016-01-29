@@ -53,8 +53,12 @@ def show_user_page(user_id):
     if request.method == 'GET':
         return render_template('user_page.html', user_id=user_id)
     if request.method == 'POST':
-        post_id = request.form['post_id']
-        return redirect(url_for('show_post', post_id=post_id))
+        return redirect(url_for('create_post'))
+
+
+@app.route('/create_post/', methods=['GET', 'POST'])
+def create_post():
+    return "Create post page"
 
 @app.route('/post/<int:post_id>/', methods=['GET', 'POST'])
 def show_post(post_id):
@@ -68,3 +72,4 @@ def show_post(post_id):
             return 'No other options implemented yet'
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=4000)
+

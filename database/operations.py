@@ -39,3 +39,10 @@ class DBOperations():
                 print "Error occurred trying to activate user for email = " + email
         return False
 
+    def insert_post(self, textbook_name, creator_id, textbook_author=None):
+        creator = User.objects.get(user_id=creator_id)
+        if textbook_author:
+            new_post = Post(textbook_name, creator, textbook_author)
+        else:
+            new_post = Post(textbook_name, creator)
+        new_post.save()
