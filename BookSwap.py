@@ -4,13 +4,13 @@ from account_management.create_account import *
 app = Flask(__name__)
 
 app.config.from_object(__name__)
-app.config['MONGODB_SETTINGS'] = {'DB': 'testing'}
+app.config['MONGODB_SETTINGS'] = {'DB': 'bookswap_development'}
 app.config['TESTING'] = True
 app.config['SECRET_KEY'] = 'flask+mongoengine=<3'
 app.debug = True
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 
-from models import db
+from database.models import db
 db.init_app(app)
 
 @app.route('/')
