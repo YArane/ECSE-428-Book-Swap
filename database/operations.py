@@ -1,6 +1,12 @@
 from models import User
 from account_management.create_account import validate_password, validate_email
 
+'''
+This class is the layer used to interact with the database. The functions defined here
+will let you add, remove, update records on the database. Just create an instance of this
+class and use it communicate with the DB. Feel free to add more operations!
+'''
+
 class DBOperations():
 
     def __init__(self):

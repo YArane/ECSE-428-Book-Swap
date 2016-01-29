@@ -1,5 +1,6 @@
 from flask import Flask, request, render_template
 from account_management.create_account import *
+from database.operations import DBOperations
 
 app = Flask(__name__)
 
@@ -12,6 +13,10 @@ app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 
 from database.models import db
 db.init_app(app)
+
+# Use this object to communicate interact with the DB. See operations.py
+# to understand what operations are defined
+dbOperations = DBOperations()
 
 @app.route('/')
 def hello_world():
