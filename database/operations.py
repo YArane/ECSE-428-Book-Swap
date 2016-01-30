@@ -1,4 +1,4 @@
-from models import User
+from models import User, Post
 from account_management.create_account import validate_password, validate_email
 
 '''
