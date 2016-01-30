@@ -41,6 +41,7 @@ We are using MongoDB as the data store for the project. Once we start building t
 3. You should see a process run on that terminal window. Great, you have a database locally deployed on your computer. Now you can open a second terminal and use the mongo command to explore your db (you need a new window, leave the DB running). You need to run the mongo command while inside the bookswap_data folder
   
   `cd bookswap_data`
+
   `mongo`
   
 4. Follow this guide to do cool things on your DB (insert, update, remove, ...): https://docs.mongodb.org/manual/reference/mongo-shell/
