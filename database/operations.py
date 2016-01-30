@@ -12,20 +12,19 @@ class DBOperations():
     def __init__(self):
         pass
 
+    def user_exists(self, email):
+        exists = True
+        try:
+            User.objects.get(email=email)
+        except:
+            exists = False
+
+        return exists
+
     def insert_user(self, email, password):
-        #TODO: talk to Yarden about where we should put the validation logic
-        # Here or on the routes?
+        new_user = User(email=email, password=password, activated=False)
+        new_user.save()
 
-        valid_password = len(validate_password(password)) == 0
-        valid_email = len(validate_email(email)) == 0
-
-        if (valid_password and valid_email):
-            new_user = User(email=email,
-                            password=password,
-                            activated=False)
-            new_user.save()
-            return True
-        return False
 
     def activate_user(self, email):
         valid_email = len(validate_email(email)) == 0
