@@ -68,11 +68,13 @@ Follow these steps to begin coding:
   
   `pip install -r requirements.txt`
 
-4. Run the server to verify that everything is OK. Your terminal should say `* Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)`. You can run the URL in your browser to see a "Hello World!" message.
+4. Follow the MongoDB instructions explained in the section above. Note that you don't have to follow step 3, that is just for playing around with MongoDB. If you don't complete steps 1 and 2, running the server will fail.
+
+5. Run the server to verify that everything is OK. Your terminal should say `* Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)`. You can run the URL in your browser to see a "Hello World!" message.
 
   `python BookSwap.py`
   
-5. Rejoice in your success.
+6. Rejoice in your success.
 
 # Coding Conventions #
 
