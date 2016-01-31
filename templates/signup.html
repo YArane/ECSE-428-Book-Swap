@@ -7,21 +7,21 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="Textbook exchange service for students.">
     <meta name="author" content="BookSwap">
-    <link rel="icon" href="favicon.ico">
+    <link rel="icon" href="../static/favicon.ico">
 
     <title>BookSwap - Sign Up</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../static/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap theme -->
-    <link href="dist/css/bootstrap-theme.min.css" rel="stylesheet">
+    <link href="../static/dist/css/bootstrap-theme.min.css" rel="stylesheet">
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <link href="assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+    <link href="../static/assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="theme.css" rel="stylesheet">
+    <link href="../static/theme.css" rel="stylesheet">
 
-    <script src="assets/js/ie-emulation-modes-warning.js"></script>
+    <script src="../static/assets/js/ie-emulation-modes-warning.js"></script>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -42,12 +42,12 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="index.html">BookSwap</a>
+          <a class="navbar-brand" href="{{ url_for('index') }}">BookSwap</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li><a href="index.html">Home</a></li>
-            <li class="active"><a href="signup.html">Create Account</a></li>
+            <li {% if page == 'index' %}class="active"{% endif %}><a href="{{ url_for('index') }}">Home</a></li>
+            <li {% if page == 'signup' %}class="active"{% endif %}><a href="{{ url_for('signup') }}">Create Account</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -67,7 +67,7 @@
     </div>
     <button type="button" class="btn btn-default" onclick="createAccount()">Create Account</button>
     <div id="validation"></div>
-    <script src="create_account.js"></script>
+    <script src="../static/create_account.js"></script>
 
     </div> <!-- /container -->
 
@@ -77,9 +77,9 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script>window.jQuery || document.write('<script src="assets/js/vendor/jquery.min.js"><\/script>')</script>
-    <script src="dist/js/bootstrap.min.js"></script>
-    <script src="assets/js/docs.min.js"></script>
+    <script src="../static/dist/js/bootstrap.min.js"></script>
+    <script src="../static/assets/js/docs.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="assets/js/ie10-viewport-bug-workaround.js"></script>
+    <script src="../static/assets/js/ie10-viewport-bug-workaround.js"></script>
   </body>
 </html>

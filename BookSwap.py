@@ -19,17 +19,30 @@ db.init_app(app)
 dbOperations = DBOperations()
 
 @app.route('/')
-def hello_world():
-    return 'Hello Slack!'
+@app.route('/index')
+def index():
+    return render_template('index.html', page='index')
+
+@app.route('/signup')
+def signup():
+    return render_template('signup.html', page='signup')
 
 @app.route('/create_account', methods = ['POST'])
 def create_account():
     error = []
+    password = request.form['password']
+    email = request.form['email']
     if request.method == 'POST':
-        error = validate_password(request.form['password'])
-        error.append(validate_email(request.form['email']))
+        error = validate_password(password)
+        error.append(validate_email(email))
 
     if not error:
+        if dbOperations.user_exists(email):
+            #TODO: show error message account with this email already exists
+            pass
+        else:
+            dbOperations.insert_user(email, password)
+
         # TODO: encrypt credentials
         # TODO: write encrypted-credentials to database
         return render_template('homepage.html')
