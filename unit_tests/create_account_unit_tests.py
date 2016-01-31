@@ -1,6 +1,7 @@
 import unittest
 from account_management.create_account import validate_password
 from account_management.create_account import validate_email
+from account_management.create_account import validate_credentials
 
 
 class TestPasswordRequirementMethod(unittest.TestCase):
@@ -46,6 +47,16 @@ class TestVaildateEmailMethod(unittest.TestCase):
     def test_null(self):
         self.assertEquals(validate_email(""), ['field is required'])
         self.assertEquals(validate_email(None), ['field is required'])
+
+
+
+class TestValidateCredentials(unittest.TestCase):
+
+    def test_true(self):
+        self.assertEquals(validate_credentials("yarden.arane@gmail.com", 'abcDEF123'), True)
+
+    def test_false(self):
+        self.assertEquals(validate_credentials("yrden.arane@gmail.com", 'abcDEF123'), False)
 
 
 if __name__ == '__main__':
