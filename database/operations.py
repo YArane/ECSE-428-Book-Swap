@@ -21,6 +21,15 @@ class DBOperations():
 
         return exists
 
+    def validate_login_credentials(self, email, password):
+        is_valid = True
+        try:
+            User.objects.get(email=email, password=password)
+        except:
+            is_valid = False
+
+        return is_valid
+
     def insert_user(self, email, password):
         new_user = User(email=email, password=password, activated=False)
         new_user.save()

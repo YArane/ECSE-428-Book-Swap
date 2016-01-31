@@ -53,18 +53,20 @@ def create_account():
 def login():
     error = []
     if request.method == 'POST':
-        pass
-        #error = validate_credentials(request.form['email'], request.form['password'])
+        is_valid = dbOperations.validate_login_credentials(request.form['email'], request.form['password'])
 
-    if not error:
-        return render_template('homepage.html')
+        if is_valid:
+            return render_template('user_page.html')
 
-    return render_template('login.html', error=error)
+
+        #TODO: show error message that credentials are incorrect
+
+    return render_template('login.html')
 
 @app.route('/user/<int:user_id>/', methods=['GET', 'POST'])
 def show_user_page(user_id):
     if request.method == 'GET':
-        return render_template('user_page.html', user_id=user_id)
+        return render_template('user_page.html', user_id=user_id) #TODO: what is user_id?
     if request.method == 'POST':
         return redirect(url_for('create_post'))
 
