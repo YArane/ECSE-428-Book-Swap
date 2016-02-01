@@ -61,7 +61,7 @@ def login():
 
         #TODO: show error message that credentials are incorrect
 
-    return render_template('login.html')
+    return "Error when logging in! Go back and try again :)"
 
 @app.route('/user/<int:user_id>/', methods=['GET', 'POST'])
 def show_user_page(user_id):

@@ -63,6 +63,23 @@
 
     </div> <!-- /container -->
 
+    <div class="container theme-showcase">
+      <h1>Login to Your Account</h1>
+      <br>
+      <form method="post" action="/login">
+          <div class="form-group">
+            <label for="usr">Email:</label>
+            <input type="text" class="form-control" id="usr" name="email" placeholder="Enter Email">
+          </div>
+          <div class="form-group">
+            <label for="pwd">Password:</label>
+            <input type="password" class="form-control" id="pwd" name="password" placeholder="Enter Password">
+          </div>
+          <button type="submit" class="btn btn-default" onclick="">Log In</button>
+      </form>
+      <div id="validation"></div>
+    </div> <!-- /container -->
+
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
