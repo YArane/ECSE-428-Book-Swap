@@ -56,14 +56,9 @@ def create_account():
             flash("Account already exists for this email")
             return render_template('signup.html', error=error)
         else:
-<<<<<<< HEAD
             dbOperations.insert_user(email, password)
-            dbOperations.validate_email(user, request.email)
+            dbOperations.validate_email(email)
             return render_template('login.html')
-=======
-            new_user = dbOperations.insert_user(email, password)
-            return redirect(url_for('show_user_page', user_id=new_user.user_id))
->>>>>>> b21acce0acddf5ed095dd43b38bab5274e499b03
     else:
         flash("Please enter a valid email and password")
         print error
@@ -77,11 +72,7 @@ def login():
     error = []
     if request.method == 'POST':
         is_valid = dbOperations.validate_login_credentials(request.form['email'], request.form['password'])
-<<<<<<< HEAD
-=======
         user = dbOperations.get_user_by_email(request.form['email'])
-
->>>>>>> b21acce0acddf5ed095dd43b38bab5274e499b03
         if is_valid:
             return redirect(url_for('show_user_page', user_id=user.user_id))
         else:
