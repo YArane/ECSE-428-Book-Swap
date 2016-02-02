@@ -1,7 +1,6 @@
-from flask import Flask, request, render_template, redirect, url_for
+from flask import Flask, request, render_template, redirect, url_for, flash
 from account_management.create_account import *
 from database.operations import DBOperations
-from flask import Flask, render_template, flash
 
 app = Flask(__name__)
 
