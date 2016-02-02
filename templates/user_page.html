@@ -8,7 +8,7 @@
                 <h1>POST request to create new post</h1>
             </div>
             <div id="content">
-                <form method="post" action="{{ url_for('show_user_page', user_id=1) }}">
+                <form method="post" action="{{ url_for('show_user_page', user_id=user_id) }}">
                   <label for="post_id">Please enter post id number:</label>
                   <input type="text" name="post_id" /><br />
                   <input type="submit" />

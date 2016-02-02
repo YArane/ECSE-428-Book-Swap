@@ -32,7 +32,8 @@ class DBOperations():
         return is_valid
 
     def insert_user(self, email, password):
-        new_user = User(email=email, password=password, activated=False)
+        user_id = uuid.uuid4()
+        new_user = User(email=email, password=password, activated=False, user_id=user_id)
         new_user.save()
 
 
@@ -47,6 +48,18 @@ class DBOperations():
             except:
                 print "Error occurred trying to activate user for email = " + email
         return False
+
+    def get_user_by_email(self, email):
+        try:
+            return User.objects.get(email=email)
+        except:
+            return None
+
+    def get_user_by_ID(self, user_id):
+        try:
+            return User.objects.get(user_id=user_id)
+        except:
+            return None
 
     def insert_post(self, textbook_title, creator_email, textbook_author=None):
         post_id = uuid.uuid4()

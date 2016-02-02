@@ -13,9 +13,10 @@ class User(db.Document):
     email = db.EmailField(max_length=30, required=True)
     password = db.StringField(max_length=30, required=True)
     activated = db.BooleanField(default=False)
+    user_id = db.UUIDField(binary=True, required=True)
 
 class Post(db.Document):
     creator = db.ReferenceField('User', max_length=30, required=True)
     textbook_title = db.StringField(max_length=60, required=True)
     textbook_author = db.StringField(max_length=30, required=False)
-    post_id = db.UUIDField(binary=True, required=True, auto=True)
+    post_id = db.UUIDField(binary=True, required=True)

@@ -63,10 +63,19 @@ def login():
             return render_template("index.html")
 
 
-@app.route('/user/<int:user_id>/', methods=['GET', 'POST'])
+@app.route('/user/<string:user_id>/', methods=['GET', 'POST'])
 def show_user_page(user_id):
+    for val in request.values:
+        print val
+        for item in val:
+            print item
     if request.method == 'GET':
-        return render_template('user_page.html', user_id=user_id) #TODO: what is user_id?
+        user = dbOperations.get_user_by_ID(user_id)
+        if user: # TODO: check that user is authenticated before showing user page
+            return render_template('user_page.html', user_id=user_id)
+        else:
+            return "No user account associated with that user"
+        
     if request.method == 'POST':
         return redirect(url_for('create_post'))
 
@@ -75,7 +84,7 @@ def show_user_page(user_id):
 def create_post():
     return "Create post page"
 
-@app.route('/post/<int:post_id>/', methods=['GET', 'POST'])
+@app.route('/post/<string:post_id>/', methods=['GET', 'POST'])
 def show_post(post_id):
     if request.method == 'GET':
         try:
