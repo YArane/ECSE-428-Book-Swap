@@ -5,7 +5,7 @@ from database.operations import DBOperations
 app = Flask(__name__)
 
 app.config.from_object(__name__)
-app.config['MONGODB_SETTINGS'] = {'DB': 'bookswap_development'}
+app.config['MONGODB_SETTINGS'] = {'DB': 'bookswap_development', 'alias':'default'}
 app.config['TESTING'] = True
 app.config['SECRET_KEY'] = 'flask+mongoengine=<3'
 app.debug = True
@@ -78,8 +78,11 @@ def create_post():
 @app.route('/post/<int:post_id>/', methods=['GET', 'POST'])
 def show_post(post_id):
     if request.method == 'GET':
-        #this is just a placeholder message, obviously it should check the database for the post and get data from there
-        return 'This is the post page of post #%d' % post_id
+        try:
+            post = dbOperations.get_post(post_id=post_id)
+        except:
+            return "No post with ID %s exists".format(post_id)
+
     if request.method == 'POST':
         if request.values['delete'] == 'true':
             return 'Post would hypothetically get deleted'

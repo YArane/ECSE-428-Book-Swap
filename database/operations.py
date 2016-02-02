@@ -1,3 +1,4 @@
+import uuid
 from models import User, Post
 from account_management.create_account import validate_password, validate_email
 
@@ -47,10 +48,31 @@ class DBOperations():
                 print "Error occurred trying to activate user for email = " + email
         return False
 
-    def insert_post(self, textbook_name, creator_id, textbook_author=None):
-        creator = User.objects.get(user_id=creator_id)
+    def insert_post(self, textbook_title, creator_email, textbook_author=None):
+        post_id = uuid.uuid4()
+        creator = User.objects.get(email=creator_email)
         if textbook_author:
-            new_post = Post(textbook_name, creator, textbook_author)
+            new_post = Post(textbook_title=textbook_title, creator=creator_email, textbook_author=textbook_author, post_id=post_id)
         else:
-            new_post = Post(textbook_name, creator)
+            new_post = Post(textbook_title=textbook_title, creator=creator_email, post_id=post_id)
         new_post.save()
+        return new_post
+
+    def get_post(self, post_id):
+        try:
+            return Post.objects.get(post_id=post_id)
+        except Exception as e:
+            return e
+
+    # This is just for testing sake
+    def delete_users(self):
+        return User.objects.delete()
+
+    def remove_post(self, post_id):
+        try:
+            Post.objects.get(post_id=post_id).delete()
+        except:
+            return "Couldn't find post with ID " + str(post_id)
+        return "Successfully deleted post with ID " + str(post_id)
+
+
