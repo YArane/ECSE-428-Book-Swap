@@ -61,13 +61,13 @@ class DBOperations():
         except:
             return None
 
-    def insert_post(self, textbook_title, creator_email, textbook_author=None):
+    def insert_post(self, textbook_title, creator_id, textbook_author=None):
         post_id = uuid.uuid4()
-        creator = User.objects.get(email=creator_email)
+        creator = User.objects.get(user_id=creator_id)
         if textbook_author:
-            new_post = Post(textbook_title=textbook_title, creator=creator_email, textbook_author=textbook_author, post_id=post_id)
+            new_post = Post(textbook_title=textbook_title, creator=creator, textbook_author=textbook_author, post_id=post_id)
         else:
-            new_post = Post(textbook_title=textbook_title, creator=creator_email, post_id=post_id)
+            new_post = Post(textbook_title=textbook_title, creator=creator, post_id=post_id)
         new_post.save()
         return new_post
 
@@ -75,7 +75,7 @@ class DBOperations():
         try:
             return Post.objects.get(post_id=post_id)
         except Exception as e:
-            return e
+            return None
 
     # This is just for testing sake
     def delete_users(self):
