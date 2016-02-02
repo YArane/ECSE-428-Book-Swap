@@ -2,13 +2,28 @@ from flask import Flask, request, render_template, redirect, url_for
 from account_management.create_account import *
 from database.operations import DBOperations
 from flask import Flask, render_template, flash
+from flask_mail import Mail
+import sys
+
+sys.path.append('/Users/ralphbousamra/Development/ECSE-428-Book-Swap')
+sys.path.append('/Users/ralphbousamra/Development/ECSE-428-Book-Swap/database')
 
 app = Flask(__name__)
-
+mail = Mail(app)
 app.config.from_object(__name__)
 app.config['MONGODB_SETTINGS'] = {'DB': 'bookswap_development'}
 app.config['TESTING'] = True
 app.config['SECRET_KEY'] = 'flask+mongoengine=<3'
+app.config['SECURITY_PASSWORD_SALT'] = 'istilllikenodejsmore'
+app.config['MAIL_SERVER'] = 'smtp.googlemail.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = True
+
+app.config['MAIL_USERNAME'] = 'mcgillbookswap@gmail.com'
+app.config['MAIL_PASSWORD'] = 'ithinkthereforeiam3'
+app.config['MAIL_DEFAULT_SENDER'] = 'mcgillbookswap@gmail.com'
+
 app.debug = True
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 
@@ -37,15 +52,17 @@ def create_account():
         error = validate_password(password)
         error.append(validate_email(email))
 
-    if not error:
+    if not error[0]:
         if dbOperations.user_exists(email):
-            flash("account already exists for this email")
+            flash("Account already exists for this email")
             return render_template('signup.html', error=error)
         else:
             dbOperations.insert_user(email, password)
-            return render_template('user_page.html')
+            dbOperations.validate_email(user, request.email)
+            return render_template('login.html')
     else:
-        flash("please enter a valid email and password")
+        flash("Please enter a valid email and password")
+        print error
         return render_template('signup.html')
 
         # TODO: encrypt credentials
@@ -56,7 +73,6 @@ def login():
     error = []
     if request.method == 'POST':
         is_valid = dbOperations.validate_login_credentials(request.form['email'], request.form['password'])
-
         if is_valid:
             return render_template('user_page.html')
         else:
@@ -70,7 +86,6 @@ def show_user_page(user_id):
         return render_template('user_page.html', user_id=user_id) #TODO: what is user_id?
     if request.method == 'POST':
         return redirect(url_for('create_post'))
-
 
 @app.route('/create_post/', methods=['GET', 'POST'])
 def create_post():
