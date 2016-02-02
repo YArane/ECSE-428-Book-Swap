@@ -57,17 +57,35 @@
 
     <h1>Enter your login information below.</h1>
     <br>
-    <div class="form-group">
-      <label for="usr">Email:</label>
-      <input type="text" class="form-control" id="usr">
-    </div>
-    <div class="form-group">
-      <label for="pwd">Password:</label>
-      <input type="password" class="form-control" id="pwd">
-    </div>
-    <button type="button" class="btn btn-default" onclick="createAccount()">Create Account</button>
+    <div class="container" style="min-height:100% width:80%">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-warning alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                        {{message}}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        {% block body %}{% endblock %}
+    </div> <!-- /container -->
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+
+    <form method="post" action="/create_account">
+        <div class="form-group">
+            <label for="usr">Email:</label>
+            <input type="email" class="form-control" name="email" id="usr">
+        </div>
+        <div class="form-group">
+            <label for="pwd">Password:</label>
+            <input type="password" class="form-control" name="password" id="pwd">
+        </div>
+         <button type="submit" class="btn btn-default" onclick="">Create Account</button>
+    </form>
     <div id="validation"></div>
-    <script src="../static/create_account.js"></script>
+    <!--<script src="../static/create_account.js"></script>
 
     </div> <!-- /container -->
 

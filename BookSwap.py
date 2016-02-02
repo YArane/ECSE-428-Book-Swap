@@ -1,6 +1,7 @@
 from flask import Flask, request, render_template, redirect, url_for
 from account_management.create_account import *
 from database.operations import DBOperations
+from flask import Flask, render_template, flash
 
 app = Flask(__name__)
 
@@ -38,16 +39,17 @@ def create_account():
 
     if not error:
         if dbOperations.user_exists(email):
-            #TODO: show error message account with this email already exists
-            pass
+            flash("account already exists for this email")
+            return render_template('signup.html', error=error)
         else:
             dbOperations.insert_user(email, password)
+            return render_template('user_page.html')
+    else:
+        flash("please enter a valid email and password")
+        return render_template('signup.html')
 
         # TODO: encrypt credentials
         # TODO: write encrypted-credentials to database
-        return render_template('homepage.html')
-
-    return render_template('create_account.html', error=error)
 
 @app.route('/login', methods = ['POST'])
 def login():
@@ -57,11 +59,10 @@ def login():
 
         if is_valid:
             return render_template('user_page.html')
+        else:
+            flash("invalid login credentials")
+            return render_template("index.html")
 
-
-        #TODO: show error message that credentials are incorrect
-
-    return "Error when logging in! Go back and try again :)"
 
 @app.route('/user/<int:user_id>/', methods=['GET', 'POST'])
 def show_user_page(user_id):
