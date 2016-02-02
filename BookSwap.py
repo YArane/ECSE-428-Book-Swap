@@ -65,10 +65,6 @@ def login():
 
 @app.route('/user/<string:user_id>/', methods=['GET', 'POST'])
 def show_user_page(user_id):
-    for val in request.values:
-        print val
-        for item in val:
-            print item
     if request.method == 'GET':
         user = dbOperations.get_user_by_ID(user_id)
         if user: # TODO: check that user is authenticated before showing user page
@@ -77,24 +73,34 @@ def show_user_page(user_id):
             return "No user account associated with that user"
         
     if request.method == 'POST':
-        return redirect(url_for('create_post'))
+        return redirect(url_for('create_post', user_id=user_id))
 
 
 @app.route('/create_post/', methods=['GET', 'POST'])
 def create_post():
-    return "Create post page"
+    user_id = request.values['user_id']
+    if request.method == 'GET':
+        return render_template("create_post_page.html")
+    else:
+        title = request.values['textbook_title']
+        author = request.values['textbook_author']
+        newpost = dbOperations.insert_post(title, user_id, author) #TODO: automatically get current user id
+        return redirect(url_for('show_post', post_id=newpost.post_id))
+
 
 @app.route('/post/<string:post_id>/', methods=['GET', 'POST'])
 def show_post(post_id):
     if request.method == 'GET':
-        try:
-            post = dbOperations.get_post(post_id=post_id)
-        except:
-            return "No post with ID %s exists".format(post_id)
+        post = dbOperations.get_post(post_id=post_id)
+        if post:
+            return "Post page for post of textbook " + post.textbook_title + " from user with ID " + str(post.creator.user_id)
+        else:
+            return "No post on Sundays"
 
     if request.method == 'POST':
         if request.values['delete'] == 'true':
-            return 'Post would hypothetically get deleted'
+            dbOperations.remove_post(post_id)
+            return "Deleted post with ID %s".format(post_id)
         else:
             return 'No other options implemented yet'
 if __name__ == "__main__":

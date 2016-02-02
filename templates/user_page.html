@@ -5,13 +5,13 @@
     <body>
         <div id="container">
             <div class="title">
-                <h1>POST request to create new post</h1>
+                <h1>User homepage!</h1>
+                <h2>Come here to create new posts</h2>
             </div>
             <div id="content">
                 <form method="post" action="{{ url_for('show_user_page', user_id=user_id) }}">
-                  <label for="post_id">Please enter post id number:</label>
-                  <input type="text" name="post_id" /><br />
-                  <input type="submit" />
+
+                  <input type="submit" value="Click here to post a new ad"/>
                 </form>
             </div>
         </div>
