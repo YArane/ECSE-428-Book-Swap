@@ -1,3 +1,4 @@
+import uuid
 from models import User, Post
 from account_management.create_account import validate_password, validate_email
 from account_management.token import generate_confirmation_token, confirm_token
@@ -42,7 +43,8 @@ class DBOperations():
         return is_valid
 
     def insert_user(self, email, password):
-        new_user = User(email=email, password=password, activated=False)
+        user_id = uuid.uuid4()
+        new_user = User(email=email, password=password, activated=False, user_id=user_id)
         new_user.save()
 
 
@@ -58,14 +60,33 @@ class DBOperations():
                 print "Error occurred trying to activate user for email = " + email
         return False
 
-    def insert_post(self, textbook_name, creator_id, textbook_author=None):
+    def get_user_by_email(self, email):
+        try:
+            return User.objects.get(email=email)
+        except:
+            return None
+
+    def get_user_by_ID(self, user_id):
+        try:
+            return User.objects.get(user_id=user_id)
+        except:
+            return None
+
+    def insert_post(self, textbook_title, creator_id, textbook_author=None):
+        post_id = uuid.uuid4()
         creator = User.objects.get(user_id=creator_id)
         if textbook_author:
-            new_post = Post(textbook_name, creator, textbook_author)
+            new_post = Post(textbook_title=textbook_title, creator=creator, textbook_author=textbook_author, post_id=post_id)
         else:
-            new_post = Post(textbook_name, creator)
+            new_post = Post(textbook_title=textbook_title, creator=creator, post_id=post_id)
         new_post.save()
+        return new_post
 
+    def get_post(self, post_id):
+        try:
+            return Post.objects.get(post_id=post_id)
+        except Exception as e:
+            return None
 
     def confirm_email(token):
         try:
@@ -80,3 +101,14 @@ class DBOperations():
             dbOperations.activate_user(email)
             flash('You have confirmed your account. Thanks!', 'success')
         return redirect(url_for('user_page'))
+
+    # This is just for testing sake
+    def delete_users(self):
+        return User.objects.delete()
+
+    def remove_post(self, post_id):
+        try:
+            Post.objects.get(post_id=post_id).delete()
+        except:
+            return "Couldn't find post with ID " + str(post_id)
+        return "Successfully deleted post with ID " + str(post_id)

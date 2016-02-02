@@ -1,7 +1,6 @@
-from flask import Flask, request, render_template, redirect, url_for
+from flask import Flask, request, render_template, redirect, url_for, flash
 from account_management.create_account import *
 from database.operations import DBOperations
-from flask import Flask, render_template, flash
 from flask_mail import Mail
 import sys
 
@@ -11,7 +10,7 @@ sys.path.append('/Users/ralphbousamra/Development/ECSE-428-Book-Swap/database')
 app = Flask(__name__)
 mail = Mail(app)
 app.config.from_object(__name__)
-app.config['MONGODB_SETTINGS'] = {'DB': 'bookswap_development'}
+app.config['MONGODB_SETTINGS'] = {'DB': 'bookswap_development', 'alias':'default'}
 app.config['TESTING'] = True
 app.config['SECRET_KEY'] = 'flask+mongoengine=<3'
 app.config['SECURITY_PASSWORD_SALT'] = 'istilllikenodejsmore'
@@ -57,9 +56,14 @@ def create_account():
             flash("Account already exists for this email")
             return render_template('signup.html', error=error)
         else:
+<<<<<<< HEAD
             dbOperations.insert_user(email, password)
             dbOperations.validate_email(user, request.email)
             return render_template('login.html')
+=======
+            new_user = dbOperations.insert_user(email, password)
+            return redirect(url_for('show_user_page', user_id=new_user.user_id))
+>>>>>>> b21acce0acddf5ed095dd43b38bab5274e499b03
     else:
         flash("Please enter a valid email and password")
         print error
@@ -73,32 +77,55 @@ def login():
     error = []
     if request.method == 'POST':
         is_valid = dbOperations.validate_login_credentials(request.form['email'], request.form['password'])
+<<<<<<< HEAD
+=======
+        user = dbOperations.get_user_by_email(request.form['email'])
+
+>>>>>>> b21acce0acddf5ed095dd43b38bab5274e499b03
         if is_valid:
-            return render_template('user_page.html')
+            return redirect(url_for('show_user_page', user_id=user.user_id))
         else:
             flash("invalid login credentials")
             return render_template("index.html")
 
 
-@app.route('/user/<int:user_id>/', methods=['GET', 'POST'])
+@app.route('/user/<string:user_id>/', methods=['GET', 'POST'])
 def show_user_page(user_id):
     if request.method == 'GET':
-        return render_template('user_page.html', user_id=user_id) #TODO: what is user_id?
+        user = dbOperations.get_user_by_ID(user_id)
+        if user: # TODO: check that user is authenticated before showing user page
+            return render_template('user_page.html', user_id=user_id)
+        else:
+            return "No user account associated with that user"
+        
     if request.method == 'POST':
-        return redirect(url_for('create_post'))
+        return redirect(url_for('create_post', user_id=user_id))
 
 @app.route('/create_post/', methods=['GET', 'POST'])
 def create_post():
-    return "Create post page"
+    user_id = request.values['user_id']
+    if request.method == 'GET':
+        return render_template("create_post_page.html")
+    else:
+        title = request.values['textbook_title']
+        author = request.values['textbook_author']
+        newpost = dbOperations.insert_post(title, user_id, author) #TODO: automatically get current user id
+        return redirect(url_for('show_post', post_id=newpost.post_id))
 
-@app.route('/post/<int:post_id>/', methods=['GET', 'POST'])
+
+@app.route('/post/<string:post_id>/', methods=['GET', 'POST'])
 def show_post(post_id):
     if request.method == 'GET':
-        #this is just a placeholder message, obviously it should check the database for the post and get data from there
-        return 'This is the post page of post #%d' % post_id
+        post = dbOperations.get_post(post_id=post_id)
+        if post:
+            return "Post page for post of textbook " + post.textbook_title + " from user with ID " + str(post.creator.user_id)
+        else:
+            return "No post on Sundays"
+
     if request.method == 'POST':
         if request.values['delete'] == 'true':
-            return 'Post would hypothetically get deleted'
+            dbOperations.remove_post(post_id)
+            return "Deleted post with ID %s".format(post_id)
         else:
             return 'No other options implemented yet'
 if __name__ == "__main__":
