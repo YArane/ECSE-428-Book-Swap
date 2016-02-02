@@ -3,6 +3,7 @@ from models import User, Post
 from account_management.create_account import validate_password, validate_email
 from account_management.token import generate_confirmation_token, confirm_token
 from account_management.email import send_email
+from Flask import render_template, url_for, flash, redirect
 '''
 This class is the layer used to interact with the database. The functions defined here
 will let you add, remove, update records on the database. Just create an instance of this
@@ -23,10 +24,10 @@ class DBOperations():
 
         return exists
 
-    def validate_email(self, user, email):
+    def validate_email(self, email):
         token = generate_confirmation_token(email)
         confirm_url = url_for('email', token=token, _external=True)
-        html = render_template('templates/confirmation.html', confirm_url = confirm_url)
+        html = render_template('confirmation', confirm_url = confirm_url)
         subject = "Please confirm your email"
         send_email(email, subject, html)
         flash('A confirmation email has been sent via email.', 'success')
@@ -88,7 +89,7 @@ class DBOperations():
         except Exception as e:
             return None
 
-    def confirm_email(token):
+    def confirm_email(self, token):
         try:
             email = confirm_token(token)
         except:
@@ -98,7 +99,7 @@ class DBOperations():
             flash('Account already confirmed. Please login.', 'success')
         else:
             user.activated = True
-            dbOperations.activate_user(email)
+            self.activate_user(email)
             flash('You have confirmed your account. Thanks!', 'success')
         return redirect(url_for('user_page'))
 
