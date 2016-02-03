@@ -1,11 +1,16 @@
 from flask.ext.mail import Message
-from BookSwap import app, mail
+from config import BaseConfig
 
-def send_email(to, subject, template):
-	msg = Messasge(
-		subject,
-		recipients=[to],
-		html=template,
-		sender=app.config['MAIL_DEFAULT_SENDER']
-		)
-	mail.send(msg)
+class MailManager():
+
+    def __init__(self, mail):
+        self.mail = mail
+
+    def send_email(self, to, subject, template):
+        msg = Message(
+            subject,
+            recipients=[to],
+            html=template,
+            sender=BaseConfig.MAIL_DEFAULT_SENDER
+        )
+        self.mail.send(msg)

@@ -1,37 +1,21 @@
 from flask import Flask, request, render_template, redirect, url_for, flash
-from account_management.create_account import *
-from database.operations import DBOperations
 from flask_mail import Mail
-import sys
-
-sys.path.append('/Users/ralphbousamra/Development/ECSE-428-Book-Swap')
-sys.path.append('/Users/ralphbousamra/Development/ECSE-428-Book-Swap/database')
 
 app = Flask(__name__)
-mail = Mail(app)
-app.config.from_object(__name__)
-app.config['MONGODB_SETTINGS'] = {'DB': 'bookswap_development', 'alias':'default'}
-app.config['TESTING'] = True
-app.config['SECRET_KEY'] = 'flask+mongoengine=<3'
-app.config['SECURITY_PASSWORD_SALT'] = 'istilllikenodejsmore'
-app.config['MAIL_SERVER'] = 'smtp.googlemail.com'
-app.config['MAIL_PORT'] = 465
-app.config['MAIL_USE_TLS'] = False
-app.config['MAIL_USE_SSL'] = True
-
-app.config['MAIL_USERNAME'] = 'mcgillbookswap@gmail.com'
-app.config['MAIL_PASSWORD'] = 'ithinkthereforeiam3'
-app.config['MAIL_DEFAULT_SENDER'] = 'mcgillbookswap@gmail.com'
-
+app.config.from_object('config.BaseConfig')
 app.debug = True
-app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 
+from account_management.create_account import *
 from database.models import db
 db.init_app(app)
 
+# initialize email object
+mail = Mail(app)
+
 # Use this object to communicate interact with the DB. See operations.py
 # to understand what operations are defined
-dbOperations = DBOperations()
+from database.operations import DBOperations
+dbOperations = DBOperations(mail)
 
 @app.route('/')
 @app.route('/index')
