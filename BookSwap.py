@@ -47,8 +47,8 @@ def create_account():
             dbOperations.validate_email(email)
             return render_template('login.html')
     else:
-        flash("Please enter a valid email and password")
-        print error
+        flash(error)
+        #print error
         return render_template('signup.html')
 
         # TODO: encrypt credentials
