@@ -1,14 +1,16 @@
 import uuid
-from models import User, Post
-from account_management.create_account import validate_password, validate_email
-from account_management.token import generate_confirmation_token, confirm_token
+
+from account_management.create_account import validate_email, validate_password
 from account_management.email import MailManager
-from flask import render_template, url_for, flash, redirect
+from account_management.token import confirm_token, generate_confirmation_token
+from flask import flash, redirect, render_template
+from models import Post, User
 '''
 This class is the layer used to interact with the database. The functions defined here
 will let you add, remove, update records on the database. Just create an instance of this
 class and use it communicate with the DB. Feel free to add more operations!
 '''
+
 
 class DBOperations():
 
@@ -28,12 +30,12 @@ class DBOperations():
     def validate_email(self, email):
         token = generate_confirmation_token(email)
         confirm_url = url_for('email', token=token, _external=True)
-        html = render_template('confirmation', confirm_url = confirm_url)
+        html = render_template('confirmation', confirm_url=confirm_url)
         subject = "Please confirm your email"
         self.mail_manager.send_email(email, subject, html)
         flash('A confirmation email has been sent via email.', 'success')
 
-        #send the email here
+#       send the email here
 
     def validate_login_credentials(self, email, password):
         is_valid = True
@@ -48,7 +50,6 @@ class DBOperations():
         user_id = uuid.uuid4()
         new_user = User(email=email, password=password, activated=False, user_id=user_id)
         new_user.save()
-
 
     def activate_user(self, email):
         valid_email = len(validate_email(email)) == 0

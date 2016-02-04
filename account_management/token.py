@@ -1,6 +1,7 @@
 from itsdangerous import URLSafeTimedSerializer
 from config import BaseConfig
 
+
 def generate_confirmation_token(email):
     serializer = URLSafeTimedSerializer(BaseConfig.SECRET_KEY)
     return serializer.dumps(email, salt=BaseConfig.SECURITY_PASSWORD_SALT)

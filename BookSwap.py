@@ -17,16 +17,19 @@ mail = Mail(app)
 from database.operations import DBOperations
 dbOperations = DBOperations(mail)
 
+
 @app.route('/')
 @app.route('/index')
 def index():
     return render_template('index.html', page='index')
 
+
 @app.route('/signup')
 def signup():
     return render_template('signup.html', page='signup')
 
-@app.route('/create_account', methods = ['POST'])
+
+@app.route('/create_account', methods=['POST'])
 def create_account():
     error = []
     password = request.form['password']
@@ -51,7 +54,8 @@ def create_account():
         # TODO: encrypt credentials
         # TODO: write encrypted-credentials to database
 
-@app.route('/login', methods = ['POST'])
+
+@app.route('/login', methods=['POST'])
 def login():
     error = []
     if request.method == 'POST':
@@ -68,13 +72,14 @@ def login():
 def show_user_page(user_id):
     if request.method == 'GET':
         user = dbOperations.get_user_by_ID(user_id)
-        if user: # TODO: check that user is authenticated before showing user page
+        if user:  # TODO: check that user is authenticated before showing user page
             return render_template('user_page.html', user_id=user_id)
         else:
             return "No user account associated with that user"
-        
+
     if request.method == 'POST':
         return redirect(url_for('create_post', user_id=user_id))
+
 
 @app.route('/create_post/', methods=['GET', 'POST'])
 def create_post():
@@ -84,7 +89,7 @@ def create_post():
     else:
         title = request.values['textbook_title']
         author = request.values['textbook_author']
-        newpost = dbOperations.insert_post(title, user_id, author) #TODO: automatically get current user id
+        newpost = dbOperations.insert_post(title, user_id, author)
         return redirect(url_for('show_post', post_id=newpost.post_id))
 
 
@@ -93,16 +98,14 @@ def show_post(post_id):
     if request.method == 'GET':
         post = dbOperations.get_post(post_id=post_id)
         if post:
-            return "Post page for post of textbook " + post.textbook_title + " from user with ID " + str(post.creator.user_id)
+            return render_template("post_page.html", user=post.creator.email, title=post.textbook_title)
         else:
             return "No post on Sundays"
 
     if request.method == 'POST':
-        if request.values['delete'] == 'true':
-            dbOperations.remove_post(post_id)
-            return "Deleted post with ID %s".format(post_id)
-        else:
-            return 'No other options implemented yet'
+        dbOperations.remove_post(post_id)
+        return "Post deleted successfully"
+    else:
+        return 'No other options implemented yet'
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=4000)
-
