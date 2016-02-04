@@ -13,18 +13,13 @@ class MailManager():
         print "templates: " + template
         print "send: " + BaseConfig.MAIL_USERNAME
         print "subject: " + subject
-        # msg = Message(
-        #     subject,
-        #     recipients=[to],
-        #     body=template,
-        #     sender=BaseConfig.MAIL_USERNAME
-        # )
         msg = Message(
-            "Hey There!",
-            sender=BaseConfig.MAIL_USERNAME,
-            recipients=[to]
+            subject,
+            recipients=[to],
+            body=template,
+            sender=BaseConfig.MAIL_USERNAME
         )
-        msg.body = "PLEASE VERIFY YOUR SHIT!"
+
 
         with self.app.app_context():
             self.mail.send(msg)

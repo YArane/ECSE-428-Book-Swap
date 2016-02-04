@@ -4,9 +4,20 @@ from account_management.email import MailManager
 from config import BaseConfig
 
 app = Flask(__name__)
-app.config.from_object('config.BaseConfig')
 
-print app.config
+app.config.update(
+    DEBUG=True,
+    #EMAIL SETTINGS
+    MAIL_SERVER='smtp.gmail.com',
+    MAIL_PORT=465,
+    MAIL_USE_SSL=True,
+    MAIL_USERNAME = 'mcgillbookswap@gmail.com',
+    MAIL_PASSWORD = 'ithinkthereforeiam3',
+   SECRET_KEY = 'flask+mongoengine=<3',
+   SECURITY_PASSWORD_SALT = 'istilllikenodejsmore',
+   MONGODB_SETTINGS = {'DB': 'bookswap_development', 'alias':'default'}
+)
+
 
 from account_management.create_account import *
 from database.models import db
@@ -16,16 +27,6 @@ db.init_app(app)
 mail = Mail(app)
 
 mail_manager = MailManager(mail, app)
-
-msg = Message(
-        "Hey There!",
-        sender=BaseConfig.MAIL_USERNAME,
-        recipients=['danielmacario5@gmail.com']
-    )
-msg.body = "PLEASE VERIFY YOUR SHIT!"
-
-with app.app_context():
-    mail.send(msg)
 
 
 # Use this object to communicate interact with the DB. See operations.py
