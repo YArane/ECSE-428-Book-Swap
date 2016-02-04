@@ -3,14 +3,28 @@ from config import BaseConfig
 
 class MailManager():
 
-    def __init__(self, mail):
+    def __init__(self, mail, app):
         self.mail = mail
+        self.app = app
 
     def send_email(self, to, subject, template):
+        print "sending mail!"
+        print "destination: " + to
+        print "templates: " + template
+        print "send: " + BaseConfig.MAIL_USERNAME
+        print "subject: " + subject
+        # msg = Message(
+        #     subject,
+        #     recipients=[to],
+        #     body=template,
+        #     sender=BaseConfig.MAIL_USERNAME
+        # )
         msg = Message(
-            subject,
-            recipients=[to],
-            html=template,
-            sender=BaseConfig.MAIL_DEFAULT_SENDER
+            "Hey There!",
+            sender=BaseConfig.MAIL_USERNAME,
+            recipients=[to]
         )
-        self.mail.send(msg)
+        msg.body = "PLEASE VERIFY YOUR SHIT!"
+
+        with self.app.app_context():
+            self.mail.send(msg)

@@ -1,9 +1,12 @@
 from flask import Flask, request, render_template, redirect, url_for, flash
-from flask_mail import Mail
+from flask_mail import Mail, Message
+from account_management.email import MailManager
+from config import BaseConfig
 
 app = Flask(__name__)
 app.config.from_object('config.BaseConfig')
-app.debug = True
+
+print app.config
 
 from account_management.create_account import *
 from database.models import db
@@ -12,10 +15,23 @@ db.init_app(app)
 # initialize email object
 mail = Mail(app)
 
+mail_manager = MailManager(mail, app)
+
+msg = Message(
+        "Hey There!",
+        sender=BaseConfig.MAIL_USERNAME,
+        recipients=['danielmacario5@gmail.com']
+    )
+msg.body = "PLEASE VERIFY YOUR SHIT!"
+
+with app.app_context():
+    mail.send(msg)
+
+
 # Use this object to communicate interact with the DB. See operations.py
 # to understand what operations are defined
 from database.operations import DBOperations
-dbOperations = DBOperations(mail)
+dbOperations = DBOperations()
 
 @app.route('/')
 @app.route('/index')
@@ -41,8 +57,8 @@ def create_account():
             return render_template('signup.html', error=error)
         else:
             dbOperations.insert_user(email, password)
-            dbOperations.validate_email(email)
-            return render_template('login.html')
+            dbOperations.send_verification_email(email, mail_manager)
+            return render_template('index.html')
     else:
         flash("Please enter a valid email and password")
         print error

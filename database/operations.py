@@ -1,20 +1,16 @@
 import uuid
 from models import User, Post
 from account_management.create_account import validate_password, validate_email
-from account_management.token import generate_confirmation_token, confirm_token
-from account_management.email import MailManager
+from account_management.token import Token
 from flask import render_template, url_for, flash, redirect
 '''
 This class is the layer used to interact with the database. The functions defined here
 will let you add, remove, update records on the database. Just create an instance of this
 class and use it communicate with the DB. Feel free to add more operations!
 '''
+tokenizer = Token()
 
 class DBOperations():
-
-    def __init__(self, mail):
-        self.mail_manager = MailManager(mail)
-        pass
 
     def user_exists(self, email):
         exists = True
@@ -25,12 +21,12 @@ class DBOperations():
 
         return exists
 
-    def validate_email(self, email):
-        token = generate_confirmation_token(email)
-        confirm_url = url_for('email', token=token, _external=True)
-        html = render_template('confirmation', confirm_url = confirm_url)
+    def send_verification_email(self, email, mail_manager):
+        token = tokenizer.generate_confirmation_token(email)
+        confirm_url = url_for('index', token=token, _external=True)
+        html = render_template('confirmation.html', confirm_url = confirm_url)
         subject = "Please confirm your email"
-        self.mail_manager.send_email(email, subject, html)
+        mail_manager.send_email(email, subject, html)
         flash('A confirmation email has been sent via email.', 'success')
 
         #send the email here
@@ -92,7 +88,7 @@ class DBOperations():
 
     def confirm_email(self, token):
         try:
-            email = confirm_token(token)
+            email = token.confirm_token(token)
         except:
             flash('The confirmation link is invalid or has expired.', 'danger')
         user = User.query.filter_by(email=email).first_or_404()
