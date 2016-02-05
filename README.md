@@ -28,6 +28,7 @@ We are using MongoDB as the data store for the project. Once we start building t
 
 - Ubuntu installation instructions: https://docs.mongodb.org/manual/tutorial/install-mongodb-on-ubuntu/
 - Mac OS X installation instructions: https://docs.mongodb.org/manual/tutorial/install-mongodb-on-os-x/
+- Windows installation instructions: https://docs.mongodb.org/manual/tutorial/install-mongodb-on-windows/
 - Ask Katie or Daniel to help you setup a local db on your computer. Here are quick instructions:
 
 1. Make a folder somewhere on your computer to store the data. Please DO NOT make it inside the repository folder, you shouldn't push your DB to the repo.
@@ -60,9 +61,13 @@ Follow these steps to begin coding:
 
   `cd ECSE-428-Book-Swap`
 
-3. Create a new virtualenv for the project. You will automatically be using it by running this command. If you want to stop using it run `deactivate`, and to start using it again run `workon bookswap`
+3. Create a new virtualenv for the project. You will automatically be using it by running this command. If you want to stop using it run `deactivate`, and to start using it again run `workon bookswap`.
 
   `mkvirtualenv bookswap`
+
+  For Windows, you can initialize the folder for the virtual environment by running this command. You can activate the virtualenv by running 'activate' from the folder's Scripts directory.
+
+  `virtualenv bookswap`
 
 3. Install the dependencies by running the following (the file requirements.txt contains a list of all the dependecies used by the project)
   
@@ -70,7 +75,7 @@ Follow these steps to begin coding:
 
 4. Follow the MongoDB instructions explained in the section above. Note that you don't have to follow step 3, that is just for playing around with MongoDB. If you don't complete steps 1 and 2, running the server will fail.
 
-5. Run the server to verify that everything is OK. Your terminal should say `* Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)`. You can run the URL in your browser to see a "Hello World!" message.
+5. Run the server to verify that everything is OK. Your terminal should say `* Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)`. You can run the URL in your browser to see the BookSwap index page.
 
   `python BookSwap.py`
   
