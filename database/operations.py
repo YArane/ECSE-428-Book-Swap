@@ -1,17 +1,8 @@
 import uuid
-<<<<<<< HEAD
-from models import User, Post
-from account_management.create_account import validate_password, validate_email
 from account_management.token import Token
-from flask import render_template, url_for, flash, redirect
-=======
-
 from account_management.create_account import validate_email, validate_password
-from account_management.email import MailManager
-from account_management.token import confirm_token, generate_confirmation_token
-from flask import flash, redirect, render_template
+from flask import flash, redirect, render_template, url_for
 from models import Post, User
->>>>>>> ad844e908bd266e8812d729ae24c406bb363d35d
 '''
 This class is the layer used to interact with the database. The functions defined here
 will let you add, remove, update records on the database. Just create an instance of this
@@ -66,6 +57,10 @@ class DBOperations():
             except:
                 print "Error occurred trying to activate user for email = " + email
         return False
+
+    def is_user_account_activated(self, email):
+        user_document = User.objects.get(email=email)
+        return user_document.activated
 
     def get_user_by_email(self, email):
         try:

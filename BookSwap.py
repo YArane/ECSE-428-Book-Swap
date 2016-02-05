@@ -1,7 +1,6 @@
 from flask import Flask, request, render_template, redirect, url_for, flash
-from flask_mail import Mail, Message
+from flask_mail import Mail
 from account_management.email import MailManager
-from config import BaseConfig
 
 app = Flask(__name__)
 
@@ -13,11 +12,10 @@ app.config.update(
     MAIL_USE_SSL=True,
     MAIL_USERNAME = 'mcgillbookswap@gmail.com',
     MAIL_PASSWORD = 'ithinkthereforeiam3',
-   SECRET_KEY = 'flask+mongoengine=<3',
-   SECURITY_PASSWORD_SALT = 'istilllikenodejsmore',
-   MONGODB_SETTINGS = {'DB': 'bookswap_development', 'alias':'default'}
+    SECRET_KEY = 'flask+mongoengine=<3',
+    SECURITY_PASSWORD_SALT = 'istilllikenodejsmore',
+    MONGODB_SETTINGS = {'DB': 'bookswap_development', 'alias':'default'}
 )
-
 
 from account_management.create_account import *
 from database.models import db
@@ -76,10 +74,15 @@ def create_account():
 def login():
     error = []
     if request.method == 'POST':
-        is_valid = dbOperations.validate_login_credentials(request.form['email'], request.form['password'])
-        user = dbOperations.get_user_by_email(request.form['email'])
+        email = request.form['email']
+        is_valid = dbOperations.validate_login_credentials(email, request.form['password'])
+        user = dbOperations.get_user_by_email(email)
         if is_valid:
-            return redirect(url_for('show_user_page', user_id=user.user_id))
+            if dbOperations.is_user_account_activated(email):
+                return redirect(url_for('show_user_page', user_id=user.user_id))
+            else:
+                flash("Your account has not been activated yet. Please follow the URL in your email")
+                return render_template("index.html")
         else:
             flash("invalid login credentials")
             return render_template("index.html")

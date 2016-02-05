@@ -20,6 +20,5 @@ class MailManager():
             sender=BaseConfig.MAIL_USERNAME
         )
 
-
         with self.app.app_context():
             self.mail.send(msg)
