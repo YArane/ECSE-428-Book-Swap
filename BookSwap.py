@@ -64,7 +64,6 @@ def create_account():
             dbOperations.send_verification_email(email, mail_manager)
             return render_template('index.html')
     else:
-        print errors
         formatted_error = '. '.join(str(error) for error in errors)
         flash(formatted_error)
         #print error
@@ -79,7 +78,13 @@ def login():
     error = []
     if request.method == 'POST':
         email = request.form['email']
-        is_valid = dbOperations.validate_login_credentials(email, request.form['password'])
+        password = request.form['password']
+
+        if len(email) is 0 or len(password) is 0:
+            flash("Please provide an email address and a password")
+            return render_template("index.html")
+
+        is_valid = dbOperations.validate_login_credentials(email, password)
         user = dbOperations.get_user_by_email(email)
         if is_valid:
             if dbOperations.is_user_account_activated(email):
