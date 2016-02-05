@@ -2,6 +2,7 @@ from flask import Flask, request, render_template, redirect, url_for, flash
 from flask_mail import Mail
 from account_management.email import MailManager
 from account_management.create_account import validate_email, validate_password
+from encryption.encryption import encrypt
 
 app = Flask(__name__)
 
@@ -60,7 +61,7 @@ def create_account():
             flash("Account already exists for this email")
             return render_template('signup.html', error=errors)
         else:
-            dbOperations.insert_user(email, password)
+            dbOperations.insert_user(email, encrypt(password))
             dbOperations.send_verification_email(email, mail_manager)
             return render_template('index.html')
     else:
@@ -84,7 +85,7 @@ def login():
             flash("Please provide an email address and a password")
             return render_template("index.html")
 
-        is_valid = dbOperations.validate_login_credentials(email, password)
+        is_valid = dbOperations.validate_login_credentials(email, encrypt(password))
         user = dbOperations.get_user_by_email(email)
         if is_valid:
             if dbOperations.is_user_account_activated(email):

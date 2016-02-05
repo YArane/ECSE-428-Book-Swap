@@ -88,11 +88,11 @@ def decrypt(input):
 
 	return output
 
-text = 'Hello World!'
-print '\nOriginal text:\n' + text + '\n'
-
-encrypted = encrypt(text)
-print 'Encrypted:\n' + encrypted + '\n'
-
-decrypted = decrypt(encrypted)
-print 'Decrypted:\n' + decrypted
+# text = 'Hello World!'
+# print '\nOriginal text:\n' + text + '\n'
+#
+# encrypted = encrypt(text)
+# print 'Encrypted:\n' + encrypted + '\n'
+#
+# decrypted = decrypt(encrypted)
+# print 'Decrypted:\n' + decrypted
