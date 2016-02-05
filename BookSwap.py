@@ -1,6 +1,7 @@
 from flask import Flask, request, render_template, redirect, url_for, flash
 from flask_mail import Mail
 from account_management.email import MailManager
+from account_management.create_account import validate_email, validate_password
 
 app = Flask(__name__)
 
@@ -17,7 +18,6 @@ app.config.update(
     MONGODB_SETTINGS = {'DB': 'bookswap_development', 'alias':'default'}
 )
 
-from account_management.create_account import *
 from database.models import db
 db.init_app(app)
 
@@ -46,23 +46,27 @@ def signup():
 
 @app.route('/create_account', methods=['POST'])
 def create_account():
-    error = []
+    errors = []
     password = request.form['password']
     email = request.form['email']
     if request.method == 'POST':
-        error = validate_password(password)
-        error.append(validate_email(email))
+        errors = validate_password(password)
+        email_errors = validate_email(email)
+        if len(email_errors) is not 0:
+            errors.append(email_errors)
 
-    if not error[0]:
+    if len(errors) is 0:
         if dbOperations.user_exists(email):
             flash("Account already exists for this email")
-            return render_template('signup.html', error=error)
+            return render_template('signup.html', error=errors)
         else:
             dbOperations.insert_user(email, password)
             dbOperations.send_verification_email(email, mail_manager)
             return render_template('index.html')
     else:
-        flash(error)
+        print errors
+        formatted_error = '. '.join(str(error) for error in errors)
+        flash(formatted_error)
         #print error
         return render_template('signup.html')
 

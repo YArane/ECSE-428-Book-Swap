@@ -5,11 +5,11 @@ rgx_password_requirements = [r'(.*[a-z])', \
                          r'(.*[0-9])', \
                          r'(^\w{8,}$)', \
                          r'(^\w{,30}$)']
-password_requirements = ['lowercase required', \
-                         'uppercase required', \
-                         'number required', \
-                         'min length = 8', \
-                         'max length = 30']
+password_requirements = ['Lowercase character required', \
+                         'Uppercase character required', \
+                         'Number required', \
+                         'Password must be at least 8 alphanumeric characters long', \
+                         'Password must be at most 30 alphanumeric characters long']
 
 """ Validates user input password using regex
 to find rules that are not obeyed
