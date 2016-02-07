@@ -35,7 +35,6 @@ dbOperations = DBOperations()
 
 
 @app.route('/')
-@app.route('/index')
 def index():
     return render_template('index.html', page='index')
 
@@ -43,6 +42,12 @@ def index():
 @app.route('/signup')
 def signup():
     return render_template('signup.html', page='signup')
+
+@app.route('/confirm')
+def confirm_email():
+    token = request.args.get('token')
+    dbOperations.confirm_email(token)
+    return render_template('index.html', page='index')
 
 
 @app.route('/create_account', methods=['POST'])

@@ -8,11 +8,6 @@ class MailManager():
         self.app = app
 
     def send_email(self, to, subject, template):
-        print "sending mail!"
-        print "destination: " + to
-        print "templates: " + template
-        print "send: " + BaseConfig.MAIL_USERNAME
-        print "subject: " + subject
         msg = Message(
             subject,
             recipients=[to],

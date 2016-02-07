@@ -18,15 +18,3 @@ class Token():
         except:
             return False
         return email
-
-def confirm_token(token, expiration=3600):
-    serializer = URLSafeTimedSerializer(BaseConfig.SECRET_KEY)
-    try:
-        email = serializer.loads(
-            token,
-            salt=BaseConfig.SECURITY_PASSWORD_SALT,
-            max_age=expiration
-        )
-    except:
-        return False
-    return email

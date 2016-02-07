@@ -24,8 +24,8 @@ class DBOperations():
 
     def send_verification_email(self, email, mail_manager):
         token = tokenizer.generate_confirmation_token(email)
-        confirm_url = url_for('index', token=token, _external=True)
-        html = render_template('confirmation.html', confirm_url = confirm_url)
+        confirm_url = url_for('confirm_email', token=token, _external=True)
+        html = render_template('confirmation.html', confirm_url=confirm_url)
         subject = "Please confirm your email"
         mail_manager.send_email(email, subject, html)
         flash('A confirmation email has been sent via email.', 'success')
@@ -91,18 +91,19 @@ class DBOperations():
             return None
 
     def confirm_email(self, token):
+        email = None
         try:
-            email = token.confirm_token(token)
+            email = tokenizer.confirm_token(token)
         except:
             flash('The confirmation link is invalid or has expired.', 'danger')
-        user = User.query.filter_by(email=email).first_or_404()
+        user = User.objects.get(email=email)
         if user.activated:
             flash('Account already confirmed. Please login.', 'success')
         else:
             user.activated = True
             self.activate_user(email)
             flash('You have confirmed your account. Thanks!', 'success')
-        return redirect(url_for('user_page'))
+        return redirect(url_for('index'))
 
     # This is just for testing sake
     def delete_users(self):
