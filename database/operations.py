@@ -1,6 +1,6 @@
 import uuid
 from account_management.token import Token
-from account_management.create_account import validate_email, validate_password
+from account_management.create_account import validate_email
 from flask import flash, redirect, render_template, url_for
 from models import Post, User
 '''
@@ -96,6 +96,7 @@ class DBOperations():
             email = tokenizer.confirm_token(token)
         except:
             flash('The confirmation link is invalid or has expired.', 'danger')
+            return redirect(url_for('index'))
         user = User.objects.get(email=email)
         if user.activated:
             flash('Account already confirmed. Please login.', 'success')
