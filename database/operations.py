@@ -3,17 +3,16 @@ from account_management.token import Token
 from account_management.create_account import validate_email
 from flask import flash, redirect, render_template, url_for
 from models import Post, User
+
 '''
 This class is the layer used to interact with the database. The functions defined here
 will let you add, remove, update records on the database. Just create an instance of this
 class and use it communicate with the DB. Feel free to add more operations!
 '''
-tokenizer = Token()
-
-
 class DBOperations():
 
-    def user_exists(self, email):
+    @staticmethod
+    def user_exists(email):
         exists = True
         try:
             User.objects.get(email=email)
@@ -22,8 +21,9 @@ class DBOperations():
 
         return exists
 
-    def send_verification_email(self, email, mail_manager):
-        token = tokenizer.generate_confirmation_token(email)
+    @staticmethod
+    def send_verification_email(email, mail_manager):
+        token = Token.generate_confirmation_token(email)
         confirm_url = url_for('confirm_email', token=token, _external=True)
         html = render_template('confirmation.html', confirm_url=confirm_url)
         subject = "Please confirm your email"
@@ -32,7 +32,8 @@ class DBOperations():
 
 #       send the email here
 
-    def validate_login_credentials(self, email, password):
+    @staticmethod
+    def validate_login_credentials(email, password):
         is_valid = True
         try:
             User.objects.get(email=email, password=password)
@@ -41,12 +42,14 @@ class DBOperations():
 
         return is_valid
 
-    def insert_user(self, email, password):
+    @staticmethod
+    def insert_user(email, password):
         user_id = uuid.uuid4()
         new_user = User(email=email, password=password, activated=False, user_id=user_id)
         new_user.save()
 
-    def activate_user(self, email):
+    @staticmethod
+    def activate_user(email):
         valid_email = len(validate_email(email)) == 0
         if (valid_email):
             try:
@@ -58,23 +61,27 @@ class DBOperations():
                 print "Error occurred trying to activate user for email = " + email
         return False
 
-    def is_user_account_activated(self, email):
+    @staticmethod
+    def is_user_account_activated(email):
         user_document = User.objects.get(email=email)
         return user_document.activated
 
-    def get_user_by_email(self, email):
+    @staticmethod
+    def get_user_by_email(email):
         try:
             return User.objects.get(email=email)
         except:
             return None
 
-    def get_user_by_ID(self, user_id):
+    @staticmethod
+    def get_user_by_ID(user_id):
         try:
             return User.objects.get(user_id=user_id)
         except:
             return None
 
-    def insert_post(self, textbook_title, creator_id, textbook_author=None):
+    @staticmethod
+    def insert_post(textbook_title, creator_id, textbook_author=None):
         post_id = uuid.uuid4()
         creator = User.objects.get(user_id=creator_id)
         if textbook_author:
@@ -84,16 +91,18 @@ class DBOperations():
         new_post.save()
         return new_post
 
-    def get_post(self, post_id):
+    @staticmethod
+    def get_post(post_id):
         try:
             return Post.objects.get(post_id=post_id)
         except Exception as e:
             return None
 
-    def confirm_email(self, token):
+    @staticmethod
+    def confirm_email(token):
         email = None
         try:
-            email = tokenizer.confirm_token(token)
+            email = Token.confirm_token(token)
         except:
             flash('The confirmation link is invalid or has expired.', 'danger')
             return redirect(url_for('index'))
@@ -103,17 +112,19 @@ class DBOperations():
                 flash('Account already confirmed. Please login.', 'success')
             else:
                 user.activated = True
-                self.activate_user(email)
+                DBOperations.activate_user(email)
                 flash('You have confirmed your account. Thanks!', 'success')
         except:
             flash('The account activation URL specified is not associated to any account', 'danger')
         return redirect(url_for('index'))
 
     # This is just for testing sake
-    def delete_users(self):
+    @staticmethod
+    def delete_users():
         return User.objects.delete()
 
-    def remove_post(self, post_id):
+    @staticmethod
+    def remove_post(post_id):
         try:
             Post.objects.get(post_id=post_id).delete()
         except:
