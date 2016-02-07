@@ -97,13 +97,16 @@ class DBOperations():
         except:
             flash('The confirmation link is invalid or has expired.', 'danger')
             return redirect(url_for('index'))
-        user = User.objects.get(email=email)
-        if user.activated:
-            flash('Account already confirmed. Please login.', 'success')
-        else:
-            user.activated = True
-            self.activate_user(email)
-            flash('You have confirmed your account. Thanks!', 'success')
+        try:
+            user = User.objects.get(email=email)
+            if user.activated:
+                flash('Account already confirmed. Please login.', 'success')
+            else:
+                user.activated = True
+                self.activate_user(email)
+                flash('You have confirmed your account. Thanks!', 'success')
+        except:
+            flash('The account activation URL specified is not associated to any account', 'danger')
         return redirect(url_for('index'))
 
     # This is just for testing sake

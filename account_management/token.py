@@ -3,11 +3,13 @@ from config import BaseConfig
 
 class Token():
 
-    def generate_confirmation_token(self, email):
+    @staticmethod
+    def generate_confirmation_token(email):
         serializer = URLSafeTimedSerializer(BaseConfig.SECRET_KEY)
         return serializer.dumps(email, salt=BaseConfig.SECURITY_PASSWORD_SALT)
 
-    def confirm_token(self, token, expiration=43200):
+    @staticmethod
+    def confirm_token(token, expiration=43200):
         serializer = URLSafeTimedSerializer(BaseConfig.SECRET_KEY)
         try:
             email = serializer.loads(
