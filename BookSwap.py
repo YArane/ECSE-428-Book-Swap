@@ -91,7 +91,7 @@ def login():
         user = dbOps.get_user_by_email(email)
         if is_valid:
             if dbOps.is_user_account_activated(email):
-                return redirect(url_for('show_user_page', user_id=user.user_id))
+                return render_template('user_page.html', user_id=user.user_id)
             else:
                 flash("Your account has not been activated yet. Please follow the URL in your email")
                 return render_template("index.html")
