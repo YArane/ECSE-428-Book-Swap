@@ -47,7 +47,6 @@
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
             <li {% if page == 'index' %}class="active"{% endif %}><a href="{{ url_for('index') }}">Home</a></li>
-            <li {% if page == 'signup' %}class="active"{% endif %}><a href="{{ url_for('signup') }}">Create Account</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -56,18 +55,15 @@
     <div class="container theme-showcase" role="main">
         <h1>Welcome User. <small>Come here to create new posts.</small></h1>
         <br>
-    </div>
-
-    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
-
-    <div id="container">
         <div id="content">
             <form method="post" action="{{ url_for('show_user_page', user_id=user_id) }}">
               <button type="submit" class="btn btn-default">Post a new ad</button>
             </form>
         </div>
     </div>
+
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
