@@ -9,6 +9,8 @@ This class is the layer used to interact with the database. The functions define
 will let you add, remove, update records on the database. Just create an instance of this
 class and use it communicate with the DB. Feel free to add more operations!
 '''
+
+
 class DBOperations():
 
     @staticmethod
@@ -97,6 +99,15 @@ class DBOperations():
             return Post.objects.get(post_id=post_id)
         except Exception as e:
             return None
+
+    @staticmethod
+    def get_posts_by_user(user_id):
+        retval = []
+        for post in Post.objects.all():
+            print post.creator.user_id, user_id
+            if str(post.creator.user_id) == str(user_id):
+                retval.append(post)
+        return retval
 
     @staticmethod
     def confirm_email(token):
