@@ -135,13 +135,15 @@ def show_post(post_id):
     if request.method == 'GET':
         post = dbOps.get_post(post_id=post_id)
         if post:
-            return render_template("post_page.html", user=post.creator.email, title=post.textbook_title)
+            return render_template("post_page.html", user=post.creator, title=post.textbook_title)
         else:
             return "The post you are trying to access does not exist"
 
     if request.method == 'POST':
+        creator = dbOps.get_post(post_id=post_id).creator
         dbOps.remove_post(post_id)
-        return "Post deleted successfully"
+        flash("Post deleted successfully")
+        return redirect(url_for("show_user_page", user_id=creator.user_id))
     else:
         return 'No other options implemented yet'
 if __name__ == "__main__":
