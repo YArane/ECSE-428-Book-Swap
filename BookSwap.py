@@ -106,7 +106,8 @@ def show_user_page(user_id):
         user = dbOps.get_user_by_ID(user_id)
         posts = dbOps.get_posts_by_user(user_id)
         if user:  # TODO: check that user is authenticated before showing user page
-            return render_template('user_page.html', user_id=user_id, posts=Markup(posts))
+            post_titles = [str(p.textbook_title) for p in posts]
+            return render_template('user_page.html', user_id=user_id, posts=Markup(post_titles))
         else:
             return "No user account associated with that user"
 
@@ -126,7 +127,7 @@ def create_post():
         return redirect(url_for('show_post', post_id=newpost.post_id))
 
 
-@app.route('/post/<string:post_id>/', methods=['GET', 'POST'])
+@app.route('/post/<string:post_id>', methods=['GET', 'POST'])
 def show_post(post_id):
     if request.method == 'GET':
         post = dbOps.get_post(post_id=post_id)
