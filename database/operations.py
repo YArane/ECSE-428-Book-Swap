@@ -104,7 +104,6 @@ class DBOperations():
     def get_posts_by_user(user_id):
         retval = []
         for post in Post.objects.all():
-            print post.creator.user_id, user_id
             if str(post.creator.user_id) == str(user_id):
                 retval.append(post)
         return retval

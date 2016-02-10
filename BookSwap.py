@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, redirect, url_for, flash
+from flask import Flask, Markup, request, render_template, redirect, url_for, flash
 from flask_mail import Mail
 from account_management.email import MailManager
 from account_management.create_account import validate_email, validate_password
@@ -91,7 +91,7 @@ def login():
         user = dbOps.get_user_by_email(email)
         if is_valid:
             if dbOps.is_user_account_activated(email):
-                return render_template('user_page.html', user_id=user.user_id)
+                return redirect(url_for('show_user_page', user_id=user.user_id))
             else:
                 flash("Your account has not been activated yet. Please follow the URL in your email")
                 return render_template("index.html")
@@ -100,12 +100,13 @@ def login():
             return render_template("index.html")
 
 
-@app.route('/user/<string:user_id>/', methods=['GET', 'POST'])
+@app.route('/user/<string:user_id>', methods=['GET', 'POST'])
 def show_user_page(user_id):
     if request.method == 'GET':
         user = dbOps.get_user_by_ID(user_id)
+        posts = dbOps.get_posts_by_user(user_id)
         if user:  # TODO: check that user is authenticated before showing user page
-            return render_template('user_page.html', user_id=user_id)
+            return render_template('user_page.html', user_id=user_id, posts=Markup(posts))
         else:
             return "No user account associated with that user"
 
@@ -113,7 +114,7 @@ def show_user_page(user_id):
         return redirect(url_for('create_post', user_id=user_id))
 
 
-@app.route('/create_post/', methods=['GET', 'POST'])
+@app.route('/create_post', methods=['GET', 'POST'])
 def create_post():
     user_id = request.values['user_id']
     if request.method == 'GET':
