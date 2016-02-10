@@ -59,6 +59,7 @@
             <form method="post" action="{{ url_for('show_user_page', user_id=user_id) }}">
               <button type="submit" class="btn btn-default">Post a new ad</button>
             </form>
+          {% block body %} Posts: {{ posts }} {% endblock %}
         </div>
     </div>
 
