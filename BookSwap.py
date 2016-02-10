@@ -122,6 +122,10 @@ def create_post():
     else:
         title = request.values['textbook_title']
         author = request.values['textbook_author']
+        if not title:
+            flash("You need to submit a title for the book")
+            return render_template("create_post_page.html")
+
         newpost = dbOps.insert_post(title, user_id, author)
         return redirect(url_for('show_post', post_id=newpost.post_id))
 
@@ -133,7 +137,7 @@ def show_post(post_id):
         if post:
             return render_template("post_page.html", user=post.creator.email, title=post.textbook_title)
         else:
-            return "No post on Sundays"
+            return "The post you are trying to access does not exist"
 
     if request.method == 'POST':
         dbOps.remove_post(post_id)
