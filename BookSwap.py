@@ -106,8 +106,7 @@ def show_user_page(user_id):
         user = dbOps.get_user_by_ID(user_id)
         posts = dbOps.get_posts_by_user(user_id)
         if user:  # TODO: check that user is authenticated before showing user page
-            post_titles = [str(p.textbook_title) for p in posts]
-            return render_template('user_page.html', user_id=user_id, posts=Markup(post_titles))
+            return render_template('user_page.html', user_id=user_id, posts=posts)
         else:
             return "No user account associated with that user"
 
