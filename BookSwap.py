@@ -1,8 +1,9 @@
-from flask import Flask, Markup, request, render_template, redirect, url_for, flash
+from flask import Flask, request, render_template, redirect, url_for, flash
 from flask_mail import Mail
 from account_management.email import MailManager
 from account_management.create_account import validate_email, validate_password
 from encryption.encryption import encrypt
+from flask.ext.paginate import Pagination
 
 # Use dbOps to communicate interact with the DB. See operations.py
 # to understand what operations are defined
@@ -104,15 +105,27 @@ def login():
 def show_user_page(user_id):
     if request.method == 'GET':
         user = dbOps.get_user_by_ID(user_id)
-        posts = dbOps.get_posts_by_user(user_id)
         if user:  # TODO: check that user is authenticated before showing user page
-            return render_template('user_page.html', user_id=user_id, posts=posts)
+            posts = dbOps.get_posts_by_user(user_id)
+            page, per_page, offset = get_page_items()
+            pagination = Pagination(page=page, total=len(posts), search=False, record_name='posts', per_page=5, css_framework='foundation')
+            return render_template('user_page.html', user_id=user_id, posts=posts[offset:offset+per_page], pagination=pagination)
         else:
             return "No user account associated with that user"
 
     if request.method == 'POST':
         return redirect(url_for('create_post', user_id=user_id))
 
+def get_page_items():
+    page = int(request.args.get('page', 1))
+    per_page = request.args.get('per_page')
+    if not per_page:
+        per_page = app.config.get('PER_PAGE', 5)
+    else:
+        per_page = int(per_page)
+
+    offset = (page - 1) * per_page
+    return page, per_page, offset
 
 @app.route('/create_post', methods=['GET', 'POST'])
 def create_post():
