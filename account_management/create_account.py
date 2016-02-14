@@ -54,7 +54,7 @@ def validate_email(email):
     # check syntax
     valid_syntax = re.match('^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$', email)
     if not valid_syntax:
-        return 'The email address submitted is invalid'
+        return ['The email address submitted is invalid']
     return []
 
 """ Validates user input email and password
