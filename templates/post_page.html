@@ -48,6 +48,7 @@
           <ul class="nav navbar-nav">
             <li {% if page == 'index' %}class="active"{% endif %}><a href="{{ url_for('show_user_page', user_id=user.user_id) }}">Home</a></li>
             <li {% if page == 'signup' %}class="active"{% endif %}><a href="{{ url_for('signup') }}">Create Account</a></li>
+            <li><a href = "{{ url_for('show_all_posts')}}">Posts</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
