@@ -142,6 +142,17 @@ def create_post():
         newpost = dbOps.insert_post(title, user_id, author)
         return redirect(url_for('show_post', post_id=newpost.post_id))
 
+@app.route('/posts', methods=['GET'])
+def show_all_posts():
+    if request.method == 'GET':
+        posts = dbOps.get_all_posts()
+        if posts:
+            page, per_page, offset = get_page_items()
+            pagination = Pagination(page=page, total=len(posts), search=False, record_name='posts', per_page=5, css_framework='foundation')
+            return render_template("posts.html", posts=posts[offset:offset+per_page], pagination=pagination)
+        else:
+            return "There are no posts available at the moment!"
+
 
 @app.route('/post/<string:post_id>', methods=['GET', 'POST'])
 def show_post(post_id):

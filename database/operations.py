@@ -101,6 +101,13 @@ class DBOperations():
             return None
 
     @staticmethod
+    def get_all_posts():
+        try:
+            return Post.objects.all()
+        except Exception as e:
+            return None
+
+    @staticmethod
     def get_posts_by_user(user_id):
         retval = []
         for post in Post.objects.all():
