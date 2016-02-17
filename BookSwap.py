@@ -148,7 +148,7 @@ def show_all_posts():
         posts = dbOps.get_all_posts()
         if posts:
             page, per_page, offset = get_page_items()
-            pagination = Pagination(page=page, total=len(posts), search=False, record_name='posts', per_page=5, css_framework='foundation')
+            pagination = Pagination(page=page, total=len(posts), search=False, record_name='posts', per_page=20, css_framework='foundation')
             return render_template("posts.html", posts=posts[offset:offset+per_page], pagination=pagination)
         else:
             return "There are no posts available at the moment!"
