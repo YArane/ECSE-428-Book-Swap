@@ -1,99 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <meta name="description" content="Textbook exchange service for students.">
-    <meta name="author" content="BookSwap">
-    <link rel="icon" href="../static/favicon.ico">
-
-    <title>BookSwap - Sign Up</title>
-
-    <!-- Bootstrap core CSS -->
-    <link href="../static/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Bootstrap theme -->
-    <link href="../static/dist/css/bootstrap-theme.min.css" rel="stylesheet">
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <link href="../static/assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
-
-    <!-- Custom styles for this template -->
-    <link href="../static/theme.css" rel="stylesheet">
-
-    <script src="../static/assets/js/ie-emulation-modes-warning.js"></script>
-
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-  </head>
-
-  <body role="document">
-
-    <!-- Fixed navbar -->
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="{{ url_for('index') }}">BookSwap</a>
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
-          <ul class="nav navbar-nav">
-            <li {% if page == 'index' %}class="active"{% endif %}><a href="{{ url_for('index') }}">Home</a></li>
-            <li><a href = "{{ url_for('show_all_posts')}}">Posts</a></li>
-          </ul>
-        </div><!--/.nav-collapse -->
-      </div>
-    </nav>
-
-    <div class="container theme-showcase" role="main">
-
-    <h1>Create a new Ad for your textbook!</h1>
-    <br>
-    <div class="container" style="min-height:100% width:80%">
-        {% with messages = get_flashed_messages() %}
-            {% if messages %}
-                {% for message in messages %}
-                    <div class="alert alert-warning alert-dismissible" role="alert">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
-                        {{message}}
-                    </div>
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
-        {% block body %}{% endblock %}
-    </div> <!-- /container -->
-    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
-
-    <form method = "post">
-    Textbook title:<br>
-      <input type="text" name="textbook_title"><br>
-      Textbook author: <br>
-      <input type="text" name="textbook_author"><br><br>
-      <input type="submit" value="Submit">
-    </form>
-    <div id="validation"></div>
-    <!--<script src="../static/create_account.js"></script>
-
-    </div> <!-- /container -->
-
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="assets/js/vendor/jquery.min.js"><\/script>')</script>
-    <script src="../static/dist/js/bootstrap.min.js"></script>
-    <script src="../static/assets/js/docs.min.js"></script>
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="../static/assets/js/ie10-viewport-bug-workaround.js"></script>
-  </body>
-</html>
+{% extends "template.html" %}
+{% block title %}BookSwap - Create Post{% endblock %}
+{% block content %}
+<h1>Create a new Ad for your textbook!</h1>
+<br>
+<form method = "post">
+Textbook title:<br>
+  <input type="text" name="textbook_title"><br>
+  Textbook author: <br>
+  <input type="text" name="textbook_author"><br><br>
+  <input type="submit" value="Submit">
+</form>
+{% endblock %}

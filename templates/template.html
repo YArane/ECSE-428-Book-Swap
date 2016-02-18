@@ -10,7 +10,7 @@
     <meta name="author" content="BookSwap">
     <link rel="icon" href="../static/favicon.ico">
 
-    <title>{% block title %}BookSwap - Home{% endblock %}</title>
+    <title>{% block title %}{% endblock %}</title>
 
     <!-- Bootstrap core CSS -->
     <link href="../static/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -34,9 +34,10 @@
 
   <body role="document">
   {% block body %}
+
     <!-- Fixed navbar -->
     <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container" id="main">
+      <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
             <span class="sr-only">Toggle navigation</span>
@@ -50,6 +51,7 @@
           <ul class="nav navbar-nav">
             <li {% if page == 'index' %}class="active"{% endif %}><a href="{{ url_for('index') }}">Home</a></li>
             <li {% if page == 'signup' %}class="active"{% endif %}><a href="{{ url_for('signup') }}">Create Account</a></li>
+            <li><a href = "{{ url_for('show_all_posts')}}">Posts</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -66,15 +68,13 @@
               {% endfor %}
           {% endif %}
       {% endwith %}
-      {% block body %}{% endblock %}
-    </div> <!-- /messages container-->
+    </div> <!-- /messages container -->
 
-    <div id="content">
+    <div class="container theme-showcase" role="main">
     {% block content %}
     {% endblock %}
-    </div> <!-- /content -->
+    </div> <!-- /container -->
 
-    </div> <!-- /main container -->
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
