@@ -1,0 +1,42 @@
+{% extends "template.html" %}
+{% block content %}
+ <div class="container theme-showcase" role="main">
+
+      <!-- Main jumbotron -->
+      <div class="jumbotron">
+        <h1>BookSwap - Textbook exchange for students, by students.</h1>
+        <p>We were sick of textbook exchange services that didn't quite fit the bill, so we made our own. <a href="{{ url_for('signup') }}">Join us today.</a></p>
+      </div>
+
+    </div> <!-- /container -->
+
+    <div class="container theme-showcase">
+      <h1>Login to Your Account</h1>
+      <br>
+
+      <div class="container" style="min-height:100% width:80%">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-warning alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                        {{message}}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+      </div> <!-- /container -->
+
+      <form method="post" action="/login">
+          <div class="form-group">
+            <label for="usr">Email:</label>
+            <input type="text" class="form-control" id="usr" name="email" placeholder="Enter Email">
+          </div>
+          <div class="form-group">
+            <label for="pwd">Password:</label>
+            <input type="password" class="form-control" id="pwd" name="password" placeholder="Enter Password">
+          </div>
+          <button type="submit" class="btn btn-default" onclick="">Log In</button>
+      </form>
+      <div id="validation"></div>
+{% endblock %}
