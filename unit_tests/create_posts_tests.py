@@ -21,13 +21,11 @@ class InsertPostTestCase(unittest.TestCase):
         self.assertEqual(Post.objects.get(post_id=post.post_id), post)
 
     def test_valid_post_without_author(self):
-        creator = DB.get_user_by_email("test@test.com")
-        post = DB.insert_post("bookname", creator.user_id)
+        post = self.create_a_post()
         self.assertEqual(Post.objects.get(post_id=post.post_id), post)
 
     def test_remove_post(self):
-        creator = DB.get_user_by_email("test@test.com")
-        post = DB.insert_post("bookname", creator.user_id)
+        post = self.create_a_post()
         DB.remove_post(post.post_id)
         self.assertNotIn(post, Post.objects.all())
 
