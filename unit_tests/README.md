@@ -1,5 +1,10 @@
 #Unit Tests#
 
+To run all unit tests in one go, run the following command from the project's top-level directory:
+`python -m unittest discover unit_tests/ *_tests.py`
+
+Also, in order for your tests to be run by the above command, make sure that the files you create to house your tests end in `_tests.py`.
+
 Unit tests will be conducted using the [unittest](https|//docs.python.org/2/library/unittest.html#module-unittest) framework provided in python 2.1
 
 ##Test Case Reference##

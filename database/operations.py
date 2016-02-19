@@ -153,6 +153,10 @@ class DBOperations():
         return User.objects.delete()
 
     @staticmethod
+    def delete_posts():
+        return Post.objects.delete()
+
+    @staticmethod
     def remove_post(post_id):
         try:
             Post.objects.get(post_id=post_id).delete()
