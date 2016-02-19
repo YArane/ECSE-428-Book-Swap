@@ -106,10 +106,16 @@ def show_user_page(user_id):
     if request.method == 'GET':
         user = dbOps.get_user_by_ID(user_id)
         if user:  # TODO: check that user is authenticated before showing user page
-            posts = dbOps.get_posts_by_user(user_id)
+            sorting = request.args.get('sorting')
+            if sorting == 'OldestFirst':
+                sorting = 'OldestFirst'
+                posts = dbOps.get_oldest_first_posts_by_user(user)
+            else:
+                sorting = 'MostRecent'
+                posts = dbOps.get_most_recent_posts_by_user(user)
             page, per_page, offset = get_page_items()
             pagination = Pagination(page=page, total=len(posts), search=False, record_name='posts', per_page=5, css_framework='foundation')
-            return render_template('user_page.html', user_id=user_id, posts=posts[offset:offset+per_page], pagination=pagination)
+            return render_template('user_page.html', user_id=user_id, posts=posts[offset:offset+per_page], pagination=pagination, sorting=sorting)
         else:
             return "No user account associated with that user"
 

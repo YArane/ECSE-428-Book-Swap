@@ -116,6 +116,18 @@ class DBOperations():
         return retval
 
     @staticmethod
+    def get_most_recent_posts_by_user(user):
+        # You need to pass the User object from the DB. Not the ID.
+        posts_by_user = Post.objects(creator=user.id).order_by('-date_posted') # the '-' sign is for decreasing
+        return posts_by_user
+
+    @staticmethod
+    def get_oldest_first_posts_by_user(user):
+        # You need to pass the User object from the DB. Not the ID.
+        posts_by_user = Post.objects(creator=user.id).order_by('+date_posted') # the '+' sign is for decreasing
+        return posts_by_user
+
+    @staticmethod
     def confirm_email(token):
         email = None
         try:
