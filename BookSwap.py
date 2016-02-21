@@ -28,7 +28,6 @@ app.config.update(
 
 from database.models import db
 db.init_app(app)
-
 # initialize email object
 mail = Mail(app)
 
@@ -168,6 +167,20 @@ def show_all_posts():
         else:
             return "There are no posts available at the moment!"
 
+# Routes relating to searching
+@app.route('/search', methods=['POST'])
+def search():
+    if request.method == 'POST':
+        query = request.form['search']
+        posts = dbOps.search(query)
+        if posts:
+            page, per_page, offset = get_page_items()
+            pagination = Pagination(page=page, total=len(posts), search=False, record_name='posts', per_page=20,
+                                    css_framework='foundation')
+            return render_template("posts.html", posts=posts[offset:offset + per_page], pagination=pagination)
+        else:
+            flash("No posts match your search!")
+            return redirect(url_for("show_all_posts"))
 
 @app.route('/post/<string:post_id>', methods=['GET', 'POST'])
 def show_post(post_id):

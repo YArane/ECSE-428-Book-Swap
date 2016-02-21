@@ -1,6 +1,12 @@
 {% extends "template.html" %}
 {% block title %}BookSwap - Posts{% endblock %}
 {% block content %}
+<div class="search">
+<form method="post" action="/search">
+    <input type=text name=search placeholder="Search by Title" value="{{ request.form.search }}" style="width: 400px;"></br>
+    <div class="actions"><input type=submit value="Search"></div>
+</form>
+</div>
 <div id="content">
     {{ pagination.info }}
     {{ pagination.links }}

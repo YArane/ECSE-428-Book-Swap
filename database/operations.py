@@ -3,13 +3,14 @@ from account_management.token import Token
 from account_management.create_account import validate_email
 from flask import flash, redirect, render_template, url_for
 from models import Post, User
+from flask.ext.mongoengine import MongoEngine
 
 '''
 This class is the layer used to interact with the database. The functions defined here
 will let you add, remove, update records on the database. Just create an instance of this
 class and use it communicate with the DB. Feel free to add more operations!
 '''
-
+db = MongoEngine()
 
 class DBOperations():
 
@@ -126,6 +127,12 @@ class DBOperations():
         # You need to pass the User object from the DB. Not the ID.
         posts_by_user = Post.objects(creator=user.id).order_by('+date_posted') # the '+' sign is for decreasing
         return posts_by_user
+
+    @staticmethod
+    def search(query):
+        Post.ensure_index([('textbook_title', 'text'),])
+        posts = Post.objects.search_text(query).order_by('$text_score')
+        return posts
 
     @staticmethod
     def confirm_email(token):

@@ -23,3 +23,5 @@ class Post(db.Document):
     textbook_author = db.StringField(max_length=30, required=False)
     date_posted = db.DateTimeField(default=datetime.datetime.now)
     post_id = db.UUIDField(binary=True, required=True)
+
+
