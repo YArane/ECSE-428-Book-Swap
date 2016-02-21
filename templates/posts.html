@@ -1,13 +1,22 @@
 {% extends "template.html" %}
 {% block title %}BookSwap - Posts{% endblock %}
 {% block content %}
+
+
 <div class="search">
 <form method="post" action="/search">
+
     <input type=text name=search placeholder="Search by Title" value="{{ request.form.search }}" style="width: 400px;"></br>
     <div class="actions"><input type=submit value="Search"></div>
+
 </form>
 </div>
 <div id="content">
+    {% if search_terms %}
+        <div class="container pale-blue leftbar border-blue">
+            <p>Currently displaying posts based on the following search term: {{ search_terms }}</p>
+        </div>
+    {%  endif %}
     {{ pagination.info }}
     {{ pagination.links }}
     <table>

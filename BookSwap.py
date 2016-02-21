@@ -177,7 +177,7 @@ def search():
             page, per_page, offset = get_page_items()
             pagination = Pagination(page=page, total=len(posts), search=False, record_name='posts', per_page=20,
                                     css_framework='foundation')
-            return render_template("posts.html", posts=posts[offset:offset + per_page], pagination=pagination)
+            return render_template("posts.html", posts=posts[offset:offset + per_page], pagination=pagination, search_terms=query)
         else:
             flash("No posts match your search!")
             return redirect(url_for("show_all_posts"))
