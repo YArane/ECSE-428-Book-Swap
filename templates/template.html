@@ -49,10 +49,13 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li {% if page == 'index' %}class="active"{% endif %}><a href="{{ url_for('index') }}">Home</a></li>
-            <li {% if page == 'signup' %}class="active"{% endif %}><a href="{{ url_for('signup') }}">Create Account</a></li>
-            <li><a href = "{{ url_for('show_all_posts')}}">Posts</a></li>
+            {% if not session.logged_in %}
+                <li {% if page == 'index' %}class="active"{% endif %}><a href="{{ url_for('index') }}">Home</a></li>
+               <li {% if page == 'signup' %}class="active"{% endif %}><a href="{{ url_for('signup') }}">Create Account</a></li>
+            {% endif %}
             {% if session.logged_in %}
+                <li {% if page == 'index' %}class="active"{% endif %}><a href="{{ url_for('index') }}">Home</a></li>
+                <li><a href = "{{ url_for('show_all_posts')}}">Posts</a></li>
                 <li><a href = "{{ url_for('logout')}}">Logout</a></li>
             {% endif %}
           </ul>
