@@ -45,7 +45,12 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="{{ url_for('index') }}">BookSwap</a>
+            {% if not session.logged_in %}
+                <a class="navbar-brand" href="{{ url_for('index') }}">BookSwap</a>
+            {% endif %}
+            {% if session.logged_in %}
+                <a class="navbar-brand" href="{{ url_for('show_user_page', user_id=user_id) }}">BookSwap</a>
+            {% endif %}
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
@@ -54,7 +59,7 @@
                <li {% if page == 'signup' %}class="active"{% endif %}><a href="{{ url_for('signup') }}">Create Account</a></li>
             {% endif %}
             {% if session.logged_in %}
-                <li {% if page == 'index' %}class="active"{% endif %}><a href="{{ url_for('index') }}">Home</a></li>
+                <li {% if page == 'index' %}class="active"{% endif %}><a href="{{ url_for('show_user_page', user_id=user_id) }}">Home</a></li>
                 <li><a href = "{{ url_for('show_all_posts')}}">Posts</a></li>
                 <li><a href = "{{ url_for('logout')}}">Logout</a></li>
             {% endif %}

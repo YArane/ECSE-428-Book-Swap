@@ -94,6 +94,7 @@ def login():
         if is_valid:
             if dbOps.is_user_account_activated(email):
                 session['logged_in'] = True
+                session['user_id'] = user.user_id
                 return redirect(url_for('show_user_page', user_id=user.user_id))
             else:
                 flash("Your account has not been activated yet. Please follow the URL in your email")
@@ -143,7 +144,7 @@ def create_post():
         return 'You are not logged in'
     user_id = request.values['user_id']
     if request.method == 'GET':
-        return render_template("create_post_page.html")
+        return render_template("create_post_page.html", user_id=session['user_id'])
     else:
         title = request.values['textbook_title']
         author = request.values['textbook_author']
@@ -152,7 +153,7 @@ def create_post():
             return render_template("create_post_page.html")
 
         newpost = dbOps.insert_post(title, user_id, author)
-        return redirect(url_for('show_post', post_id=newpost.post_id))
+        return redirect(url_for('show_post', post_id=newpost.post_id, user_id=session['user_id']))
 
 @app.route('/posts', methods=['GET'])
 def show_all_posts():
@@ -163,7 +164,7 @@ def show_all_posts():
         if posts:
             page, per_page, offset = get_page_items()
             pagination = Pagination(page=page, total=len(posts), search=False, record_name='posts', per_page=20, css_framework='foundation')
-            return render_template("posts.html", posts=posts[offset:offset+per_page], pagination=pagination)
+            return render_template("posts.html", posts=posts[offset:offset+per_page], pagination=pagination, user_id=session['user_id'])
         else:
             return "There are no posts available at the moment!"
 
@@ -177,7 +178,7 @@ def search():
             page, per_page, offset = get_page_items()
             pagination = Pagination(page=page, total=len(posts), search=False, record_name='posts', per_page=20,
                                     css_framework='foundation')
-            return render_template("posts.html", posts=posts[offset:offset + per_page], pagination=pagination, search_terms=query)
+            return render_template("posts.html", posts=posts[offset:offset + per_page], pagination=pagination, search_terms=query, user_id=session['user_id'])
         else:
             flash("No posts match your search!")
             return redirect(url_for("show_all_posts"))
@@ -189,7 +190,7 @@ def show_post(post_id):
     if request.method == 'GET':
         post = dbOps.get_post(post_id=post_id)
         if post:
-            return render_template("post_page.html", user=post.creator, title=post.textbook_title)
+            return render_template("post_page.html", user=post.creator, title=post.textbook_title, user_id=session['user_id'])
         else:
             return "The post you are trying to access does not exist"
 
