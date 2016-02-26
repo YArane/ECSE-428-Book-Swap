@@ -23,7 +23,7 @@ app.config.update(
     MAIL_PASSWORD = 'ithinkthereforeiam3',
     SECRET_KEY = 'flask+mongoengine=<3',
     SECURITY_PASSWORD_SALT = 'istilllikenodejsmore',
-    MONGODB_SETTINGS = {'DB': 'bookswap_development', 'alias':'default'}
+    MONGODB_SETTINGS = {'DB': 'bookswap_development', 'alias':'default', 'port':57589}
 )
 
 from database.models import db
