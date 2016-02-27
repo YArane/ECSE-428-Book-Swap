@@ -37,7 +37,9 @@ We are using MongoDB as the data store for the project. Once we start building t
   
 2. Create and bootup a MongoDB instance (terms totally made up by me, Daniel):
 
-  `mongod --dbpath bookswap_data`
+*NOTE: we are using a specific port for the deployment. The mongod command has changed! Use the new one shown below.*
+
+  `mongod --port 57589 --dbpath bookswap_data`
   
 3. You should see a process run on that terminal window. Great, you have a database locally deployed on your computer. Now you can open a second terminal and use the mongo command to explore your db (you need a new window, leave the DB running). You need to run the mongo command while inside the bookswap_data folder
   
