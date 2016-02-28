@@ -6,6 +6,7 @@ from encryption.encryption import encrypt
 from flask.ext.paginate import Pagination
 
 import os
+import json
 
 # Use dbOps to communicate interact with the DB. See operations.py
 # to understand what operations are defined
@@ -183,6 +184,17 @@ def search():
             flash("No posts match your search!")
             return redirect(url_for("show_all_posts"))
 
+# Routes relating to searching
+@app.route('/search', methods=['POST'])
+def searchWithoutLoading(post_id):
+    if request.method == 'POST':
+        query = request.form['search']
+        posts = dbOps.search(query)
+        if posts:
+            page, per_page, offset = get_page_items()
+            posts_json = json.dumps(posts)
+            return posts_json
+
 @app.route('/post/<string:post_id>', methods=['GET', 'POST'])
 def show_post(post_id):
     if not session.get('logged_in'):
@@ -211,4 +223,4 @@ def logout():
 app.secret_key = os.urandom(24)
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=4000)
+    app.run(host="127.0.0.1", port=5000)
