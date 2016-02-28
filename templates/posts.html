@@ -22,6 +22,23 @@
       }
 
       var input = document.getElementById('search_input').value;
+      var data = {"search_query":input};
+      $.ajax({
+        url: '/search-realtime',
+        type: 'POST',
+        dataType: 'json',
+        contentType: "application/json",
+        success: function (data) {
+            // ADD CODE HERE TO PARSE THE POSTS YOU GET FROM THE SERVER!
+            // PUT THEM IN THE TABLE!
+            // We should probably remove the search button, and just make it all work real time
+            // Use keydown on the search bar
+            console.log(data); // This print statement will let you know what's in the JSON object you get from the request
+        },
+        headers: {'Content-Type':'application/json'},
+        processData: false,
+        data: JSON.stringify(data)
+      });
 
       {% for post in posts %}
 
@@ -44,7 +61,7 @@
       {% endfor %}
 
     }
-  , 100);
+  , 2000);
 
     updateList();
 

@@ -185,14 +185,21 @@ def search():
             return redirect(url_for("show_all_posts"))
 
 # Routes relating to searching
-@app.route('/search', methods=['POST'])
-def searchWithoutLoading(post_id):
-    if request.method == 'POST':
-        query = request.form['search']
-        posts = dbOps.search(query)
-        if posts:
-            page, per_page, offset = get_page_items()
+@app.route('/search-realtime', methods=['POST'])
+def searchWithoutLoading():
+    if request.headers['Content-Type'] == 'application/json':
+        request_json = request.get_json()
+        query = request_json['search_query']
+        if len(query) != 0:
+            print "Going in here!"
+            posts = dbOps.search(query)
+            print posts
             posts_json = json.dumps(posts)
+            print posts_json
+            return posts_json
+        else:
+            print "No posts were found!"
+            posts_json = json.dumps([])
             return posts_json
 
 @app.route('/post/<string:post_id>', methods=['GET', 'POST'])
