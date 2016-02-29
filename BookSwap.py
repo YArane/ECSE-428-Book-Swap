@@ -192,14 +192,36 @@ def searchWithoutLoading():
         query = request_json['search_query']
         if len(query) != 0:
             print "Going in here!"
+            print query
             posts = dbOps.search(query)
-            print posts
-            posts_json = json.dumps(posts)
-            print posts_json
+
+            if len(posts) == 0:
+                posts_json = json.dumps({'posts_data': []})
+                return posts_json
+
+            formatted_posts = []
+            for post in posts:
+                new_post = (
+                    post.textbook_title,
+                    post.textbook_author,
+                    str(post.post_id)
+                )
+                formatted_posts.append(new_post)
+
+            posts_dictionary = {
+                'posts_data':
+                    list([{
+                        'textbook_title': textbook_title,
+                        'textbook_author': textbook_author,
+                        'post_id': post_id
+                    } for (textbook_title, textbook_author, post_id) in formatted_posts])
+            }
+            print posts_dictionary
+            posts_json = json.dumps(posts_dictionary)
             return posts_json
         else:
             print "No posts were found!"
-            posts_json = json.dumps([])
+            posts_json = json.dumps({'posts_data': []})
             return posts_json
 
 @app.route('/post/<string:post_id>', methods=['GET', 'POST'])
