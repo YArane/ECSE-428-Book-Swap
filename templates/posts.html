@@ -1,7 +1,8 @@
+<!DOCTYPE html>
+
 {% extends "template.html" %}
 {% block title %}BookSwap - Posts{% endblock %}
 {% block content %}
-
 
 <div class="search">
 <form id="search_form" method="post" action="/search">
@@ -16,54 +17,52 @@
   setInterval(
     function updateList() {
 
-      var searchListTbody = document.getElementById('searchList_tbody');
-      while (searchListTbody.rows.length> 0) {
-        searchListTbody.deleteRow(0);
-      }
+      // var searchListTbody = document.getElementById('searchList_tbody');
+      // while (searchListTbody.rows.length > 0) {
+      //   searchListTbody.deleteRow(0);
+      // }
 
       var input = document.getElementById('search_input').value;
       var data = {"search_query":input};
       $.ajax({
         url: '/search-realtime',
         type: 'POST',
+        data:data,
         dataType: 'json',
         contentType: "application/json",
         success: function (data) {
-            // ADD CODE HERE TO PARSE THE POSTS YOU GET FROM THE SERVER!
-            // PUT THEM IN THE TABLE!
-            // We should probably remove the search button, and just make it all work real time
-            // Use keydown on the search bar
-            console.log(data); // This print statement will let you know what's in the JSON object you get from the request
+          var jsData = JSON.parse(JSON.stringify(data));
+          for (var i = 0; i < jsData.posts_data.length; i++) {
+            console.log(jsData.posts_data[i].textbook_title);
+          }
         },
         headers: {'Content-Type':'application/json'},
         processData: false,
         data: JSON.stringify(data)
       });
 
-      {% for post in posts %}
+      // {% for post in posts %}
 
-      var tableRef = document.getElementById('searchList_table').getElementsByTagName('tbody')[0];
-      var newRow   = tableRef.insertRow(tableRef.rows.length);
-      var newCell0  = newRow.insertCell(0);
-      var newCell1  = newRow.insertCell(1);
-      var newTitle  = document.createTextNode('{{post.textbook_title}}');
+      // var tableRef = document.getElementById('searchList_table').getElementsByTagName('tbody')[0];
+      // var newRow   = tableRef.insertRow(tableRef.rows.length);
+      // var newCell0  = newRow.insertCell(0);
+      // var newCell1  = newRow.insertCell(1);
+      // var newTitle  = document.createTextNode('{{post.textbook_title}}');
 
-      var newTitle = document.createElement('a');
-      newTitle.setAttribute('href', '{{ url_for('show_post', post_id=post.post_id)}}');
-      newTitle.appendChild(document.createTextNode('{{post.textbook_author}}'));
-      newCell0.appendChild(newTitle);
+      // var newTitle = document.createElement('a');
+      // newTitle.setAttribute('href', '{{ url_for('show_post', post_id=post.post_id)}}');
+      // newTitle.appendChild(document.createTextNode('{{post.textbook_author}}'));
+      // newCell0.appendChild(newTitle);
 
-      var newAuthor  = document.createTextNode('{{post.textbook_title}}');
+      // var newAuthor  = document.createTextNode('{{post.textbook_title}}');
 
-      newCell0.appendChild(newTitle);
-      newCell1.appendChild(newAuthor);
+      // newCell0.appendChild(newTitle);
+      // newCell1.appendChild(newAuthor);
 
-      {% endfor %}
+      // {% endfor %}
 
     }
-  , 2000);
-
-    updateList();
+  , 500);
 
 </script>
 
@@ -76,14 +75,21 @@
     {%  endif %}
     {{ pagination.info }}
     {{ pagination.links }}
-    <table id="searchList_table">
+    <table>
       <thead>
         <tr>
           <th>Textbook Title</th>
           <th>Author</th>
         </tr>
       </thead>
-      <tbody id="searchList_tbody"></tbody>
+      <tbody>
+        {% for post in posts %}
+          <tr>
+            <td><a href="{{ url_for('show_post', post_id=post.post_id)}}">{{post.textbook_title}}</a></td>
+            <td>{{post.textbook_author}}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
     </table>
     {{ pagination.links }}
 </div>
