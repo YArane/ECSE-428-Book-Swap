@@ -5,9 +5,25 @@
 <br>
 
 <div id="content">
-    Post page for {{ title }} <br>
-    Posted by {{ user.email }} <br>
+    
+    <button onclick="goBack()">Go Back</button>
+
+    <script>
+    function goBack() {
+        window.history.back();
+    }
+    </script>
+
+    <br><br>
+
+    Post page for <b>{{ title }}</b><br>
+    Posted by <b>{{ user.email }}</b>
+    
+    <br>
+    <br>
+    
     <form method="post">
     <input type="submit" name="submit" value="Delete this post">
+
 </div>
 {% endblock %}
