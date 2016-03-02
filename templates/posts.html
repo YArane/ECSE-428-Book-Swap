@@ -20,6 +20,29 @@
         margin-top: 100px;
         font-size: 25px;
     }
+    
+    #posts_table {
+        margin-top: 35px;
+        width: 90%;
+    }
+    
+    #posts_table_th {
+        background-color: #333333;
+        color: #FFFFFF;
+        height: 30px;
+        font-size: 18px;
+        padding: 8px;
+    }
+    
+    #posts_table_td {
+        height: 30px;
+        font-size: 18px;
+        padding: 8px;
+    }
+    
+    #posts_table tr:nth-child(even) {
+        background: #CCCCCC;
+    }
 </style>
 
 <div class="search">
@@ -130,18 +153,18 @@
     {%  endif %}
     {{ pagination.info }}
     {{ pagination.links }}
-    <table style="margin-top: 35px;">
+    <table id="posts_table">
         <thead>
             <tr>
-                <th>Textbook Title</th>
-                <th>Author</th>
+                <th id="posts_table_th">Textbook Title</th>
+                <th id="posts_table_th">Author</th>
             </tr>
         </thead>
         <tbody>
             {% for post in posts %}
                 <tr>
-                    <td><a href="{{ url_for('show_post', post_id=post.post_id)}}">{{post.textbook_title}}</a></td>
-                    <td>{{post.textbook_author}}</td>
+                    <td id="posts_table_td"><a href="{{ url_for('show_post', post_id=post.post_id)}}">{{post.textbook_title}}</a></td>
+                    <td id="posts_table_td">{{post.textbook_author}}</td>
                 </tr>
             {% endfor %}
         </tbody>
