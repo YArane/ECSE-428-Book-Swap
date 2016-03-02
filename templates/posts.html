@@ -5,100 +5,112 @@
 {% block content %}
 
 <style>
-  input::-webkit-calendar-picker-indicator {
-  display: none;
-}
+    input::-webkit-calendar-picker-indicator {
+       // display: none;
+    }
 </style>
 
 <div class="search">
-<form id="search_form" method="post" action="/search">
-
-    <input id="search_input" list="postsList" type=text name=search placeholder="Search by Title" value="{{request.form.search}}"
-           style="width: 400px;" onkeypress="updateList()" autocomplete="off"></br>
-    <datalist id="postsList">
-        <option value="Internet Explorer">
-        <option value="Firefox">
-        <option value="Chrome">
-        <option value="Opera">
-        <option value="Safari">
-    </datalist>
-    <div class="actions"><input type=submit value="Search"></div>
-
-</form>
-
-<style>
-
-</style>
-
-<div id="dropdown">
-    
+    <form id="search_form" method="post" action="/search">
+        <input id="search_input" list="postsList" type=text name=search placeholder="Search by Title" value="{{request.form.search}}"
+               style="width: 400px;" onkeypress="updateList()"
+               onkeyup="if (!(event.keyCode == 37 || event.keyCode == 38 || event.keyCode == 39 || event.keyCode == 40)) updateList();" autocomplete="off"></br>
+        <datalist id="postsList"></datalist>
+        <div class="actions"><input type=submit value="Search"></div>
+    </form>
+    <div id="dropdown"></div>
 </div>
 
 <script>
+    function isStartingMatch(current, suggested) {
+        if (current.length >= suggested.length) {
+            return false;
+        }
+        for (var i = 0; i < current.length; i++) {
+            if (current.charAt(i).toLowerCase() != suggested.charAt(i).toLowerCase()) {
+                // console.log("\"" + current + "\" is NOT starting match with \"" + suggested + "\"");
+                return false;
+            }
+        }
+        // console.log("\"" + current + "\" is starting match with \"" + suggested + "\"");
+        return true;
+    }
+
+    function setCaretPosition(elemId, caretPos) {
+        var elem = document.getElementById(elemId);
+
+        if (elem != null) {
+            if (elem.createTextRange) {
+                var range = elem.createTextRange();
+                range.move('character', caretPos);
+                range.select();
+            }
+            else {
+                if (elem.selectionStart) {
+                    elem.focus();
+                    elem.setSelectionRange(caretPos, caretPos);
+                }
+                else {
+                    elem.focus();
+                }
+            }
+        }
+    }
 
     // setInterval(
-      function updateList() {
+    function updateList() {
 
-          // var searchListTbody = document.getElementById('searchList_tbody');
-          // while (searchListTbody.rows.length > 0) {
-          //   searchListTbody.deleteRow(0);
-          // }
+        var input = document.getElementById('search_input').value;
+        var data = { "search_query": input };
+        
+        $.ajax({
+            url: '/search-realtime',
+            type: 'POST',
+            data: data,
+            dataType: 'json',
+            contentType: "application/json",
+            success: function (data) {
 
-          var input = document.getElementById('search_input').value;
-          var data = { "search_query": input };
-          $.ajax({
-              url: '/search-realtime',
-              type: 'POST',
-              data: data,
-              dataType: 'json',
-              contentType: "application/json",
-              success: function (data) {
+                var jsData = JSON.parse(JSON.stringify(data));
 
-                  var jsData = JSON.parse(JSON.stringify(data));
-                  
-                  var str = "";
-                  var month = new Array();
+                var str = "";
+                var month = new Array();
 
-                  for (var i = 0; i < jsData.posts_data.length; i++) {
-                      console.log(jsData.posts_data[i].textbook_title);
-                      str += '<option value="' + jsData.posts_data[i].textbook_title + '"/>'
-                  }
+                for (var i = 0; i < jsData.posts_data.length; i++) {
+                    console.log(jsData.posts_data[i].textbook_title);
+                    str += '<option value="' + jsData.posts_data[i].textbook_title + '"/>'
+                }
+                console.log(str);
 
-                  var updatedList = document.getElementById('postsList');
-                  updatedList.innerHTML = str;
+                for (i = 0; i < document.getElementById('postsList').options.length; i++) {
+                    console.log("HERE!!! " + document.getElementById('postsList').options[i].value);
+                }
 
-              },
-              headers: { 'Content-Type': 'application/json' },
-              processData: false,
-              data: JSON.stringify(data)
-          });
+                var updatedList = document.getElementById('postsList');
+                updatedList.innerHTML = str;
 
-          // {% for post in posts %}
+                var currentIndex = input.length;
+                var suggested = jsData.posts_data[0].textbook_title;
 
-          // var tableRef = document.getElementById('searchList_table').getElementsByTagName('tbody')[0];
-          // var newRow   = tableRef.insertRow(tableRef.rows.length);
-          // var newCell0  = newRow.insertCell(0);
-          // var newCell1  = newRow.insertCell(1);
-          // var newTitle  = document.createTextNode('{{post.textbook_title}}');
+                if (jsData.posts_data.length > 0) {
+                    if (isStartingMatch(input, suggested)) {
+                        document.getElementById('search_input').value = input + suggested.substring(currentIndex);
+                        setCaretPosition('search_input', currentIndex);
 
-          // var newTitle = document.createElement('a');
-          // newTitle.setAttribute('href', '{{ url_for('show_post', post_id=post.post_id)}}');
-          // newTitle.appendChild(document.createTextNode('{{post.textbook_author}}'));
-          // newCell0.appendChild(newTitle);
+                        document.getElementById('search_input').setSelectionRange(currentIndex, document.getElementById('search_input').value.length);
+                    }
+                }
 
-          // var newAuthor  = document.createTextNode('{{post.textbook_title}}');
+            },
+            headers: { 'Content-Type': 'application/json' },
+            processData: false,
+            data: JSON.stringify(data)
+        });
 
-          // newCell0.appendChild(newTitle);
-          // newCell1.appendChild(newAuthor);
-
-          // {% endfor %}
-
-      }
+    }
     // , 500);
-
 </script>
 
-</div>
 <div id="content">
     {% if search_terms %}
         <div class="container pale-blue leftbar border-blue">
@@ -108,20 +120,20 @@
     {{ pagination.info }}
     {{ pagination.links }}
     <table>
-      <thead>
-        <tr>
-          <th>Textbook Title</th>
-          <th>Author</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for post in posts %}
-          <tr>
-            <td><a href="{{ url_for('show_post', post_id=post.post_id)}}">{{post.textbook_title}}</a></td>
-            <td>{{post.textbook_author}}</td>
-          </tr>
-        {% endfor %}
-      </tbody>
+        <thead>
+            <tr>
+                <th>Textbook Title</th>
+                <th>Author</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for post in posts %}
+                <tr>
+                    <td><a href="{{ url_for('show_post', post_id=post.post_id)}}">{{post.textbook_title}}</a></td>
+                    <td>{{post.textbook_author}}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
     </table>
     {{ pagination.links }}
 </div>
