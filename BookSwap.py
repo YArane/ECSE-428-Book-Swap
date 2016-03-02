@@ -6,6 +6,7 @@ from encryption.encryption import encrypt
 from flask.ext.paginate import Pagination
 
 import os
+import json
 
 # Use dbOps to communicate interact with the DB. See operations.py
 # to understand what operations are defined
@@ -183,6 +184,46 @@ def search():
             flash("No posts match your search!")
             return redirect(url_for("show_all_posts"))
 
+# Routes relating to searching
+@app.route('/search-realtime', methods=['POST'])
+def searchWithoutLoading():
+    if request.headers['Content-Type'] == 'application/json':
+        request_json = request.get_json()
+        query = request_json['search_query']
+        if len(query) != 0:
+            print "Going in here!"
+            print query
+            posts = dbOps.search(query)
+
+            if len(posts) == 0:
+                posts_json = json.dumps({'posts_data': []})
+                return posts_json
+
+            formatted_posts = []
+            for post in posts:
+                new_post = (
+                    post.textbook_title,
+                    post.textbook_author,
+                    str(post.post_id)
+                )
+                formatted_posts.append(new_post)
+
+            posts_dictionary = {
+                'posts_data':
+                    list([{
+                        'textbook_title': textbook_title,
+                        'textbook_author': textbook_author,
+                        'post_id': post_id
+                    } for (textbook_title, textbook_author, post_id) in formatted_posts])
+            }
+            print posts_dictionary
+            posts_json = json.dumps(posts_dictionary)
+            return posts_json
+        else:
+            print "No posts were found!"
+            posts_json = json.dumps({'posts_data': []})
+            return posts_json
+
 @app.route('/post/<string:post_id>', methods=['GET', 'POST'])
 def show_post(post_id):
     if not session.get('logged_in'):
@@ -211,4 +252,4 @@ def logout():
 app.secret_key = os.urandom(24)
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=4000)
+    app.run(host="127.0.0.1", port=5000)

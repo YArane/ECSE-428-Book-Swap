@@ -1,15 +1,103 @@
+<!DOCTYPE html>
+
 {% extends "template.html" %}
 {% block title %}BookSwap - Posts{% endblock %}
 {% block content %}
 
+<style>
+  input::-webkit-calendar-picker-indicator {
+  display: none;
+}
+</style>
 
 <div class="search">
-<form method="post" action="/search">
+<form id="search_form" method="post" action="/search">
 
-    <input type=text name=search placeholder="Search by Title" value="{{ request.form.search }}" style="width: 400px;"></br>
+    <input id="search_input" list="postsList" type=text name=search placeholder="Search by Title" value="{{request.form.search}}"
+           style="width: 400px;" onkeypress="updateList()" autocomplete="off"></br>
+    <datalist id="postsList">
+        <option value="Internet Explorer">
+        <option value="Firefox">
+        <option value="Chrome">
+        <option value="Opera">
+        <option value="Safari">
+    </datalist>
     <div class="actions"><input type=submit value="Search"></div>
 
 </form>
+
+<style>
+
+</style>
+
+<div id="dropdown">
+    
+</div>
+
+<script>
+
+    // setInterval(
+      function updateList() {
+
+          // var searchListTbody = document.getElementById('searchList_tbody');
+          // while (searchListTbody.rows.length > 0) {
+          //   searchListTbody.deleteRow(0);
+          // }
+
+          var input = document.getElementById('search_input').value;
+          var data = { "search_query": input };
+          $.ajax({
+              url: '/search-realtime',
+              type: 'POST',
+              data: data,
+              dataType: 'json',
+              contentType: "application/json",
+              success: function (data) {
+
+                  var jsData = JSON.parse(JSON.stringify(data));
+                  
+                  var str = "";
+                  var month = new Array();
+
+                  for (var i = 0; i < jsData.posts_data.length; i++) {
+                      console.log(jsData.posts_data[i].textbook_title);
+                      str += '<option value="' + jsData.posts_data[i].textbook_title + '"/>'
+                  }
+
+                  var updatedList = document.getElementById('postsList');
+                  updatedList.innerHTML = str;
+
+              },
+              headers: { 'Content-Type': 'application/json' },
+              processData: false,
+              data: JSON.stringify(data)
+          });
+
+          // {% for post in posts %}
+
+          // var tableRef = document.getElementById('searchList_table').getElementsByTagName('tbody')[0];
+          // var newRow   = tableRef.insertRow(tableRef.rows.length);
+          // var newCell0  = newRow.insertCell(0);
+          // var newCell1  = newRow.insertCell(1);
+          // var newTitle  = document.createTextNode('{{post.textbook_title}}');
+
+          // var newTitle = document.createElement('a');
+          // newTitle.setAttribute('href', '{{ url_for('show_post', post_id=post.post_id)}}');
+          // newTitle.appendChild(document.createTextNode('{{post.textbook_author}}'));
+          // newCell0.appendChild(newTitle);
+
+          // var newAuthor  = document.createTextNode('{{post.textbook_title}}');
+
+          // newCell0.appendChild(newTitle);
+          // newCell1.appendChild(newAuthor);
+
+          // {% endfor %}
+
+      }
+    // , 500);
+
+</script>
+
 </div>
 <div id="content">
     {% if search_terms %}
