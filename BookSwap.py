@@ -119,7 +119,7 @@ def show_user_page(user_id):
             else:
                 sorting = 'MostRecent'
                 posts = dbOps.get_most_recent_posts_by_user(user)
-            page, per_page, offset = get_page_items()
+            page, per_page, offset = get_page_items(5)
             pagination = Pagination(page=page, total=len(posts), search=False, record_name='posts', per_page=5, css_framework='foundation')
             return render_template('user_page.html', user_id=user_id, posts=posts[offset:offset+per_page], pagination=pagination, sorting=sorting)
         else:
@@ -128,16 +128,10 @@ def show_user_page(user_id):
     if request.method == 'POST':
         return redirect(url_for('create_post', user_id=user_id))
 
-def get_page_items():
+def get_page_items(posts_per_page):
     page = int(request.args.get('page', 1))
-    per_page = request.args.get('per_page')
-    if not per_page:
-        per_page = app.config.get('PER_PAGE', 5)
-    else:
-        per_page = int(per_page)
-
-    offset = (page - 1) * per_page
-    return page, per_page, offset
+    offset = (page - 1) * posts_per_page
+    return page, posts_per_page, offset
 
 @app.route('/create_post', methods=['GET', 'POST'])
 def create_post():
@@ -163,8 +157,8 @@ def show_all_posts():
     if request.method == 'GET':
         posts = dbOps.get_all_posts()
         if posts:
-            page, per_page, offset = get_page_items()
-            pagination = Pagination(page=page, total=len(posts), search=False, record_name='posts', per_page=20, css_framework='foundation')
+            page, per_page, offset = get_page_items(20)
+            pagination = Pagination(page=page, total=len(posts), search=False, record_name='posts', per_page=per_page, css_framework='foundation')
             return render_template("posts.html", posts=posts[offset:offset+per_page], pagination=pagination, user_id=session['user_id'])
         else:
             return "There are no posts available at the moment!"
@@ -176,8 +170,8 @@ def search():
         query = request.form['search']
         posts = dbOps.search(query)
         if posts:
-            page, per_page, offset = get_page_items()
-            pagination = Pagination(page=page, total=len(posts), search=False, record_name='posts', per_page=20,
+            page, per_page, offset = get_page_items(20)
+            pagination = Pagination(page=page, total=len(posts), search=False, record_name='posts', per_page=per_page,
                                     css_framework='foundation')
             return render_template("posts.html", posts=posts[offset:offset + per_page], pagination=pagination, search_terms=query, user_id=session['user_id'])
         else:
