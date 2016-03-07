@@ -7,7 +7,7 @@ DB = DBOperations()
 class InsertPostTestCase(unittest.TestCase):
 
     def setUp(self):
-        mongoengine.connect('testDB', host='localhost')
+        mongoengine.connect('testDB', host='localhost', port=57589)
         DB.delete_users()
         DB.insert_user("test@test.com", password="Somepass1234")
 

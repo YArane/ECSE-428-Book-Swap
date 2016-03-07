@@ -6,7 +6,7 @@ DB = DBOperations()
 class PostsTestCase(unittest.TestCase):
 
     def setUp(self):
-        mongoengine.connect('testDB', host='localhost')
+        mongoengine.connect('testDB', host='localhost', port=57589)
         DB.delete_posts()
 
     def create_a_post(self):
