@@ -72,11 +72,7 @@ def create_account():
     else:
         formatted_error = '. '.join(str(error) for error in errors)
         flash(formatted_error)
-        #print error
         return render_template('signup.html')
-
-        # TODO: encrypt credentials
-        # TODO: write encrypted-credentials to database
 
 
 @app.route('/login', methods=['POST'])
