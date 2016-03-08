@@ -1,6 +1,5 @@
 import mongoengine, unittest
 from database.operations import DBOperations
-from database.models import Post
 DB = DBOperations()
 
 
@@ -14,7 +13,7 @@ class SearchPostsTest(unittest.TestCase):
     def create_posts(self):
         creator = DB.get_user_by_email("test@test.com")
         search_term = "booktitle"
-        post = DB.insert_post(search_term, creator.user_id, "authorname")
+        post = [DB.insert_post(search_term, creator.user_id, "authorname"), DB.insert_post(DB.insert_post(search_term+' extra'))]
         DB.insert_post("textbook title", creator.user_id, "name of author")
         search = {'post': post, 'search_term': search_term}
         return search
