@@ -1,6 +1,9 @@
 import mongoengine, unittest
 from database.operations import DBOperations
 import BookSwap
+import encryption
+import flask
+from encryption.encryption import encrypt
 
 DB = DBOperations()
 
@@ -28,24 +31,28 @@ class BookSwapTestCase(unittest.TestCase):
         ), follow_redirects=True)
 
     def create_test_account(self):
-        DB.insert_user("test@test.com", password="Somepass1234")
+        DB.insert_user("test@test.com", password=encrypt("Somepass1234"))
         DB.activate_user("test@test.com")
 
     def logout(self):
         return self.app.get('/logout', follow_redirects=True)
 
     def test_login(self):
-        with self.app as c:
-            resp = c.post('/login', data=dict(
-                email="test@test.com",
-                password="Somepass1234"
-            ), follow_redirects=True)
+        self.login("test@test.com", "Somepass1234")
 
-            assert resp.status_code is 200
-            page_data = resp.get_data()
-            assert '<title>BookSwap - Home</title>' in page_data
+        with self.app as c:
+            c.get('/')
+            assert flask.session['logged_in']
 
         self.logout()
+
+    def test_logout(self):
+        self.login("test@test.com", "Somepass1234")
+        resp = self.logout()
+
+        with self.app as c:
+            c.get('/')
+            assert 'logged_in' not in flask.session
 
 
 if __name__ == '__main__':
