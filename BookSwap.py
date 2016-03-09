@@ -241,7 +241,7 @@ def logout():
     session.pop('logged_in', None)
     return render_template("index.html")
 
-app.secret_key = os.urandom(24)
+app.secret_key = 'FOX98PPPCATCHER09FREEFLIGHT'
 
 if __name__ == "__main__":
     app.run(host="127.0.0.1", port=5000)
