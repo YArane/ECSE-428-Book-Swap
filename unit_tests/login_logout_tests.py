@@ -31,13 +31,13 @@ class BookSwapTestCase(unittest.TestCase):
         ), follow_redirects=True)
 
     def create_test_account(self):
-        DB.insert_user("test@test.com", password=encrypt("Somepass1234"))
+        DB.insert_user("test@test.com", encrypt("Somepass1234"))
         DB.activate_user("test@test.com")
 
     def logout(self):
         return self.app.get('/logout', follow_redirects=True)
 
-    def test_login(self):
+    def test_login_session(self):
         self.login("test@test.com", "Somepass1234")
 
         with self.app as c:
@@ -46,9 +46,9 @@ class BookSwapTestCase(unittest.TestCase):
 
         self.logout()
 
-    def test_logout(self):
+    def test_logout_session(self):
         self.login("test@test.com", "Somepass1234")
-        resp = self.logout()
+        self.logout()
 
         with self.app as c:
             c.get('/')
