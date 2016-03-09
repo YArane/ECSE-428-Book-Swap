@@ -10,6 +10,8 @@ class PostsTestCase(unittest.TestCase):
         DB.delete_posts()
 
     def create_a_post(self):
+        DB.insert_user("test@test.com", password="Somepass1234")
+        DB.activate_user("test@test.com")
         creator = DB.get_user_by_email("test@test.com")
         post = DB.insert_post("bookname", creator.user_id, "authorname")
         return post

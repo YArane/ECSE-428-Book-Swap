@@ -1,12 +1,6 @@
 import mongoengine, unittest
 from database.operations import DBOperations
-from database.models import Post
 import BookSwap
-import tempfile
-import os
-import flask
-from flask import session, redirect, url_for
-from database.models import db
 
 DB = DBOperations()
 
@@ -20,6 +14,7 @@ class BookSwapTestCase(unittest.TestCase):
             MONGODB_SETTINGS={'DB': 'testDB', 'alias':'default', 'port':57589}
         )
         BookSwap.app.config['TESTING'] = True
+        BookSwap.app.config['SECRET_KEY'] = '112SOMESECRETKEY987'
         self.app = BookSwap.app.test_client()
         self.create_test_account()
 
@@ -41,14 +36,17 @@ class BookSwapTestCase(unittest.TestCase):
 
     def test_login(self):
         with self.app as c:
-            c.post('/login', data=dict(
+            resp = c.post('/login', data=dict(
                 email="test@test.com",
                 password="Somepass1234"
             ), follow_redirects=True)
-            c.get('/')
-            assert flask.session['logged_in']
+
+            assert resp.status_code is 200
+            page_data = resp.get_data()
+            assert '<title>BookSwap - Home</title>' in page_data
+
         self.logout()
 
 
 if __name__ == '__main__':
-        unittest.main()
+    unittest.main()
