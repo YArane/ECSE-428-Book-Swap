@@ -40,11 +40,15 @@ class BookSwapTestCase(unittest.TestCase):
         return self.app.get('/logout', follow_redirects=True)
 
     def test_login(self):
-        self.login("test@test.com", "Somepass1234")
         with self.app as c:
+            c.post('/login', data=dict(
+                email="test@test.com",
+                password="Somepass1234"
+            ), follow_redirects=True)
             c.get('/')
             assert flask.session['logged_in']
         self.logout()
+
 
 if __name__ == '__main__':
         unittest.main()
