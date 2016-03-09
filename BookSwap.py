@@ -4,6 +4,7 @@ from account_management.email import MailManager
 from account_management.create_account import validate_email, validate_password
 from encryption.encryption import encrypt
 from flask.ext.paginate import Pagination
+from datetime import timedelta
 
 import os
 import json
@@ -80,7 +81,6 @@ def create_account():
 
 @app.route('/login', methods=['POST'])
 def login():
-    error = []
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
@@ -95,6 +95,8 @@ def login():
             if dbOps.is_user_account_activated(email):
                 session['logged_in'] = True
                 session['user_id'] = user.user_id
+                session.permanent = True
+                app.permanent_session_lifetime = timedelta(minutes=20)
                 return redirect(url_for('show_user_page', user_id=user.user_id))
             else:
                 flash("Your account has not been activated yet. Please follow the URL in your email")
@@ -243,7 +245,7 @@ def logout():
         session.pop('logged_in', None)
         return render_template("index.html")
 
-app.secret_key = os.urandom(24)
+app.secret_key = 'FOX98PPPCATCHER09FREEFLIGHT'
 
 if __name__ == "__main__":
     app.run(host="127.0.0.1", port=5000)

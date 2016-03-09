@@ -114,7 +114,6 @@
                 var jsData = JSON.parse(JSON.stringify(data));
 
                 var str = "";
-                var month = new Array();
 
                 for (var i = 0; i < jsData.posts_data.length; i++) {
                     console.log(jsData.posts_data[i].textbook_title);
@@ -130,9 +129,9 @@
                 updatedList.innerHTML = str;
 
                 var currentIndex = input.length;
-                var suggested = jsData.posts_data[0].textbook_title;
 
                 if (jsData.posts_data.length > 0) {
+                    var suggested = jsData.posts_data[0].textbook_title;
                     if (isStartingMatch(input, suggested)) {
                         document.getElementById('search_input').value = input + suggested.substring(currentIndex);
                         setCaretPosition('search_input', currentIndex);
