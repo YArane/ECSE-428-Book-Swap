@@ -34,6 +34,7 @@ mail = Mail(app)
 
 mail_manager = MailManager(mail, app)
 
+
 @app.route('/')
 def index():
     return render_template('index.html', page='index')
@@ -43,11 +44,13 @@ def index():
 def signup():
     return render_template('signup.html', page='signup')
 
-@app.route('/confirm')
+
+@app.route('/confirm', methods=['POST'])
 def confirm_email():
-    token = request.args.get('token')
-    dbOps.confirm_email(token)
-    return render_template('index.html', page='index')
+    if request.method == 'POST':
+        token = request.args.get('token')
+        dbOps.confirm_email(token)
+        return render_template('index.html', page='index')
 
 
 @app.route('/create_account', methods=['POST'])
@@ -234,10 +237,11 @@ def show_post(post_id):
         return 'No other options implemented yet'
 
 
-@app.route('/logout')
+@app.route('/logout', methods=['GET'])
 def logout():
-    session.pop('logged_in', None)
-    return render_template("index.html")
+    if request.method == 'GET':
+        session.pop('logged_in', None)
+        return render_template("index.html")
 
 app.secret_key = os.urandom(24)
 
