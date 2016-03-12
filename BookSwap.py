@@ -6,7 +6,6 @@ from encryption.encryption import encrypt
 from flask.ext.paginate import Pagination
 from datetime import timedelta
 
-import os
 import json
 
 # Use dbOps to communicate interact with the DB. See operations.py
@@ -157,12 +156,12 @@ def show_all_posts():
         return 'You are not logged in'
     if request.method == 'GET':
         posts = dbOps.get_all_posts()
-        if posts:
-            page, per_page, offset = get_page_items(20)
-            pagination = Pagination(page=page, total=len(posts), search=False, record_name='posts', per_page=per_page, css_framework='foundation')
-            return render_template("posts.html", posts=posts[offset:offset+per_page], pagination=pagination, user_id=session['user_id'])
-        else:
-            return "There are no posts available at the moment!"
+        #if posts:
+        page, per_page, offset = get_page_items(20)
+        pagination = Pagination(page=page, total=len(posts), search=False, record_name='posts', per_page=per_page, css_framework='foundation')
+        return render_template("posts.html", posts=posts[offset:offset+per_page], pagination=pagination, user_id=session['user_id'])
+        # else:
+        #     return "There are no posts available at the moment!"
 
 # Routes relating to searching
 @app.route('/search', methods=['POST'])
