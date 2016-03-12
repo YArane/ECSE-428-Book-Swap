@@ -46,9 +46,9 @@ def signup():
     return render_template('signup.html', page='signup')
 
 
-@app.route('/confirm', methods=['POST'])
+@app.route('/confirm', methods=['GET'])
 def confirm_email():
-    if request.method == 'POST':
+    if request.method == 'GET':
         token = request.args.get('token')
         dbOps.confirm_email(token)
         return render_template('index.html', page='index')
