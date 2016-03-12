@@ -95,6 +95,20 @@ class DBOperations():
         return new_post
 
     @staticmethod
+    def update_existing_post(post_id, new_title, new_author):
+        # Pass in the id of the post you want to modify as a string
+        # A new title and a new author (both also strings)
+        # This operation will store the changes in the database
+        try:
+            post = Post.objects.get(post_id=post_id)
+            post.textbook_author = new_author
+            post.textbook_title = new_title
+            post.save()
+        except Exception as e:
+            print "Failed to update post"
+
+
+    @staticmethod
     def get_post(post_id):
         try:
             return Post.objects.get(post_id=post_id)
