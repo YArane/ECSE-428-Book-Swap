@@ -1,6 +1,25 @@
 {% extends "template.html" %}
 {% block title %}BookSwap - Posts{% endblock %}
 {% block content %}
+
+<style>
+    #contact {
+        width: max-content;
+        padding: 20px;
+        background-color: #CCCCCC;
+        font-size: medium;
+    }
+    #contact_email {
+        width: 600px;
+        margin-top: 5px;
+    }
+    #contact_message {
+        height: 200px;
+        width: 600px;
+        margin-top: 5px;
+    }
+</style>
+
 <h1>{{ title }} IS FOR SALE!</h1>
 <br>
 
@@ -26,8 +45,32 @@
     <form method="post">
         <input type="submit" name="submit" value="Delete this post">
     </form>
+    {% else %}
+    <form method="post">
+        <input id="contactSeller" type="button" value="Contact Seller">
+    </form>
     {% endif %}
 
+    <br>
+    <br>
+
+    <div id="contact">
+        <form id="contact_form">
+            
+            Email:<br>
+            <input id="contact_email" type=text placeholder="Email Address" autofocus="true">
+            
+            <br><br>
+            
+            Message:<br>
+            <textarea id="contact_message" placeholder="Hello! I am interested in buying your textbook!"></textarea>
+            
+            <br><br>
+            
+            <input id="search_submit" type=submit value="Submit">
+
+        </form>
+    </div>
 
 </div>
 {% endblock %}
