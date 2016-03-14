@@ -2,21 +2,25 @@
 {% block title %}BookSwap - Posts{% endblock %}
 {% block content %}
 
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
 <style>
     #contact {
         width: max-content;
         padding: 20px;
-        background-color: #CCCCCC;
+        // background-color: #E6E6E6;
         font-size: medium;
     }
     #contact_email {
         width: 600px;
         margin-top: 5px;
+        font-size: medium;
     }
     #contact_message {
         height: 200px;
         width: 600px;
         margin-top: 5px;
+        font-size: medium;
     }
 </style>
 
@@ -51,28 +55,6 @@
     </form>
     {% endif %}
 
-    <br>
-    <br>
-
-    <div id="contact" style="display: none;">
-        <form id="contact_form">
-            
-            Email:<br>
-            <input id="contact_email" type=text placeholder="Email Address" autofocus="true">
-            
-            <br><br>
-            
-            Message:<br>
-            <textarea id="contact_message" placeholder="Hello! I am interested in buying your textbook!"></textarea>
-            
-            <br><br>
-            
-            <input id="search_submit" type=submit value="Submit">
-
-        </form>
-    </div>
-
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script>
         $(document).ready(function () {
             $("#contactSeller").click(function () {
@@ -85,6 +67,27 @@
             });
         });
     </script>
+
+    <br>
+    <br>
+
+    <div id="contact" style="display: none;">
+        <form id="contact_form">
+            
+            <label for="contact_email">Email:</label><br>
+            <input id="contact_email" type=text placeholder="Your Email Address" autofocus="true">
+            
+            <br><br>
+            
+            <label for="contact_message">Message:</label><br>
+            <textarea id="contact_message" placeholder="Hello! I am interested in buying your textbook!"></textarea>
+            
+            <br><br>
+            
+            <input type="button" id="search_submit" value="Submit" />
+
+        </form>
+    </div>
 
 </div>
 
