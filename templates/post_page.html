@@ -54,7 +54,7 @@
     <br>
     <br>
 
-    <div id="contact">
+    <div id="contact" style="display: none;">
         <form id="contact_form">
             
             Email:<br>
@@ -72,5 +72,21 @@
         </form>
     </div>
 
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#contactSeller").click(function () {
+                if (contact.style.display == 'none') {
+                    $("#contact").slideDown("slow");
+                }
+                else {
+                    $("#contact").slideUp("slow");
+                }
+            });
+        });
+    </script>
+
 </div>
+
 {% endblock %}
+
