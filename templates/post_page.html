@@ -56,6 +56,13 @@
 
     <script>
         $(document).ready(function () {
+            $(window).keydown(function(event){
+                if (event.keyCode == 13) {
+                  event.preventDefault();
+                  return false;
+                }
+              });
+
             $("#contactSeller").click(function () {
                 if (contact.style.display == 'none') {
                     $("#contact").slideDown("slow");
@@ -91,6 +98,20 @@
 
         </form>
     </div>
+
+    <script>
+        setInterval(function () {
+            var contact_email = document.getElementById('contact_email');
+            var contact_submit = document.getElementById('contact_submit');
+            if (contact_email.value == '') {
+                contact_submit.disabled = true;
+            }
+            else {
+                contact_submit.disabled = false;
+            }
+        }
+        , 1);
+    </script>
 
 </div>
 
