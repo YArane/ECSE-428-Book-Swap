@@ -52,7 +52,6 @@ def confirm_email():
         dbOps.confirm_email(token)
         return render_template('index.html', page='index')
 
-
 @app.route('/create_account', methods=['POST'])
 def create_account():
     errors = []
@@ -76,6 +75,15 @@ def create_account():
         formatted_error = '. '.join(str(error) for error in errors)
         flash(formatted_error)
         return render_template('signup.html')
+
+
+@app.route('/contact_seller', methods=['POST'])
+def contact_seller():
+    message = request.form['contact_message']
+    email = request.form['contact_email']
+    user_id = session['user_id']
+    dbOps.send_contact_seller_email(email, mail_manager, user_id)
+    return redirect(url_for("show_user_page", user_id=user_id))
 
 
 @app.route('/login', methods=['POST'])

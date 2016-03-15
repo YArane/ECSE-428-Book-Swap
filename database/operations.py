@@ -36,6 +36,15 @@ class DBOperations():
 #       send the email here
 
     @staticmethod
+    def send_contact_seller_email(email, mail_manager, user_id):
+        token = Token.generate_confirmation_token(email)
+        confirm_url = url_for('contact_seller', token=token, _external=True)
+        html = render_template('contact_seller_confirmation.html', confirm_url=confirm_url, user_id=user_id)
+        subject = "Interest in your textbook"
+        mail_manager.send_email(email, subject, html)
+        flash('Your message has been sent!', 'success')
+
+    @staticmethod
     def validate_login_credentials(email, password):
         is_valid = True
         try:
@@ -167,6 +176,10 @@ class DBOperations():
         except:
             flash('The account activation URL specified is not associated to any account', 'danger')
         return redirect(url_for('index'))
+
+    @staticmethod
+    def contact_seller_confirm_email(token):
+        return redirect(url_for('post_page'))
 
     # This is just for testing sake
     @staticmethod
