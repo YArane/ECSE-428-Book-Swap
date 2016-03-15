@@ -11,6 +11,7 @@ import json
 # Use dbOps to communicate interact with the DB. See operations.py
 # to understand what operations are defined
 from database.operations import DBOperations as dbOps
+from database.forms import EditAccountForm
 
 app = Flask(__name__)
 
@@ -128,10 +129,33 @@ def show_user_page(user_id):
     if request.method == 'POST':
         return redirect(url_for('create_post', user_id=user_id))
 
+
+@app.route('/edit_account/<string:user_id>', methods=['GET', 'POST'])
+def edit_account(user_id):
+    form = EditAccountForm(request.form)
+    if not session.get('logged_in'):
+        return "You are not logged in"
+    user = dbOps.get_user_by_ID(user_id)
+    if not user:
+        return "No user account associated with that user"
+    if request.method == 'GET':
+        return render_template("edit_account_page.html", user_id=user_id, form=form)
+    if request.method == 'POST' and form.validate():
+        new_email = form.email.data
+        new_pword = form.password.data
+        dbOps.edit_user_account(user_id, new_email, encrypt(new_pword))
+        flash("Account successfully updated")
+        return redirect(url_for('show_user_page', user_id=user_id))
+    else:
+        flash("Please fix any errors")
+        return render_template("edit_account_page.html", user_id=user_id, form=form)
+
+
 def get_page_items(posts_per_page):
     page = int(request.args.get('page', 1))
     offset = (page - 1) * posts_per_page
     return page, posts_per_page, offset
+
 
 @app.route('/create_post', methods=['GET', 'POST'])
 def create_post():
@@ -150,6 +174,7 @@ def create_post():
         newpost = dbOps.insert_post(title, user_id, author)
         return redirect(url_for('show_post', post_id=newpost.post_id, user_id=session['user_id']))
 
+
 @app.route('/posts', methods=['GET'])
 def show_all_posts():
     if not session.get('logged_in'):
@@ -159,6 +184,7 @@ def show_all_posts():
         page, per_page, offset = get_page_items(20)
         pagination = Pagination(page=page, total=len(posts), search=False, record_name='posts', per_page=per_page, css_framework='foundation')
         return render_template("posts.html", posts=posts[offset:offset+per_page], pagination=pagination, user_id=session['user_id'])
+
 
 # Routes relating to searching
 @app.route('/search', methods=['POST'])
@@ -174,6 +200,7 @@ def search():
         else:
             flash("No posts match your search!")
             return redirect(url_for("show_all_posts"))
+
 
 # Routes relating to searching
 @app.route('/search-realtime', methods=['POST'])
@@ -214,6 +241,7 @@ def searchWithoutLoading():
             print "No posts were found!"
             posts_json = json.dumps({'posts_data': []})
             return posts_json
+
 
 @app.route('/post/<string:post_id>', methods=['GET', 'POST'])
 def show_post(post_id):
