@@ -74,6 +74,15 @@ class DBOperations():
         return False
 
     @staticmethod
+    def edit_user_account(user_id, email, password):
+        user = User.objects.get(user_id=user_id)
+        if email:
+            user.email = email
+        if password:
+            user.password = password
+        user.save()
+
+    @staticmethod
     def is_user_account_activated(email):
         user_document = User.objects.get(email=email)
         return user_document.activated
