@@ -73,9 +73,13 @@
     <div id="contact" style="display: none;">
         <form id="contact_form" method="post" action="/contact_seller">
             
-            <label for="contact_email">Email:</label><br>
-            <input id="contact_email" name="contact_email" type=text placeholder="Your Email Address" autofocus="true">
+            <label for="contact_recipient">Seller Email:</label><br>
+            <input id="contact_recipient" name="contact_recipient" type=text value="{{ user.email }}" readonly="true">
             
+            <br><br>
+            
+            <label for="contact_email">Your Email:</label> *Required<br>
+            <input id="contact_email" name="contact_email" type=text placeholder="Your Email Address" autofocus="true">            
             <br><br>
             
             <label for="contact_message">Message:</label><br>
@@ -83,8 +87,7 @@
             
             <br><br>
             
-            <!--<input type="button" id="search_submit" value="Submit" />-->
-            <button type="submit" class="btn btn-default" onclick="">Submit</button>
+            <button id="contact_submit" type="submit" class="btn btn-default" onclick="">Submit</button>
 
         </form>
     </div>

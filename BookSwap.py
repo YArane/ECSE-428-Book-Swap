@@ -81,9 +81,10 @@ def create_account():
 @app.route('/contact_seller', methods=['POST'])
 def contact_seller():
     message = request.form['contact_message']
-    email = request.form['contact_email']
+    email = request.form['contact_recipient']
+    sender_email = request.form['contact_email']
     user_id = session['user_id']
-    dbOps.send_contact_seller_email(email, mail_manager, user_id)
+    dbOps.send_contact_seller_email(email, sender_email, mail_manager, message)
     return redirect(url_for("show_user_page", user_id=user_id))
 
 

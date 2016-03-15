@@ -36,10 +36,12 @@ class DBOperations():
 #       send the email here
 
     @staticmethod
-    def send_contact_seller_email(email, mail_manager, user_id):
+    def send_contact_seller_email(email, sender_email, mail_manager, message):
         token = Token.generate_confirmation_token(email)
         confirm_url = url_for('contact_seller', token=token, _external=True)
-        html = render_template('contact_seller_confirmation.html', confirm_url=confirm_url, user_id=user_id)
+        if message == '':
+            message = "Message from " + sender_email + ":\n\n" + "Hello! I am interested in buying your textbook!"
+        html = render_template('contact_seller_confirmation.html', message=message, sender_email=sender_email)
         subject = "Interest in your textbook"
         mail_manager.send_email(email, subject, html)
         flash('Your message has been sent!', 'success')
