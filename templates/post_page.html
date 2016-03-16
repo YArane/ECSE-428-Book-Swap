@@ -80,11 +80,12 @@
     <div id="contact" style="display: none;">
         <form id="contact_form" method="post" action="/contact_seller">
             
-            <label for="contact_recipient">Seller Email:</label><br>
-            <input id="contact_recipient" name="contact_recipient" type=text value="{{ user.email }}" readonly="true">
-            
-            <br><br>
-            
+            <div id="contact_recipient_div" style="visibility: hidden; display: none;">
+                <label for="contact_recipient">Seller Email:</label><br>
+                <input id="contact_recipient" name="contact_recipient" type=text value="{{ user.email }}" readonly="true">
+                <br><br>
+            </div>
+
             <label for="contact_email">Your Email:</label> *Required<br>
             <input id="contact_email" name="contact_email" type=text placeholder="Your Email Address" autofocus="true">            
             <br><br>
