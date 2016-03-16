@@ -1,4 +1,4 @@
-from wtforms import Form, BooleanField, TextField, PasswordField, validators
+from wtforms import Form, TextField, PasswordField
 
 
 class EditAccountForm(Form):
