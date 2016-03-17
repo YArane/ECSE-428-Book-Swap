@@ -1,5 +1,6 @@
 from flask import Flask, request, render_template, redirect, url_for, flash, session
 from flask_mail import Mail
+from account_management.token import Token
 from account_management.email import MailManager
 from account_management.create_account import validate_email, validate_password
 from encryption.encryption import encrypt
@@ -77,6 +78,47 @@ def create_account():
         flash(formatted_error)
         return render_template('signup.html')
 
+@app.route('/forgot_password', methods=['GET'])
+def forgot_password():
+    email = 'yarden.arane@gmail.com'#request.form['email']
+    if dbOps.get_user_by_email(email) is None:
+        flash('The email you entered is not associated with any account. Please verify the email address.', 'danger')
+        return redirect(url_for('index'))
+    else:
+       token = Token.generate_confirmation_token(email)
+       reset_url = url_for('reset_password', token=token, _external=True)
+       html = render_template('reset_password.html', redirect(url_for('update_password', token))confirm_url=reset_url)
+       subject = "Password Recovery"
+       mail_manager.send_email(email, subject, html)
+       flash("A email has been sent to your account, please follow the link to reset your password.", 'success')
+
+
+@app.route('/reset-password', methods=['GET'])
+def reset_password():
+    token = request.args.get('token')
+    email = None
+    if request.method == 'GET':
+        try:
+            email = Token.confirm_token(token)
+            return redirect(url_for('update_password', token))
+        except:
+            flash('The confirmation link is invalid or has expired.', 'danger')
+            return redirect(url_for('index'))
+
+@app.route('/update-password', methods=['POST'])
+def update_password():
+    if request.method == 'POST':
+        token = request.form['token']
+        new_password = request.form['new_password']
+        errors = []
+        errors.append(validate_password(new_password))
+        if(len(errors) == 0):
+            user = User.objects.get(email=email)
+            edit_user_account(user.user_id, None, encrypt(password))
+            flash("Successfully updated your password", 'Success')
+        else:
+            formatted_error = '. '.join(str(error) for error in errors)
+            flash(formatted_error)
 
 @app.route('/contact_seller', methods=['POST'])
 def contact_seller():
