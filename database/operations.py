@@ -79,6 +79,7 @@ class DBOperations():
     def edit_user_account(user_id, email, password):
         user = User.objects.get(user_id=user_id)
         if email:
+            user.activated = False
             user.email = email
         if password:
             user.password = password

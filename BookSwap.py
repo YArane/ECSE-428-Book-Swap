@@ -150,8 +150,24 @@ def edit_account(user_id):
     if request.method == 'GET':
         return render_template("edit_account_page.html", user_id=user_id, form=form)
     if request.method == 'POST' and form.validate():
+        errors = []
         new_email = form.email.data
         new_pword = form.password.data
+        if (not new_email) and (not new_pword):
+            errors += ['Please enter a new email or password']
+        errors += validate_password(new_pword) + validate_email(new_email)
+        if dbOps.user_exists(new_email):
+            flash("Account already exists for this email")
+            return render_template("edit_account_page.html", user_id=user_id, form=form)
+        if len(errors) is not 0:
+            if errors[0] !='field is required':
+                flash(errors[0])
+                return render_template("edit_account_page.html", user_id=user_id, form=form)
+        if new_email:
+            dbOps.send_verification_email(new_email, mail_manager)
+            flash("you will receive a confirmation email with an activation URL, to prove that the new email address belongs to you")
+            dbOps.edit_user_account(user_id, new_email, encrypt(new_pword))
+            return redirect(url_for('index'))
         dbOps.edit_user_account(user_id, new_email, encrypt(new_pword))
         flash("Account successfully updated")
         return redirect(url_for('show_user_page', user_id=user_id))
