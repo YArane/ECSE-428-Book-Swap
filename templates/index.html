@@ -2,22 +2,71 @@
 {% block title %}BookSwap - Home{% endblock %}
 {% block content %}
 <!-- Main jumbotron -->
-<div class="jumbotron">
-  <h1>BookSwap - Textbook exchange for students, by students.</h1>
-  <p>We were sick of textbook exchange services that didn't quite fit the bill, so we made our own. <a href="{{ url_for('signup') }}">Join us today.</a></p>
+
+<style>
+    #jumbotron {
+        background-image: url("http://eddylu.com/images/books_edited.jpg");
+        background-size: 100%;
+    }
+    
+    #index_left {
+        float: left;
+        width: 49%;
+        border-radius: 8px;
+        height: 300px;
+        
+        background-image: url("http://eddylu.com/images/books3_edited.jpg");
+        background-size: 100%;
+        
+        padding-left: 20px;
+    }
+    
+    #index_right {
+        float: right;
+        width: 49%;
+        height: 300px;
+        border-radius: 8px;
+        
+        background-image: url("http://eddylu.com/images/books2_edited.jpg");
+        background-size: 100%;
+        
+        text-align: right;
+        padding-right: 20px;
+    }
+    
+    #join_box_header {
+        color: #333333;
+    }
+</style>
+
+<div class="jumbotron" id="jumbotron">
+  <h1 style="text-align: center;">BookSwap</h1>
+  <h2 style="text-align: center;">Textbook exchange for students, by students</h2>
+  <!--<p style="text-align: center;">We were sick of textbook exchange services that didn't quite fit the bill, so we made our own.</p>-->
 </div>
 
-<h1>Login to Your Account</h1>
-<br>
-<form method="post" action="/login">
-    <div class="form-group">
-      <label for="usr">Email:</label>
-      <input type="text" class="form-control" id="usr" name="email" placeholder="Enter Email" autofocus="true">
+<div id="index_left">
+    <h1>Login to Your Account</h1>
+    <br>
+
+    <form method="post" action="/login" style="width: 90%;">
+        <div class="form-group">
+          <label for="usr">Email:</label>
+          <input type="text" class="form-control" id="usr" name="email" placeholder="Enter Email" autofocus="true">
+        </div>
+        <div class="form-group">
+          <label for="pwd">Password:</label>
+          <input type="password" class="form-control" id="pwd" name="password" placeholder="Enter Password">
+        </div>
+        <button type="submit" class="btn btn-default" onclick="">Log In</button>
+    </form>
+</div>
+
+<a style="display: block" href="{{ url_for('signup') }}">
+    <div id="index_right">
+        <div id="join_box_header"><h1>No account?</h1></div>
+        <h1>Join us today!</h1>
     </div>
-    <div class="form-group">
-      <label for="pwd">Password:</label>
-      <input type="password" class="form-control" id="pwd" name="password" placeholder="Enter Password">
-    </div>
-    <button type="submit" class="btn btn-default" onclick="">Log In</button>
-</form>
+</a>
+
 {% endblock %}
