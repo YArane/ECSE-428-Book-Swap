@@ -1,45 +1,147 @@
 {% extends "template.html" %}
 {% block title %}BookSwap - User Page{% endblock %}
 {% block content %}
-<h1>Welcome User. <small>Come here to create new posts.</small></h1>
+
+<style>
+    #post_button {
+        float: left;
+        width: 49%;
+        height: 200px;
+        border-radius: 8px;
+        
+        border: none;
+        
+        background-image: url("http://eddylu.com/images/books4.jpg");
+        background-size: 100%;
+        
+        text-align: left;        
+        padding-left: 30px;
+    }
+    
+    #advanced_search {
+        float: right;
+        width: 49%;
+        height: 200px;
+        border-radius: 8px;
+        
+        background-image: url("http://eddylu.com/images/books_cropped.jpg");
+        background-size: 100%;
+        background-repeat: no-repeat;
+        
+        text-align: left;
+        padding-left: 30px;
+    }
+    
+    #advanced_search_header {
+        color: #333333;
+    }
+    
+    #user_page_left {
+        float: left;
+        width: 10%;
+    }
+    
+    #user_page_right {
+        float: right;
+        width: 85%;
+    }
+
+    #posts_table {
+        margin-top: 35px;
+        width: 100%;
+    }
+
+    #posts_table_th {
+        background-color: #666666;
+        color: #FFFFFF;
+        height: 30px;
+        font-size: 14px;
+        padding: 8px;
+        border: 1px solid #A3A3A3;
+    }
+
+    #posts_table_td {
+        height: 30px;
+        font-size: 14px;
+        padding: 8px;
+        border: 1px solid #A3A3A3; 
+    }
+    
+    #posts_table {
+        border: 1px solid #A3A3A3; 
+    }
+
+    #posts_table tr:nth-child(even) {
+        background: #EDEDED;
+    }
+</style>
+
+<h1>Welcome! <small>Come here to create new posts.</small></h1>
 <br>
 <div id="content">
+       
     <form method="post" action="{{ url_for('show_user_page', user_id=user_id) }}">
-      <button type="submit" class="btn btn-default">Post a new ad</button>
+        <button id="post_button" type="submit"><h1>Post an ad</h1></button>
     </form>
-    <br>
-    <form method="get" action="{{ url_for('show_user_page', user_id=user_id) }}">
-        {% if sorting == 'MostRecent' %}
-            <input type="radio" name="sorting" value="MostRecent" checked> Most Recent<br>
-            <input type="radio" name="sorting" value="OldestFirst"> Oldest First<br>
-        {% else %}
-            <input type="radio" name="sorting" value="MostRecent"> Most Recent<br>
-            <input type="radio" name="sorting" value="OldestFirst" checked> Oldest First<br>
-        {% endif %}
-      <button type="submit" class="btn btn-default">Apply Filter</button>
-    </form>
-    <br><br>
-    {{ pagination.info }}
-    {{ pagination.links }}
-    <table>
-      <thead>
-        <tr>
-          <th>Textbook Title</th>
-          <th>Author</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for post in posts %}
-          <tr>
-            <td><a href="{{ url_for('show_post', post_id=post.post_id)}}">{{post.textbook_title}}</a></td>
-            <td>{{post.textbook_author}}</td>
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-    {{ pagination.links }}
-    <form method="get" action="{{ url_for('edit_account', user_id=user_id) }}">
-      <button type="submit" class="btn btn-default">Edit Account</button>
-    </form>
+
+    <a style="display: block" href="{{ url_for('show_all_posts')}}">
+        <div id="advanced_search">
+            <div id="advanced_search_header"><h1>Search by Title</h1></div>
+        </div>
+    </a>
+
+    <div id="user_page_bottom">
+
+        <div id="user_page_left" style="margin-top: 35px;">
+
+            <form method="get" action="{{ url_for('show_user_page', user_id=user_id) }}">
+                {% if sorting == 'MostRecent' %}
+                    <input type="radio" name="sorting" value="MostRecent" checked> Most Recent<br>
+                    <input type="radio" name="sorting" value="OldestFirst"> Oldest First<br>
+                {% else %}
+                    <input type="radio" name="sorting" value="MostRecent"> Most Recent<br>
+                    <input type="radio" name="sorting" value="OldestFirst" checked> Oldest First<br>
+                {% endif %}
+        
+                <br>
+
+              <button type="submit" class="btn btn-default">Apply Filter</button>
+            </form>
+    
+            <br><br>
+    
+        </div>
+
+        <div id="user_page_right" style="margin-top: 35px;">
+
+            {{ pagination.info }}
+            {{ pagination.links }}
+            <table id="posts_table">
+              <thead>
+                <tr id="posts_table_tr">
+                  <th id="posts_table_th">Textbook Title</th>
+                  <th id="posts_table_th">Author</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for post in posts %}
+                  <tr id="posts_table_tr">
+                    <td id="posts_table_td"><a href="{{ url_for('show_post', post_id=post.post_id)}}">{{post.textbook_title}}</a></td>
+                    <td id="posts_table_td">{{post.textbook_author}}</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+            {{ pagination.links }}
+    
+            <br>
+    
+            <form method="get" action="{{ url_for('edit_account', user_id=user_id) }}">
+              <button type="submit" class="btn btn-default">Edit Account</button>
+            </form>
+        </div>
+    
+    </div>
+
 </div>
 {% endblock %}
