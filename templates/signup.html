@@ -77,4 +77,69 @@
     </ul>
 </div>
 
+<script>
+
+    function init() {
+        
+        /*intialize positions*/
+
+        //create_account_div
+        var create_account_div = document.getElementById('create_account_div');
+        var create_account_div_Intensity = 0;
+        create_account_div.style.opacity = create_account_div_Intensity;
+        create_account_div.style.visibility = 'visible';
+        var create_account_div_Position = -10;
+        create_account_div.style.position = 'relative';
+        create_account_div.style.left = create_account_div_Position + 'px';
+
+        //password_requirements
+        var password_requirements = document.getElementById('password_requirements');
+        var password_requirements_Intensity = 0;
+        password_requirements.style.opacity = password_requirements_Intensity;
+        password_requirements.style.visibility = 'visible';
+        var password_requirements_Position = -10;
+        password_requirements.style.position = 'relative';
+        password_requirements.style.left = password_requirements_Position + 'px';
+
+        /*intervals*/
+
+        //create_account_div
+        setTimeout(run_create_account_div_IntervalFunction, 0);
+        function run_create_account_div_IntervalFunction() {
+            var run_create_account_div_Interval = setInterval(create_account_div_IntervalFunction, 1);
+        }
+        function create_account_div_IntervalFunction() {
+            if (create_account_div_Intensity < 1) {
+                create_account_div_Intensity += .005;
+                create_account_div_Position += .05;
+                create_account_div.style.opacity = create_account_div_Intensity;
+                create_account_div.style.left = create_account_div_Position + 'px';
+            }
+            else {
+                clearInterval(run_create_account_div_Interval);
+            }
+        }
+
+        //password_requirements
+        setTimeout(run_password_requirements_IntervalFunction, 0);
+        function run_password_requirements_IntervalFunction() {
+            var run_password_requirements_Interval = setInterval(password_requirements_IntervalFunction, 1);
+        }
+        function password_requirements_IntervalFunction() {
+            if (password_requirements_Intensity < 1) {
+                password_requirements_Intensity += .005;
+                password_requirements_Position += .05;
+                password_requirements.style.opacity = password_requirements_Intensity;
+                password_requirements.style.left = password_requirements_Position + 'px';
+            }
+            else {
+                clearInterval(run_password_requirements_Interval);
+            }
+        }
+
+    }
+    window.onload = init;
+
+</script>
+
 {% endblock %}
