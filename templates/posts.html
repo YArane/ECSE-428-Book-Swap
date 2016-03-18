@@ -198,4 +198,69 @@
     {{ pagination.links }}
 </div>
 
+<script>
+
+    function init() {
+        
+        /*intialize positions*/
+
+        //search
+        var search = document.getElementById('search');
+        var search_Intensity = 0;
+        search.style.opacity = search_Intensity;
+        search.style.visibility = 'visible';
+        var search_Position = -10;
+        search.style.position = 'relative';
+        search.style.left = search_Position + 'px';
+
+        //contact_seller_table
+        var contact_seller_table = document.getElementById('contact_seller_table');
+        var contact_seller_table_Intensity = 0;
+        contact_seller_table.style.opacity = contact_seller_table_Intensity;
+        contact_seller_table.style.visibility = 'visible';
+        var contact_seller_table_Position = -10;
+        contact_seller_table.style.position = 'relative';
+        contact_seller_table.style.left = contact_seller_table_Position + 'px';
+
+        /*intervals*/
+
+        //search
+        setTimeout(run_search_IntervalFunction, 0);
+        function run_search_IntervalFunction() {
+            var run_search_Interval = setInterval(search_IntervalFunction, 1);
+        }
+        function search_IntervalFunction() {
+            if (search_Intensity < 1) {
+                search_Intensity += .005;
+                search_Position += .05;
+                search.style.opacity = search_Intensity;
+                search.style.left = search_Position + 'px';
+            }
+            else {
+                clearInterval(run_search_Interval);
+            }
+        }
+
+        //contact_seller_table
+        setTimeout(run_contact_seller_table_IntervalFunction, 800);
+        function run_contact_seller_table_IntervalFunction() {
+            var run_contact_seller_table_Interval = setInterval(contact_seller_table_IntervalFunction, 1);
+        }
+        function contact_seller_table_IntervalFunction() {
+            if (contact_seller_table_Intensity < 1) {
+                contact_seller_table_Intensity += .005;
+                contact_seller_table_Position += .05;
+                contact_seller_table.style.opacity = contact_seller_table_Intensity;
+                contact_seller_table.style.left = contact_seller_table_Position + 'px';
+            }
+            else {
+                clearInterval(run_contact_seller_table_Interval);
+            }
+        }
+
+    }
+    window.onload = init;
+
+</script>
+
 {% endblock %}
