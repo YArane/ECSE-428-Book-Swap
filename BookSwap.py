@@ -99,7 +99,6 @@ def forgot_password():
 
 @app.route('/reset-password', methods=['GET', 'POST'])
 def reset_password():
-    print "In reset_password!"
     if request.method == 'GET':
         token = request.args.get('token')
         return render_template('update_password.html', token=token)
@@ -111,7 +110,6 @@ def reset_password():
         errors.append(validate_password(new_password))
         flattened_errors_list = [error for errorSublist in errors for error in errorSublist]
         if(len(flattened_errors_list) == 0):
-            print "All good!"
             user = dbOps.get_user_by_email(email)
             dbOps.edit_user_account(user.user_id, None, encrypt(new_password))
             flash("Successfully updated password", 'Success')
@@ -278,8 +276,6 @@ def searchWithoutLoading():
         request_json = request.get_json()
         query = request_json['search_query']
         if len(query) != 0:
-            print "Going in here!"
-            print query
             posts = dbOps.search(query)
 
             if len(posts) == 0:
@@ -303,11 +299,9 @@ def searchWithoutLoading():
                         'post_id': post_id
                     } for (textbook_title, textbook_author, post_id) in formatted_posts])
             }
-            print posts_dictionary
             posts_json = json.dumps(posts_dictionary)
             return posts_json
         else:
-            print "No posts were found!"
             posts_json = json.dumps({'posts_data': []})
             return posts_json
 
