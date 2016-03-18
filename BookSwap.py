@@ -87,7 +87,7 @@ def forgot_password():
     else:
        token = Token.generate_confirmation_token(email)
        reset_url = url_for('reset_password', token=token, _external=True)
-       html = render_template('reset_password.html', redirect(url_for('update_password', token))confirm_url=reset_url)
+       html = render_template('reset_password.html', redirect(url_for('update_password', token, confirm_url=reset_url)))
        subject = "Password Recovery"
        mail_manager.send_email(email, subject, html)
        flash("A email has been sent to your account, please follow the link to reset your password.", 'success')
