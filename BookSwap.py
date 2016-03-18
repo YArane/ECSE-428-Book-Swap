@@ -26,7 +26,7 @@ app.config.update(
     MAIL_PASSWORD = 'ithinkthereforeiam3',
     SECRET_KEY = 'flask+mongoengine=<3',
     SECURITY_PASSWORD_SALT = 'istilllikenodejsmore',
-    MONGODB_SETTINGS = {'DB': 'bookswap_development', 'alias':'default', 'port':57589}
+    MONGODB_SETTINGS = {'DB': 'bookswap_development', 'alias':'default', 'port': 57589}
 )
 
 from database.models import db
@@ -78,47 +78,47 @@ def create_account():
         flash(formatted_error)
         return render_template('signup.html')
 
-@app.route('/forgot_password', methods=['GET'])
+@app.route('/forgot_password', methods=['GET', 'POST'])
 def forgot_password():
-    email = 'yarden.arane@gmail.com'#request.form['email']
-    if dbOps.get_user_by_email(email) is None:
-        flash('The email you entered is not associated with any account. Please verify the email address.', 'danger')
-        return redirect(url_for('index'))
-    else:
-       token = Token.generate_confirmation_token(email)
-       reset_url = url_for('reset_password', token=token, _external=True)
-       html = render_template('reset_password.html', redirect(url_for('update_password', token, confirm_url=reset_url)))
-       subject = "Password Recovery"
-       mail_manager.send_email(email, subject, html)
-       flash("A email has been sent to your account, please follow the link to reset your password.", 'success')
-
-
-@app.route('/reset-password', methods=['GET'])
-def reset_password():
-    token = request.args.get('token')
-    email = None
     if request.method == 'GET':
-        try:
-            email = Token.confirm_token(token)
-            return redirect(url_for('update_password', token))
-        except:
-            flash('The confirmation link is invalid or has expired.', 'danger')
+        return render_template('forgot_password.html')
+    elif request.method == 'POST':
+        email = request.form['email']
+        if dbOps.get_user_by_email(email) is None:
+            flash('The email you entered is not associated with any account. Please verify the email address.', 'danger')
+            return redirect(url_for('forgot_password'))
+        else:
+            token = Token.generate_confirmation_token(email)
+            recover_password_url = url_for('reset_password', token=token, _external=True)
+            html = render_template('reset_password.html', recover_password_url=recover_password_url)
+            subject = "BookSwap - Password Recovery"
+            mail_manager.send_email(email, subject, html)
+            flash("An email has been sent to your account, please follow the link to reset your password.", 'success')
             return redirect(url_for('index'))
 
-@app.route('/update-password', methods=['POST'])
-def update_password():
-    if request.method == 'POST':
+
+@app.route('/reset-password', methods=['GET', 'POST'])
+def reset_password():
+    if request.method == 'GET':
+        token = request.args.get('token')
+        return render_template('update_password.html', token=token)
+    elif request.method == 'POST':
         token = request.form['token']
-        new_password = request.form['new_password']
+        email = Token.confirm_token(token)
+        new_password = request.form['password']
         errors = []
         errors.append(validate_password(new_password))
-        if(len(errors) == 0):
-            user = User.objects.get(email=email)
-            edit_user_account(user.user_id, None, encrypt(password))
-            flash("Successfully updated your password", 'Success')
+        flattened_errors_list = [error for errorSublist in errors for error in errorSublist]
+        if(len(flattened_errors_list) == 0):
+            user = dbOps.get_user_by_email(email)
+            dbOps.edit_user_account(user.user_id, None, encrypt(new_password))
+            flash("Successfully updated password", 'Success')
+            return render_template('index.html')
         else:
-            formatted_error = '. '.join(str(error) for error in errors)
+            formatted_error = '. '.join(str(error) for error in flattened_errors_list)
             flash(formatted_error)
+            return render_template('update_password.html', token=token)
+
 
 @app.route('/contact_seller', methods=['POST'])
 def contact_seller():
@@ -280,8 +280,6 @@ def searchWithoutLoading():
         request_json = request.get_json()
         query = request_json['search_query']
         if len(query) != 0:
-            print "Going in here!"
-            print query
             posts = dbOps.search(query)
 
             if len(posts) == 0:
@@ -305,11 +303,9 @@ def searchWithoutLoading():
                         'post_id': post_id
                     } for (textbook_title, textbook_author, post_id) in formatted_posts])
             }
-            print posts_dictionary
             posts_json = json.dumps(posts_dictionary)
             return posts_json
         else:
-            print "No posts were found!"
             posts_json = json.dumps({'posts_data': []})
             return posts_json
 

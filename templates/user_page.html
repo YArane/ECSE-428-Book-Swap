@@ -147,92 +147,92 @@
 
 <script>
 
-    function init() {
+    // function init() {
 
-        /*intialize positions*/
+    //     /*intialize positions*/
 
-        //post_button
-        var post_button = document.getElementById('post_button');
-        var post_button_Intensity = 0;
-        post_button.style.opacity = post_button_Intensity;
-        post_button.style.visibility = 'visible';
-        var post_button_Position = -10;
-        post_button.style.position = 'relative';
-        post_button.style.left = post_button_Position + 'px';
+    //     //post_button
+    //     var post_button = document.getElementById('post_button');
+    //     var post_button_Intensity = 0;
+    //     post_button.style.opacity = post_button_Intensity;
+    //     post_button.style.visibility = 'visible';
+    //     var post_button_Position = -10;
+    //     post_button.style.position = 'relative';
+    //     post_button.style.left = post_button_Position + 'px';
 
-        //advanced_search
-        var advanced_search = document.getElementById('advanced_search');
-        var advanced_search_Intensity = 0;
-        advanced_search.style.opacity = advanced_search_Intensity;
-        advanced_search.style.visibility = 'visible';
-        var advanced_search_Position = -10;
-        advanced_search.style.position = 'relative';
-        advanced_search.style.left = advanced_search_Position + 'px';
+    //     //advanced_search
+    //     var advanced_search = document.getElementById('advanced_search');
+    //     var advanced_search_Intensity = 0;
+    //     advanced_search.style.opacity = advanced_search_Intensity;
+    //     advanced_search.style.visibility = 'visible';
+    //     var advanced_search_Position = -10;
+    //     advanced_search.style.position = 'relative';
+    //     advanced_search.style.left = advanced_search_Position + 'px';
 
-        //user_page_bottom
-        var user_page_bottom = document.getElementById('user_page_bottom');
-        var user_page_bottom_Intensity = 0;
-        user_page_bottom.style.opacity = user_page_bottom_Intensity;
-        user_page_bottom.style.visibility = 'visible';
-        var user_page_bottom_Position = -10;
-        user_page_bottom.style.position = 'relative';
-        user_page_bottom.style.left = user_page_bottom_Position + 'px';
+    //     //user_page_bottom
+    //     var user_page_bottom = document.getElementById('user_page_bottom');
+    //     var user_page_bottom_Intensity = 0;
+    //     user_page_bottom.style.opacity = user_page_bottom_Intensity;
+    //     user_page_bottom.style.visibility = 'visible';
+    //     var user_page_bottom_Position = -10;
+    //     user_page_bottom.style.position = 'relative';
+    //     user_page_bottom.style.left = user_page_bottom_Position + 'px';
 
-        /*intervals*/
+    //     /*intervals*/
 
-        //post_button
-        setTimeout(run_post_button_IntervalFunction, 0);
-        function run_post_button_IntervalFunction() {
-            var run_post_button_Interval = setInterval(post_button_IntervalFunction, 1);
-        }
-        function post_button_IntervalFunction() {
-            if (post_button_Intensity < 1) {
-                post_button_Intensity += .005;
-                post_button_Position += .05;
-                post_button.style.opacity = post_button_Intensity;
-                post_button.style.left = post_button_Position + 'px';
-            }
-            else {
-                clearInterval(run_post_button_Interval);
-            }
-        }
+    //     //post_button
+    //     setTimeout(run_post_button_IntervalFunction, 0);
+    //     function run_post_button_IntervalFunction() {
+    //         var run_post_button_Interval = setInterval(post_button_IntervalFunction, 1);
+    //     }
+    //     function post_button_IntervalFunction() {
+    //         if (post_button_Intensity < 1) {
+    //             post_button_Intensity += .005;
+    //             post_button_Position += .05;
+    //             post_button.style.opacity = post_button_Intensity;
+    //             post_button.style.left = post_button_Position + 'px';
+    //         }
+    //         else {
+    //             clearInterval(run_post_button_Interval);
+    //         }
+    //     }
 
-        //advanced_search
-        setTimeout(run_advanced_search_IntervalFunction, 800);
-        function run_advanced_search_IntervalFunction() {
-            var run_advanced_search_Interval = setInterval(advanced_search_IntervalFunction, 1);
-        }
-        function advanced_search_IntervalFunction() {
-            if (advanced_search_Intensity < 1) {
-                advanced_search_Intensity += .005;
-                advanced_search_Position += .05;
-                advanced_search.style.opacity = advanced_search_Intensity;
-                advanced_search.style.left = advanced_search_Position + 'px';
-            }
-            else {
-                clearInterval(run_advanced_search_Interval);
-            }
-        }
+    //     //advanced_search
+    //     setTimeout(run_advanced_search_IntervalFunction, 800);
+    //     function run_advanced_search_IntervalFunction() {
+    //         var run_advanced_search_Interval = setInterval(advanced_search_IntervalFunction, 1);
+    //     }
+    //     function advanced_search_IntervalFunction() {
+    //         if (advanced_search_Intensity < 1) {
+    //             advanced_search_Intensity += .005;
+    //             advanced_search_Position += .05;
+    //             advanced_search.style.opacity = advanced_search_Intensity;
+    //             advanced_search.style.left = advanced_search_Position + 'px';
+    //         }
+    //         else {
+    //             clearInterval(run_advanced_search_Interval);
+    //         }
+    //     }
 
-        //user_page_bottom
-        setTimeout(run_user_page_bottom_IntervalFunction, 1600);
-        function run_user_page_bottom_IntervalFunction() {
-            var run_user_page_bottom_Interval = setInterval(user_page_bottom_IntervalFunction, 1);
-        }
-        function user_page_bottom_IntervalFunction() {
-            if (user_page_bottom_Intensity < 1) {
-                user_page_bottom_Intensity += .005;
-                user_page_bottom_Position += .05;
-                user_page_bottom.style.opacity = user_page_bottom_Intensity;
-                user_page_bottom.style.left = user_page_bottom_Position + 'px';
-            }
-            else {
-                clearInterval(run_user_page_bottom_Interval);
-            }
-        }
+    //     //user_page_bottom
+    //     setTimeout(run_user_page_bottom_IntervalFunction, 1600);
+    //     function run_user_page_bottom_IntervalFunction() {
+    //         var run_user_page_bottom_Interval = setInterval(user_page_bottom_IntervalFunction, 1);
+    //     }
+    //     function user_page_bottom_IntervalFunction() {
+    //         if (user_page_bottom_Intensity < 1) {
+    //             user_page_bottom_Intensity += .005;
+    //             user_page_bottom_Position += .05;
+    //             user_page_bottom.style.opacity = user_page_bottom_Intensity;
+    //             user_page_bottom.style.left = user_page_bottom_Position + 'px';
+    //         }
+    //         else {
+    //             clearInterval(run_user_page_bottom_Interval);
+    //         }
+    //     }
 
-    }
-    window.onload = init;
+    // }
+    // window.onload = init;
 
 </script>
 
