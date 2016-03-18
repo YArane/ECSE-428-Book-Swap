@@ -1,20 +1,80 @@
 {% extends "template.html" %}
 {% block title %}BookSwap - Sign Up{% endblock %}
 {% block content %}
-<h1>Create a new account. Please enter your login information.</h1>
-<br>
+
+<style>
+    #create_account_div {
+        margin-top: 5%;
+        
+        float: left;
+        width: 49%;
+        border-top-left-radius: 8px;
+        border-bottom-left-radius: 8px;
+        height: 300px;
+        
+        color: #FFFFFF;
+        
+        background-image: url("http://eddylu.com/images/books5_flipped.jpg");
+        background-size: 100%;
+        
+        padding-left: 20px;
+    }
+    
+    #password_requirements {
+        margin-top: 5%;
+        
+        float: left;
+        width: 49%;
+        border-top-right-radius: 8px;
+        border-bottom-right-radius: 8px;
+        height: 300px;
+        
+        background-image: url("http://eddylu.com/images/books5_edited.jpg");
+        background-size: 100%;
+        
+        font-weight: 500;
+        
+        padding-left: 20px;
+    }
+    
+    #password_requirements_ul {
+        margin-top: 20px;
+    }
+    
+    #password_requirements_ul li {
+        padding: 8px;
+        font-weight: 500;
+    }
+</style>
+
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
 
-<form method="post" action="/create_account">
-    <div class="form-group">
-        <label for="usr">Email:</label>
-        <input type="email" class="form-control" name="email" id="usr">
-    </div>
-    <div class="form-group">
-        <label for="pwd">Password:</label>
-        <input type="password" class="form-control" name="password" id="pwd">
-    </div>
-     <button type="submit" class="btn btn-default" onclick="">Create Account</button>
-</form>
+<div id="create_account_div">
+    <h1>Create Account</h1>
+    <br>
+    <form method="post" action="/create_account" style="width: 90%;">
+        <div class="form-group">
+            <label for="usr">Email:</label>
+            <input type="email" class="form-control" name="email" id="usr" autofocus="true">
+        </div>
+        <div class="form-group">
+            <label for="pwd">Password:</label>
+            <input type="password" class="form-control" name="password" id="pwd">
+        </div>
+         <button type="submit" class="btn btn-default" onclick="">Create Account</button>
+    </form>
+</div>
+
+<div id="password_requirements">
+    <h2 style="margin-top: 30px; margin-left: 10px;">Password Requirements</h2>
+    <ul id="password_requirements_ul">
+        <li>Lowercase character required</li>
+        <li>Uppercase character required</li>
+        <li>Number required</li>
+        <li>Password must be at least 8 alphanumeric characters long</li>
+        <li>Password must be at most 30 alphanumeric characters long</li>
+    </ul>
+</div>
+
 {% endblock %}
