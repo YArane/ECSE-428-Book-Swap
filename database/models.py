@@ -21,6 +21,7 @@ class Post(db.Document):
     creator = db.ReferenceField('User', max_length=30, required=True)
     textbook_title = db.StringField(max_length=60, required=True)
     textbook_author = db.StringField(max_length=30, required=False)
+    contact_seller_email = db.EmailField(max_length=30, required=False)
     date_posted = db.DateTimeField(default=datetime.datetime.now)
     post_id = db.UUIDField(binary=True, required=True)
 
