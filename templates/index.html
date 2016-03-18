@@ -69,4 +69,95 @@
     </div>
 </a>
 
+<script>
+
+    function init() {
+
+        /*intialize positions*/
+
+        //jumbotron
+        var jumbotron = document.getElementById('jumbotron');
+        var jumbotron_Intensity = 0;
+        jumbotron.style.opacity = jumbotron_Intensity;
+        jumbotron.style.visibility = 'visible';
+        var jumbotron_Position = -10;
+        jumbotron.style.position = 'relative';
+        jumbotron.style.left = jumbotron_Position + 'px';
+
+        //index_left
+        var index_left = document.getElementById('index_left');
+        var index_left_Intensity = 0;
+        index_left.style.opacity = index_left_Intensity;
+        index_left.style.visibility = 'visible';
+        var index_left_Position = -10;
+        index_left.style.position = 'relative';
+        index_left.style.left = index_left_Position + 'px';
+
+        //index_right
+        var index_right = document.getElementById('index_right');
+        var index_right_Intensity = 0;
+        index_right.style.opacity = index_right_Intensity;
+        index_right.style.visibility = 'visible';
+        var index_right_Position = -10;
+        index_right.style.position = 'relative';
+        index_right.style.left = index_right_Position + 'px';
+
+        /*intervals*/
+
+        //jumbotron
+        setTimeout(run_jumbotron_IntervalFunction, 0);
+        function run_jumbotron_IntervalFunction() {
+            var run_jumbotron_Interval = setInterval(jumbotron_IntervalFunction, 1);
+        }
+        function jumbotron_IntervalFunction() {
+            if (jumbotron_Intensity < 1) {
+                jumbotron_Intensity += .005;
+                jumbotron_Position += .05;
+                jumbotron.style.opacity = jumbotron_Intensity;
+                jumbotron.style.left = jumbotron_Position + 'px';
+            }
+            else {
+                clearInterval(run_jumbotron_Interval);
+            }
+        }
+
+        //index_left
+        setTimeout(run_index_left_IntervalFunction, 800);
+        function run_index_left_IntervalFunction() {
+            var run_index_left_Interval = setInterval(index_left_IntervalFunction, 1);
+        }
+        function index_left_IntervalFunction() {
+            if (index_left_Intensity < 1) {
+                index_left_Intensity += .005;
+                index_left_Position += .05;
+                index_left.style.opacity = index_left_Intensity;
+                index_left.style.left = index_left_Position + 'px';
+            }
+            else {
+                clearInterval(run_index_left_Interval);
+            }
+        }
+
+        //index_right
+        setTimeout(run_index_right_IntervalFunction, 1600);
+        function run_index_right_IntervalFunction() {
+            var run_index_right_Interval = setInterval(index_right_IntervalFunction, 1);
+        }
+        function index_right_IntervalFunction() {
+            if (index_right_Intensity < 1) {
+                index_right_Intensity += .005;
+                index_right_Position += .05;
+                index_right.style.opacity = index_right_Intensity;
+                index_right.style.left = index_right_Position + 'px';
+            }
+            else {
+                clearInterval(run_index_right_Interval);
+            }
+        }
+
+    }
+    window.onload = init;
+
+</script>
+
 {% endblock %}
