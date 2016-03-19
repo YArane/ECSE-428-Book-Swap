@@ -3,6 +3,10 @@
 {% block content %}
 
 <style>
+    #overall_create_account {
+        min-height: fit-content;
+    }
+    
     #create_account_div {
         margin-top: 5%;
         
@@ -11,6 +15,7 @@
         border-top-left-radius: 8px;
         border-bottom-left-radius: 8px;
         height: 300px;
+        min-height: fit-content;
         
         color: #FFFFFF;
         
@@ -28,6 +33,7 @@
         border-top-right-radius: 8px;
         border-bottom-right-radius: 8px;
         height: 300px;
+        min-height: fit-content;
         
         background-image: url("http://eddylu.com/images/books5_edited.jpg");
         background-size: 100%;
@@ -60,7 +66,9 @@
         </div>
         <div class="form-group">
             <label for="pwd">Password:</label>
-            <input type="password" class="form-control" name="password" id="pwd">
+            <input type="password" class="form-control" name="password" id="pwd"
+                   onkeypress="update_password_requirements()" autocomplete="off" autofocus="true"
+                   onkeyup="if (!(event.keyCode == 37 || event.keyCode == 38 || event.keyCode == 39 || event.keyCode == 40)) update_password_requirements();">
         </div>
          <button type="submit" class="btn btn-default" onclick="">Create Account</button>
     </form>
@@ -69,18 +77,18 @@
 <div id="password_requirements">
     <h2 style="margin-top: 30px; margin-left: 10px;">Password Requirements</h2>
     <ul id="password_requirements_ul">
-        <li>Lowercase character required</li>
-        <li>Uppercase character required</li>
-        <li>Number required</li>
-        <li>Password must be at least 8 alphanumeric characters long</li>
-        <li>Password must be at most 30 alphanumeric characters long</li>
+        <li id="password_requirement_1" style="font-weight: 500; font-size: initial;">Lowercase character required</li>
+        <li id="password_requirement_2" style="font-weight: 500; font-size: initial;">Uppercase character required</li>
+        <li id="password_requirement_3" style="font-weight: 500; font-size: initial;">Number required</li>
+        <li id="password_requirement_4" style="font-weight: 500; font-size: initial;">Password must be at least 8 alphanumeric characters long</li>
+        <li id="password_requirement_5" style="font-weight: 700; font-size: medium; color: green;">Password must be at most 30 alphanumeric characters long</li>
     </ul>
 </div>
 
 <script>
 
     // function init() {
-        
+
     //     /*intialize positions*/
 
     //     //create_account_div
@@ -139,6 +147,78 @@
 
     // }
     // window.onload = init;
+
+    function update_password_requirements() {
+        var pwd = document.getElementById('pwd').value;
+
+        var requirement1 = document.getElementById('password_requirement_1');
+        var requirement2 = document.getElementById('password_requirement_2');
+        var requirement3 = document.getElementById('password_requirement_3');
+        var requirement4 = document.getElementById('password_requirement_4');
+        var requirement5 = document.getElementById('password_requirement_5');
+
+        var re1 = /.*[a-z]/;
+        var re2 = /.*[A-Z]/;
+        var re3 = /.*[0-9]/;
+        var re4 = /^\w{8,}$/;
+        var re5 = /^\w{0,30}$/;
+
+        if (re1.test(pwd)) {
+            requirement1.style.color = 'green';
+            requirement1.style.fontWeight = '700';
+            requirement1.style.fontSize = 'medium';
+            requirement1.imageStyleImage= "url('http://eddylu.com/images/checkmark.png')";
+        }
+        else {
+            requirement1.style.color = 'black';
+            requirement1.style.fontWeight = '500';
+            requirement1.style.fontSize = 'initial';
+        }
+
+        if (re2.test(pwd)) {
+            requirement2.style.color = 'green';
+            requirement2.style.fontWeight = '700';
+            requirement2.style.fontSize = 'medium';
+        }
+        else {
+            requirement2.style.color = 'black';
+            requirement2.style.fontWeight = '500';
+            requirement2.style.fontSize = 'initial';
+        }
+
+        if (re3.test(pwd)) {
+            requirement3.style.color = 'green';
+            requirement3.style.fontWeight = '700';
+            requirement3.style.fontSize = 'medium';
+        }
+        else {
+            requirement3.style.color = 'black';
+            requirement3.style.fontWeight = '500';
+            requirement3.style.fontSize = 'initial';
+        }
+
+        if (re4.test(pwd)) {
+            requirement4.style.color = 'green';
+            requirement4.style.fontWeight = '700';
+            requirement4.style.fontSize = 'medium';
+        }
+        else {
+            requirement4.style.color = 'black';
+            requirement4.style.fontWeight = '500';
+            requirement4.style.fontSize = 'initial';
+        }
+
+        if (re5.test(pwd)) {
+            requirement5.style.color = 'green';
+            requirement5.style.fontWeight = '700';
+            requirement5.style.fontSize = 'medium';
+        }
+        else {
+            requirement5.style.color = 'black';
+            requirement5.style.fontWeight = '500';
+            requirement5.style.fontSize = 'initial';
+        }
+    }
 
 </script>
 
