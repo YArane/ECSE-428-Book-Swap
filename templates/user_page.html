@@ -3,7 +3,7 @@
 {% block content %}
 
 <style>
-    #post_button {
+    #post_button {    
         float: left;
         width: 49%;
         height: 200px;
@@ -11,11 +11,30 @@
         
         border: none;
         
+        display: inline-block;
+        overflow: hidden;
+        
         background-image: url("http://eddylu.com/images/books4.jpg");
         background-size: 100%;
         
+        -webkit-transition: all .2s ease;
+        -moz-transition: all .2s ease;
+        -ms-transition: all .2s ease;
+        -o-transition: all .2s ease;
+        transition: all .2s ease;
+        
         text-align: left;        
         padding-left: 30px;
+    }
+    
+    #post_button:hover {
+        opacity: 0.7;
+        
+        -webkit-transform:scale(1.05); /* Safari and Chrome */
+        -moz-transform:scale(1.05); /* Firefox */
+        -ms-transform:scale(1.05); /* IE 9 */
+        -o-transform:scale(1.05); /* Opera */
+        transform:scale(1.05);
     }
     
     #advanced_search {
@@ -24,12 +43,34 @@
         height: 200px;
         border-radius: 8px;
         
+        display: inline-block;
+        overflow: hidden;
+        
         background-image: url("http://eddylu.com/images/books_cropped.jpg");
         background-size: 100%;
         background-repeat: no-repeat;
         
+        -webkit-transition: all .2s ease;
+        -moz-transition: all .2s ease;
+        -ms-transition: all .2s ease;
+        -o-transition: all .2s ease;
+        transition: all .2s ease;
+    
+        vertical-align: middle;
+        
         text-align: left;
         padding-left: 30px;
+    }
+    
+    #advanced_search:hover {
+        opacity: 0.7;
+        
+        -webkit-transform:scale(1.05); /* Safari and Chrome */
+        -moz-transform:scale(1.05); /* Firefox */
+        -ms-transform:scale(1.05); /* IE 9 */
+        -o-transform:scale(1.05); /* Opera */
+        transform:scale(1.05);
+        
     }
     
     #advanced_search_header {
@@ -79,10 +120,12 @@
 <h1>Welcome! <small>Come here to create new posts.</small></h1>
 <br>
 <div id="content">
-       
-    <form method="post" action="{{ url_for('show_user_page', user_id=user_id) }}">
-        <button id="post_button" type="submit"><h1>Post an ad</h1></button>
-    </form>
+    
+    <div id="post_button_div">
+        <form method="post" action="{{ url_for('show_user_page', user_id=user_id) }}">
+            <button id="post_button" type="submit"><h1>Post an ad</h1></button>
+        </form>
+    </div>   
 
     <a style="display: block" href="{{ url_for('show_all_posts')}}">
         <div id="advanced_search">
