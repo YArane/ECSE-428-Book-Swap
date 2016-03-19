@@ -62,7 +62,9 @@
     <form method="post" action="/create_account" style="width: 90%;">
         <div class="form-group">
             <label for="usr">Email:</label>
-            <input type="email" class="form-control" name="email" id="usr" autofocus="true">
+            <input type="email" class="form-control" name="email" id="usr" autofocus="true"
+                   onkeypress="update_password_requirements()" autocomplete="off" autofocus="true"
+                   onkeyup="if (!(event.keyCode == 37 || event.keyCode == 38 || event.keyCode == 39 || event.keyCode == 40)) update_password_requirements();">
         </div>
         <div class="form-group">
             <label for="pwd">Password:</label>
@@ -70,7 +72,7 @@
                    onkeypress="update_password_requirements()" autocomplete="off" autofocus="true"
                    onkeyup="if (!(event.keyCode == 37 || event.keyCode == 38 || event.keyCode == 39 || event.keyCode == 40)) update_password_requirements();">
         </div>
-         <button type="submit" class="btn btn-default" onclick="">Create Account</button>
+        <button id="signup_submit" type="submit" class="btn btn-default" onclick="">Create Account</button>
     </form>
 </div>
 
@@ -84,6 +86,24 @@
         <li id="password_requirement_5" style="font-weight: 700; font-size: medium; color: green;">Password must be at most 30 alphanumeric characters long</li>
     </ul>
 </div>
+
+    <script>
+        $(document).ready(function () {
+            $(window).keydown(function (event) {
+                var pwd = document.getElementById('pwd').value;
+                var usr = document.getElementById('usr').value;
+                if (event.keyCode == 13 && !((/.*[a-z]/).test(pwd) && (/.*[A-Z]/).test(pwd)
+                    && (/.*[0-9]/).test(pwd) && (/^\w{8,}$/).test(pwd) && (/^\w{0,30}$/).test(pwd)
+                    && usr != '' && usr.indexOf('@') > -1 && usr.length - 1 > usr.indexOf('@'))) {
+                    //event.preventDefault();
+                    return false;
+                }
+                else if (event.keyCode == 13) {
+                    document.getElementById('signup_submit').click();
+                }
+            });
+        });
+    </script>
 
 <script>
 
@@ -148,9 +168,10 @@
     // }
     // window.onload = init;
 
-    function update_password_requirements() {
-        var pwd = document.getElementById('pwd').value;
+    document.getElementById('signup_submit').disabled = true;
 
+    function update_password_requirements() {
+        
         var requirement1 = document.getElementById('password_requirement_1');
         var requirement2 = document.getElementById('password_requirement_2');
         var requirement3 = document.getElementById('password_requirement_3');
@@ -162,6 +183,8 @@
         var re3 = /.*[0-9]/;
         var re4 = /^\w{8,}$/;
         var re5 = /^\w{0,30}$/;
+
+        var pwd = document.getElementById('pwd').value;
 
         if (re1.test(pwd)) {
             requirement1.style.color = 'green';
@@ -218,6 +241,18 @@
             requirement5.style.fontWeight = '500';
             requirement5.style.fontSize = 'initial';
         }
+
+        var usr = document.getElementById('usr').value;
+        var signup_submit = document.getElementById('signup_submit');
+
+        if (!(re1.test(pwd) && re2.test(pwd) && re3.test(pwd) && re4.test(pwd) && re5.test(pwd)
+            && usr != '' && usr.indexOf('@') > -1 && usr.length - 1 > usr.indexOf('@'))) {
+            signup_submit.disabled = true;
+        }
+        else {
+            signup_submit.disabled = false;
+        }
+
     }
 
 </script>
