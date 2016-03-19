@@ -234,11 +234,15 @@ def create_post():
     else:
         title = request.values['textbook_title']
         author = request.values['textbook_author']
+        email = request.values['contact_seller_email']
+        if email and validate_email(email) is None:
+            flash("Email address is not valid")
+            return render_template("create_post_page.html")
         if not title:
             flash("You need to submit a title for the book")
             return render_template("create_post_page.html")
 
-        newpost = dbOps.insert_post(title, user_id, author)
+        newpost = dbOps.insert_post(title, user_id, author, email)
         return redirect(url_for('show_post', post_id=newpost.post_id, user_id=session['user_id']))
 
 
@@ -313,7 +317,7 @@ def show_post(post_id):
     if request.method == 'GET':
         post = dbOps.get_post(post_id=post_id)
         if post:
-            return render_template("post_page.html", user=post.creator, title=post.textbook_title, user_id=session['user_id'])
+            return render_template("post_page.html", user=post.creator, title=post.textbook_title, user_id=session['user_id'], post=post)
         else:
             return "The post you are trying to access does not exist"
 
