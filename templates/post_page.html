@@ -23,7 +23,7 @@
     }
 </style>
 
-<h1>{{ title }} IS FOR SALE!</h1>
+<h1>{{ post.textbook_title }} IS FOR SALE!</h1>
 <br>
 
 <div id="content">
@@ -38,13 +38,13 @@
 
     <br><br>
 
-    Post page for <b>{{ title }}</b><br>
-    Posted by <b>{{ user.email }}</b>
+    Post page for <b>{{ post.textbook_title }}</b><br>
+    Posted by <b>{{ post.creator.email }}</b>
 
     <br>
     <br>
 
-    {% if user.user_id == user_id %}
+    {% if post.creator.user_id == user_id %}
         <form method="post">
             <input type="submit" name="submit" value="Delete this post">
         </form>
@@ -85,7 +85,7 @@
                 {% if post.contact_seller_email != None %}
                     <input id="contact_recipient" name="contact_recipient" type=text value="{{ post.contact_seller_email }}" readonly="true">
                 {% else %}
-                    <input id="contact_recipient" name="contact_recipient" type=text value="{{ user.email }}" readonly="true">
+                    <input id="contact_recipient" name="contact_recipient" type=text value="{{ post.creator.email }}" readonly="true">
                 {% endif %}
                 <br><br>
             </div>

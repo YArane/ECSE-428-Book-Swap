@@ -265,8 +265,7 @@ def search():
         posts = dbOps.search(query)
         if posts:
             page, per_page, offset = get_page_items(20)
-            pagination = Pagination(page=page, total=len(posts), search=False, record_name='posts', per_page=per_page,
-                                    css_framework='foundation')
+            pagination = Pagination(page=page, total=len(posts), search=False, record_name='posts', per_page=per_page, css_framework='foundation')
             return render_template("posts.html", posts=posts[offset:offset + per_page], pagination=pagination, search_terms=query, user_id=session['user_id'])
         else:
             flash("No posts match your search!")
@@ -317,7 +316,7 @@ def show_post(post_id):
     if request.method == 'GET':
         post = dbOps.get_post(post_id=post_id)
         if post:
-            return render_template("post_page.html", user=post.creator, title=post.textbook_title, user_id=session['user_id'], post=post)
+            return render_template("post_page.html", post=post, user_id=session['user_id'])
         else:
             return "The post you are trying to access does not exist"
 
