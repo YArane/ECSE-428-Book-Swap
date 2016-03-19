@@ -105,11 +105,15 @@ class DBOperations():
             return None
 
     @staticmethod
-    def insert_post(textbook_title, creator_id, textbook_author=None):
+    def insert_post(textbook_title, creator_id, textbook_author=None, contact_seller_email=None):
         post_id = uuid.uuid4()
         creator = User.objects.get(user_id=creator_id)
         if textbook_author:
-            new_post = Post(textbook_title=textbook_title, creator=creator, textbook_author=textbook_author, post_id=post_id)
+            if contact_seller_email:
+                new_post = Post(textbook_title=textbook_title, creator=creator, textbook_author=textbook_author,
+                                contact_seller_email=contact_seller_email, post_id=post_id)
+            else:
+                new_post = Post(textbook_title=textbook_title, creator=creator, textbook_author=textbook_author, post_id=post_id)
         else:
             new_post = Post(textbook_title=textbook_title, creator=creator, post_id=post_id)
         new_post.save()
