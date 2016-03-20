@@ -64,6 +64,24 @@ def initialize_elements():
 
 	return p, q, n, t, e, d
 
+# remove any characters that are not UTF-8
+def removeNonUTF8(s):
+	output = ''
+	for i in range (0, len(s)):
+		if not isUTF8(s[i]):
+			output += chr(ord(s[i]) % 100)
+		else:
+			output += s[i]
+	return output
+
+# check if character is UTF-8
+def isUTF8(c):
+	try:
+	    c.decode('utf-8')
+	    return True
+	except UnicodeError:
+	    return False
+
 # returns encrypted text
 def encrypt(input):
 	p, q, n, t, e, d = initialize_elements()
@@ -74,7 +92,7 @@ def encrypt(input):
 		m = find_mod(m, e, n) % n # m^e % n
 		output += chr(m)
 
-	return output
+	return removeNonUTF8(output)
 
 # returns decrypted text
 def decrypt(input):
@@ -88,11 +106,8 @@ def decrypt(input):
 
 	return output
 
-# text = 'Hello World!'
+# text = 'Password123'
 # print '\nOriginal text:\n' + text + '\n'
-#
+
 # encrypted = encrypt(text)
 # print 'Encrypted:\n' + encrypted + '\n'
-#
-# decrypted = decrypt(encrypted)
-# print 'Decrypted:\n' + decrypted
