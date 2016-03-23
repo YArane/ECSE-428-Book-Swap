@@ -8,6 +8,7 @@ DB = DBOperations()
 email_success = "An email has been sent to your account, please follow the link to reset your password."
 email_failure = "The email you entered is not associated with any account. Please verify the email address."
 
+
 class ForgotPasswordTestCase(unittest.TestCase):
 
     def setUp(self):
@@ -52,7 +53,6 @@ class ForgotPasswordTestCase(unittest.TestCase):
             assert resp.status_code is 200
             page_data = resp.get_data()
             assert email_failure in page_data
-
 
 
 if __name__ == '__main__':
