@@ -20,9 +20,9 @@ class EditPostTestCase(TestCase):
         BookSwap.app.config['SECRET_KEY'] = '112SOMESECRETKEY987'
         self.app = BookSwap.app.test_client()
 
-        def tearDown(self):
-            DB.delete_users()
-            DB.delete_posts()
+    def tearDown(self):
+        DB.delete_users()
+        DB.delete_posts()
 
     def create_app(self):
         app = Flask(__name__)
@@ -39,7 +39,7 @@ class EditPostTestCase(TestCase):
         DB.insert_user("test@test.com", encrypt("Somepass1234"))
         DB.activate_user("test@test.com")
         user = DB.get_user_by_email("test@test.com")
-        post = DB.insert_post('test_title',user.user_id,'test_author',user.email)
+        post = DB.insert_post('test_title', user.user_id, 'test_author', user.email)
         return dict(user=user, post=post)
 
     def test_edit_posts_db(self):
@@ -48,16 +48,18 @@ class EditPostTestCase(TestCase):
         new_title = "test_title2"
         new_author = "test_author2"
         DB.update_existing_post(post.post_id, new_title, new_author)
-        self.assertEqual(new_title, post.textbook_title)
-        self.assertEqual(new_author, post.textbook_author)
+        updated_post = DB.get_post(post.post_id)
+        self.assertEqual(new_title, updated_post.textbook_title)
+        self.assertEqual(new_author, updated_post.textbook_author)
 
     def test_edit_successfully(self):
         params = self.create_test_account_and_post()
         post = params['post']
         self.login()
-        rv = self.app.post('/edit_post/{0}'.format(post.post_id), data=dict(
+        self.app.post('/edit_post/{0}'.format(post.post_id), data=dict(
             textbook_title="test_title2",
             textbook_author="test_author2"
         ), follow_redirects=True)
-        self.assertEqual(post.textbook_title, "test_title2")
-        self.assertEqual(post.textbook_author, "test_author2")
+        updated_post = DB.get_post(post.post_id)
+        self.assertEqual(updated_post.textbook_title, "test_title2")
+        self.assertEqual(updated_post.textbook_author, "test_author2")
