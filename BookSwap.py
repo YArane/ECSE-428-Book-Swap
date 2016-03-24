@@ -12,7 +12,7 @@ import json
 # Use dbOps to communicate interact with the DB. See operations.py
 # to understand what operations are defined
 from database.operations import DBOperations as dbOps
-from database.forms import EditAccountForm
+from database.forms import EditAccountForm, EditPostForm
 
 app = Flask(__name__)
 
@@ -322,11 +322,42 @@ def show_post(post_id):
 
     if request.method == 'POST':
         creator = dbOps.get_post(post_id=post_id).creator
-        dbOps.remove_post(post_id)
-        flash("Post deleted successfully")
-        return redirect(url_for("show_user_page", user_id=creator.user_id))
+        if request.form['submit'] == 'Delete this post':
+            dbOps.remove_post(post_id)
+            flash("Post deleted successfully")
+            return redirect(url_for("show_user_page", user_id=creator.user_id))
+        elif request.form['submit'] == 'Edit this post':
+            return redirect(url_for("edit_post", post_id=post_id))
+
     else:
         return 'No other options implemented yet'
+
+@app.route('/edit_post/<string:post_id>', methods=['GET', 'POST'])
+def edit_post(post_id):
+    post = dbOps.get_post(post_id=post_id)
+    form = EditPostForm(request.form, obj=post)
+    creator = post.creator
+    user_id = session['user_id']
+    if not session.get('logged_in'):
+        return "You are not logged in"
+    if not creator.user_id==user_id:
+        return "You do not have permission to edit this post"
+    post = dbOps.get_post(post_id)
+    if not post:
+        return "This post does not exist"
+    if request.method == 'GET':
+        return render_template("edit_post_page.html", post_id=post_id, form=form)
+    if request.method == 'POST' and form.validate():
+        new_title = form.textbook_title.data
+        new_author = form.textbook_author.data
+        if (not new_title) or (not new_author):
+            errors = ['Please enter a title or author']
+            flash(errors[0])
+            return render_template("edit_post_page.html", post_id=post_id, form=form)
+        dbOps.update_existing_post(post_id, new_title, new_author)
+        flash('Post has been updated')
+        return redirect(url_for('show_user_page', user_id=creator.user_id))
+
 
 
 @app.route('/logout', methods=['GET'])

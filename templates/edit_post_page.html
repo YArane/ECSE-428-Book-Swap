@@ -1,9 +1,12 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title></title>
-</head>
-<body>
-
-</body>
-</html>
+{% extends "template.html" %}
+{% block title %}BookSwap - Edit Post{% endblock %}
+{% block content %}
+{% from "_formhelpers.html" import render_field %}
+<form method=post action="{{ url_for('edit_post', post_id=post_id) }}">
+  <dl>
+    {{ render_field(form.textbook_title) }}
+    {{ render_field(form.textbook_author) }}
+  </dl>
+  <p><input type=submit value="Edit Post">
+</form>
+{% endblock %}
