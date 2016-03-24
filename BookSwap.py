@@ -125,8 +125,10 @@ def contact_seller():
     message = request.form['contact_message']
     email = request.form['contact_recipient'] # Email of person that posted the textbook
     sender_email = request.form['contact_email'] # Email of person that is interested in textbook
+    post_id = request.form['post_id']
     user_id = session['user_id']
-    dbOps.send_contact_seller_email(email, sender_email, mail_manager, message)
+    book_for_sale = dbOps.get_post(post_id)
+    dbOps.send_contact_seller_email(email, sender_email, mail_manager, message, book_for_sale.textbook_title)
     return redirect(url_for("show_user_page", user_id=user_id))
 
 
