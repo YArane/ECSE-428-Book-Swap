@@ -41,6 +41,8 @@ class DBOperations():
         confirm_url = url_for('contact_seller', token=token, _external=True)
         if message == '':
             message = "Message from " + sender_email + ":\n\n" + "Hello! I am interested in buying your textbook!"
+        else:
+            message = "Message from " + sender_email + ":\n\n" + message
         html = render_template('contact_seller_confirmation.html', message=message, sender_email=sender_email)
         subject = "Interest in your textbook"
         mail_manager.send_email(email, subject, html)

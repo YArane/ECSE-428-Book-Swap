@@ -123,8 +123,8 @@ def reset_password():
 @app.route('/contact_seller', methods=['POST'])
 def contact_seller():
     message = request.form['contact_message']
-    email = request.form['contact_recipient']
-    sender_email = request.form['contact_email']
+    email = request.form['contact_recipient'] # Email of person that posted the textbook
+    sender_email = request.form['contact_email'] # Email of person that is interested in textbook
     user_id = session['user_id']
     dbOps.send_contact_seller_email(email, sender_email, mail_manager, message)
     return redirect(url_for("show_user_page", user_id=user_id))
