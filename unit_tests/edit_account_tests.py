@@ -19,8 +19,8 @@ class EditAccountTestCase(TestCase):
         BookSwap.app.config['SECRET_KEY'] = '112SOMESECRETKEY987'
         self.app = BookSwap.app.test_client()
 
-        def tearDown(self):
-            DB.delete_users()
+    def tearDown(self):
+        DB.delete_users()
 
     def create_app(self):
         app = Flask(__name__)
@@ -46,3 +46,30 @@ class EditAccountTestCase(TestCase):
             password="Somepass123"
         ), follow_redirects=True)
         self.assertEqual(str(user.password), encrypt("Somepass1234"))
+
+    def test_edit_no_fields(self):
+        user = self.create_test_account()
+        self.login()
+        rv = self.app.post('/edit_account/{0}'.format(user.user_id), data=dict(
+            email="",
+            password=""
+        ), follow_redirects=True)
+        self.assertEqual(str(user.password), encrypt("Somepass1234"))
+
+    def test_edit_invalid_password(self):
+        user = self.create_test_account()
+        self.login()
+        rv = self.app.post('/edit_account/{0}'.format(user.user_id), data=dict(
+            email="",
+            password="pword"
+        ), follow_redirects=True)
+        self.assertEqual(str(user.password), encrypt("Somepass1234"))
+
+    def test_edit_account_email_already_in_use(self):
+        user = self.create_test_account()
+        self.login()
+        rv = self.app.post('/edit_account/{0}'.format(user.user_id), data=dict(
+            email="test@test.com",
+            password=""
+        ), follow_redirects=True)
+        self.assertTrue(user.activated)
