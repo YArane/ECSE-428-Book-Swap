@@ -1,6 +1,6 @@
 import mongoengine
 import BookSwap
-from flask import Flask, session, url_for
+from flask import Flask
 from flask.ext.testing import TestCase
 from database.operations import DBOperations
 from encryption.encryption import encrypt

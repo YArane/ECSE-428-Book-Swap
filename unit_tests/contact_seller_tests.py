@@ -2,7 +2,6 @@ import mongoengine, unittest
 from database.operations import DBOperations
 import BookSwap
 from encryption.encryption import encrypt
-import flask
 
 DB = DBOperations()
 
