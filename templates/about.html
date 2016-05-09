@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+
+{% extends "template.html" %}
+{% block title %}BoookSwap - About{% endblock %}
+{% block content %}
+
+<style>
+   #author_td {
+        height: 30px;
+        font-size: 18px;
+        padding: 5px 35px 5px 35px;
+    }
+</style>
+
+<h1>About BoookSwap</h1>
+
+<br>
+
+<p>This website was created by a group of nine McGill University students
+ for the <a target="_blank" href="http://www.mcgill.ca/study/2010-2011/courses/ecse-428">ECSE 428 - Software Engineering Practice</a> course.
+ <br>The group utilized the Scrum development process to create a web platform in which students can buy and sell textbooks.</p>
+
+<br>
+
+<h3>Team Members</h3>
+
+<br>
+
+<table id="author_table">
+    <tr>
+        <td id="author_td"><a target="_blank" href="https://linkedin.com/in/yarden-arane-6060b5104">Yarden Arane</a></td>
+        <td id="author_td"><a target="_blank" href="https://linkedin.com/in/ruth-berkow-809248113">Ruth Berkow</a></td>
+        <td id="author_td"><a target="_blank" href="https://linkedin.com/in/ralph-bou-samra-b229a232">Ralph Bou Samra</a></td>
+    </tr>
+    <tr>
+        <td id="author_td"><a target="_blank" href="https://linkedin.com/in/katherine-duff-29893281">Katherine Duff</a></td>
+        <td id="author_td"><a target="_blank" href="https://linkedin.com/in/erin-holley-685244101">Erin Holley</a></td>
+        <td id="author_td"><a target="_blank" href="https://linkedin.com/in/brett-leighton-889397106">Brett Leighton</a></td>
+    </tr>
+    <tr>
+        <td id="author_td"><a target="_blank" href="https://linkedin.com/in/lueddy">Eddy Lu</a></td>
+        <td id="author_td"><a target="_blank" href="https://linkedin.com/in/danielmacario">Daniel Macario</a></td>
+        <td id="author_td"><a target="_blank" href="https://linkedin.com/in/sergenasr">Serge Nasr</a></td>
+    </tr>
+</table>
+
+<br>
+
+<h3>Tools</h3>
+
+<br>
+
+<p>In addition to <b>HTML</b>, <b>CSS</b>, and <b>JavaScript</b>, the group used <b>mongoDB</b> and built the platform using the <b>Python Flask</b> framework.</p>
+
+<br>
+
+<img src="http://s3.amazonaws.com/info-mongodb-com/_com_assets/media/mongodb-logo-rgb.jpeg" width="354" height="100" style="margin: 15px;">
+<img src="http://flask.pocoo.org/static/logo/flask.png" width="256" height="100" style="margin: 15px;">
+
+{% endblock %}

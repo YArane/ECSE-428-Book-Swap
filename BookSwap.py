@@ -46,6 +46,9 @@ def index():
 def signup():
     return render_template('signup.html', page='signup')
 
+@app.route('/about')
+def about():
+    return render_template('about.html', page='about', user_id=session['user_id'])
 
 @app.route('/confirm', methods=['GET'])
 def confirm_email():
