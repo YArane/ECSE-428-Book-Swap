@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
 {% extends "template.html" %}
-{% block title %}BookSwap - Posts{% endblock %}
+{% block title %}BoookSwap - Posts{% endblock %}
 {% block content %}
 
 <style>
@@ -70,7 +70,7 @@
 
 <div class="search" id="search">
     <br>
-    <h1>BookSwap Search</h1>
+    <h1>BoookSwap Search</h1>
     <form id="search_form" method="post" action="/search">
         <div id="inner_search">
             <input id="search_input" list="postsList" type=text name=search placeholder="Search by Title" value="{{request.form.search}}"
