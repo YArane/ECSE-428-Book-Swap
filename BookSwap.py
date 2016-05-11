@@ -48,7 +48,10 @@ def signup():
 
 @app.route('/about')
 def about():
-    return render_template('about.html', page='about', user_id=session['user_id'])
+    if not session.get('logged_in'):
+        return render_template('about.html', page='about')
+    else:
+        return render_template('about.html', page='about', user_id=session['user_id'])
 
 @app.route('/confirm', methods=['GET'])
 def confirm_email():
